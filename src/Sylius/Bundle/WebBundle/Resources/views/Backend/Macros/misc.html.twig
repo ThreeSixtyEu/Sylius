@@ -42,18 +42,15 @@
         {% set class = 'label-danger' %}
     {% endif %}
 {% elseif type == 'order' %}
-    {% if state is sameas(1) %}
-        {% set label = 'sylius.order.state.checkout' %}
+    {% set label = 'sylius.order.state.'~state %}
+    {% if state in ['ordered', 'abandoned', 'returned'] %}
         {% set class = 'label-warning' %}
-    {% elseif state is sameas(2) %}
-        {% set label = 'sylius.order.state.cart_locked' %}
-        {% set class = 'label-default' %}
-    {% elseif state is sameas(3) %}
-        {% set label = 'sylius.order.state.ordered' %}
-        {% set class = 'label-info' %}
-    {% else %}
-        {% set label = 'sylius.order.state.order_confimed' %}
+    {% elseif state in ['checkout', 'order_confirmed', 'shipped'] %}
         {% set class = 'label-success' %}
+    {% elseif state in ['cart_locked', 'cancelled'] %}
+        {% set class = 'label-danger' %}
+    {% else %}
+        {% set class = 'label-primary' %}
     {% endif %}
 {% else %}
     {% if state %}
