@@ -121,6 +121,9 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
     {
         $queryBuilder = parent::getCollectionQueryBuilder();
         $queryBuilder->andWhere($queryBuilder->expr()->isNotNull('o.completedAt'));
+        $queryBuilder
+            ->innerJoin('o.user', 'user')
+        ;
 
         if ($deleted) {
             $this->_em->getFilters()->disable('softdeleteable');
