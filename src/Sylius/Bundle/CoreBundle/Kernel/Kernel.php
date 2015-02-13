@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
  * Sylius base application kernel.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
 abstract class Kernel extends BaseKernel
 {
@@ -27,6 +28,11 @@ abstract class Kernel extends BaseKernel
     const MINOR_VERSION   = '13';
     const RELEASE_VERSION = '0';
     const EXTRA_VERSION   = 'DEV';
+
+    const ENV_DEV = 'dev';
+    const ENV_PROD = 'prod';
+    const ENV_TEST = 'test';
+    const ENV_STAGING = 'staging';
 
     /**
      * {@inheritdoc}
@@ -43,6 +49,7 @@ abstract class Kernel extends BaseKernel
             new \Sylius\Bundle\SettingsBundle\SyliusSettingsBundle(),
             new \Sylius\Bundle\CartBundle\SyliusCartBundle(),
             new \Sylius\Bundle\ProductBundle\SyliusProductBundle(),
+            new \Sylius\Bundle\ArchetypeBundle\SyliusArchetypeBundle(),
             new \Sylius\Bundle\VariationBundle\SyliusVariationBundle(),
             new \Sylius\Bundle\AttributeBundle\SyliusAttributeBundle(),
             new \Sylius\Bundle\TaxationBundle\SyliusTaxationBundle(),
@@ -58,6 +65,7 @@ abstract class Kernel extends BaseKernel
             new \Sylius\Bundle\SequenceBundle\SyliusSequenceBundle(),
             new \Sylius\Bundle\ContentBundle\SyliusContentBundle(),
             new \Sylius\Bundle\SearchBundle\SyliusSearchBundle(),
+            new \Sylius\Bundle\TranslationBundle\SyliusTranslationBundle(),
 
             new \Sylius\Bundle\CoreBundle\SyliusCoreBundle(),
             new \Sylius\Bundle\WebBundle\SyliusWebBundle(),
@@ -100,11 +108,13 @@ abstract class Kernel extends BaseKernel
             new \HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
-        );
 
-        if (in_array($this->environment, array('dev', 'test'))) {
-            $bundles[] = new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-        }
+            new \A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
+
+            new \Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new \Sylius\Bundle\FixturesBundle\SyliusFixturesBundle(),
+        );
 
         return $bundles;
     }

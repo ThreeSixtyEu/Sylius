@@ -66,20 +66,6 @@ abstract class DefaultContext extends RawMinkContext implements Context, KernelA
     }
 
     /**
-     * @BeforeScenario
-     */
-    public function purgeDatabase(BeforeScenarioScope $scope)
-    {
-        $entityManager = $this->getService('doctrine.orm.entity_manager');
-        $entityManager->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
-
-        $purger = new ORMPurger($entityManager);
-        $purger->purge();
-
-        $entityManager->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
-    }
-
-    /**
      * Find one resource by name.
      *
      * @param string $type
@@ -189,6 +175,10 @@ abstract class DefaultContext extends RawMinkContext implements Context, KernelA
 
                 case 'variant':
                     $configuration[$key] = $this->getRepository('product')->findOneBy(array('name' => trim($value)))->getMasterVariant()->getId();
+                    break;
+
+                case 'amount':
+                    $configuration[$key] = (int) $value;
                     break;
 
                 default:

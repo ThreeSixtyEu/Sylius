@@ -13,16 +13,19 @@ namespace Sylius\Component\Product\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Archetype\Model\ArchetypeInterface as BaseArchetypeInterface;
 use Sylius\Component\Attribute\Model\AttributeValueInterface as BaseAttributeValueInterface;
 use Sylius\Component\Variation\Model\OptionInterface as BaseOptionInterface;
 use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
+use Sylius\Component\Translation\Model\AbstractTranslatable;
 
 /**
  * Sylius catalog product model.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
-class Product implements ProductInterface
+class Product extends AbstractTranslatable implements ProductInterface
 {
     /**
      * Product id.
@@ -32,26 +35,9 @@ class Product implements ProductInterface
     protected $id;
 
     /**
-     * Product name.
-     *
-     * @var string
+     * @var null|ArchetypeInterface
      */
-    protected $name;
-
-    /**
-     * Permalink for the product.
-     * Used in url to access it.
-     *
-     * @var string
-     */
-    protected $slug;
-
-    /**
-     * Product description.
-     *
-     * @var string
-     */
-    protected $description;
+    protected $archetype;
 
     /**
      * Available on.
@@ -59,20 +45,6 @@ class Product implements ProductInterface
      * @var \DateTime
      */
     protected $availableOn;
-
-    /**
-     * Meta keywords.
-     *
-     * @var string
-     */
-    protected $metaKeywords;
-
-    /**
-     * Meta description.
-     *
-     * @var string
-     */
-    protected $metaDescription;
 
     /**
      * Attributes.
@@ -121,6 +93,7 @@ class Product implements ProductInterface
      */
     public function __construct()
     {
+        parent::__construct();
         $this->availableOn = new \DateTime();
         $this->attributes = new ArrayCollection();
         $this->variants = new ArrayCollection();
@@ -137,11 +110,29 @@ class Product implements ProductInterface
     }
 
     /**
+     * @return null|ArchetypeInterface
+     */
+    public function getArchetype()
+    {
+        return $this->archetype;
+    }
+
+    /**
+     * @param null|ArchetypeInterface $archetype
+     */
+    public function setArchetype(BaseArchetypeInterface $archetype = null)
+    {
+        $this->archetype = $archetype;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return $this->name;
+        return $this->translate()->getName();
     }
 
     /**
@@ -149,7 +140,7 @@ class Product implements ProductInterface
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->translate()->setName($name);
 
         return $this;
     }
@@ -159,15 +150,15 @@ class Product implements ProductInterface
      */
     public function getSlug()
     {
-        return $this->slug;
+        return $this->translate()->getSlug();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setSlug($slug)
+    public function setSlug($slug = null)
     {
-        $this->slug = $slug;
+        $this->translate()->setSlug($slug);
 
         return $this;
     }
@@ -177,7 +168,7 @@ class Product implements ProductInterface
      */
     public function getDescription()
     {
-        return $this->description;
+        return $this->translate()->getDescription();
     }
 
     /**
@@ -185,7 +176,43 @@ class Product implements ProductInterface
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->translate()->setDescription($description);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetaKeywords()
+    {
+        return $this->translate()->getMetaKeywords();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMetaKeywords($metaKeywords)
+    {
+        $this->translate()->setMetaKeywords($metaKeywords);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetaDescription()
+    {
+        return $this->translate()->getMetaDescription();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->translate()->setMetaDescription($metaDescription);
 
         return $this;
     }
@@ -212,42 +239,6 @@ class Product implements ProductInterface
     public function setAvailableOn(\DateTime $availableOn = null)
     {
         $this->availableOn = $availableOn;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMetaKeywords()
-    {
-        return $this->metaKeywords;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMetaKeywords($metaKeywords)
-    {
-        $this->metaKeywords = $metaKeywords;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMetaDescription()
-    {
-        return $this->metaDescription;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMetaDescription($metaDescription)
-    {
-        $this->metaDescription = $metaDescription;
 
         return $this;
     }
@@ -557,5 +548,13 @@ class Product implements ProductInterface
         $this->deletedAt = $deletedAt;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTranslationEntityClass()
+    {
+        return get_class().'Translation';
     }
 }

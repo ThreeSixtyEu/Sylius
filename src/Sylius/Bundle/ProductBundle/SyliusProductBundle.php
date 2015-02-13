@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * customizations support.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
 class SyliusProductBundle extends AbstractResourceBundle
 {
@@ -53,13 +54,15 @@ class SyliusProductBundle extends AbstractResourceBundle
     protected function getModelInterfaces()
     {
         return array(
-            'Sylius\Component\Product\Model\ProductInterface'        => 'sylius.model.product.class',
-            'Sylius\Component\Product\Model\AttributeInterface'      => 'sylius.model.product_attribute.class',
-            'Sylius\Component\Product\Model\AttributeValueInterface' => 'sylius.model.product_attribute_value.class',
-            'Sylius\Component\Product\Model\VariantInterface'        => 'sylius.model.product_variant.class',
-            'Sylius\Component\Product\Model\OptionInterface'         => 'sylius.model.product_option.class',
-            'Sylius\Component\Product\Model\OptionValueInterface'    => 'sylius.model.product_option_value.class',
-            'Sylius\Component\Product\Model\PrototypeInterface'      => 'sylius.model.product_prototype.class',
+            'Sylius\Component\Product\Model\ProductInterface'              => 'sylius.model.product.class',
+            'Sylius\Component\Product\Model\ProductTranslationInterface'   => 'sylius.model.product_translation.class',
+            'Sylius\Component\Product\Model\AttributeInterface'            => 'sylius.model.product_attribute.class',
+            'Sylius\Component\Product\Model\AttributeTranslationInterface' => 'sylius.model.product_attribute_translation.class',
+            'Sylius\Component\Product\Model\AttributeValueInterface'       => 'sylius.model.product_attribute_value.class',
+            'Sylius\Component\Product\Model\VariantInterface'              => 'sylius.model.product_variant.class',
+            'Sylius\Component\Product\Model\OptionInterface'               => 'sylius.model.product_option.class',
+            'Sylius\Component\Product\Model\OptionValueInterface'          => 'sylius.model.product_option_value.class',
+            'Sylius\Component\Product\Model\ArchetypeInterface'            => 'sylius.model.product_archetype.class',
         );
     }
 

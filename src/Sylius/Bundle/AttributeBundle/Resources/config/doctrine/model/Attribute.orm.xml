@@ -20,7 +20,6 @@
         </id>
 
         <field name="name" column="name" type="string" />
-        <field name="presentation" column="presentation" type="string" />
         <field name="type" column="type" type="string" />
         <field name="configuration" column="configuration" type="array" />
 

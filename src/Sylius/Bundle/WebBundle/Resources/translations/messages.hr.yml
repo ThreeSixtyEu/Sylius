@@ -80,7 +80,7 @@ sylius:
       products: Pregledaj proizvode
       users: Pregledaj korisnika
     statistics:
-      0: Statistika
+      header: Statistika
       orders_this_month: Narudžbe u trenutnom mjesecu
       registrations_this_month: Registracije u trenutnom mjesecu
       sales_this_month: Prodaja u trenutnom mjesecu
@@ -134,7 +134,7 @@ sylius:
       index: Kuponi
     property:
       index: Svojstva
-    prototype:
+    archetype:
       index: Prototipovi proizvoda
     sales: Prodaja
     shipment:
@@ -288,7 +288,7 @@ sylius:
     update_header: Uredi grupu
   hide_deleted: Sakrij izbrisano
   history:
-    header: Povijest
+    0: Povijest
     action: Akcija
     author: Autor
     data: Podaci
@@ -433,7 +433,7 @@ sylius:
     method: Tip
     no_results: Nema postavljenih tipova plaćanja.
     state:
-      header: Stanje
+      0: Stanje
       checkout: Blagajna
       completed: Završeno
       failed: Neuspješno
@@ -554,7 +554,7 @@ sylius:
     type: Tip
     update_header: Ažuriranje atributa
     updated_at: Ažurirano
-  prototype:
+  archetype:
     build: Kreiraj prototip
     build_header: Kreirajte artikal na bazi prototipa
     create: Kreiraj prototip

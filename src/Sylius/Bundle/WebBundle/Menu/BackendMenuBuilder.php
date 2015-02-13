@@ -25,11 +25,9 @@ class BackendMenuBuilder extends MenuBuilder
     /**
      * Builds backend main menu.
      *
-     * @param Request $request
-     *
      * @return ItemInterface
      */
-    public function createMainMenu(Request $request)
+    public function createMainMenu()
     {
         $menu = $this->factory->createItem('root', array(
             'childrenAttributes' => array(
@@ -69,17 +67,17 @@ class BackendMenuBuilder extends MenuBuilder
     /**
      * Builds backend sidebar menu.
      *
-     * @param Request $request
-     *
      * @return ItemInterface
      */
-    public function createSidebarMenu(Request $request)
+    public function createSidebarMenu()
     {
         $menu = $this->factory->createItem('root', array(
             'childrenAttributes' => array(
                 'class' => 'nav'
             )
         ));
+
+        $menu->setCurrentUri($this->request->getRequestUri());
 
         $childOptions = array(
             'childrenAttributes' => array('class' => 'nav'),
@@ -136,10 +134,10 @@ class BackendMenuBuilder extends MenuBuilder
             'labelAttributes' => array('icon' => 'glyphicon glyphicon-list-alt'),
         ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.attributes', $section)));
 
-        $child->addChild('prototypes', array(
-            'route' => 'sylius_backend_product_prototype_index',
+        $child->addChild('product_archetypes', array(
+            'route' => 'sylius_backend_product_archetype_index',
             'labelAttributes' => array('icon' => 'glyphicon glyphicon-compressed'),
-        ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.prototypes', $section)));
+        ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.archetypes', $section)));
     }
 
     /**

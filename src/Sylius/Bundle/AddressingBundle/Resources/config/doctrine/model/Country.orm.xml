@@ -18,7 +18,6 @@
             <generator strategy="AUTO" />
         </id>
 
-        <field name="name" column="name" type="string" />
         <field name="isoName" column="iso_name" type="string" />
         <one-to-many field="provinces" target-entity="Sylius\Component\Addressing\Model\ProvinceInterface" mapped-by="country">
             <cascade>

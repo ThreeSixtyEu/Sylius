@@ -5,9 +5,9 @@
     {% spaceless %}
         <div data-form-type="collection"
              {{ block('widget_container_attributes') }}
-             {% if prototype is not empty %}
+             {% if prototype is defined and allow_add and prototype is not empty %}
              data-prototype='{{ _self.collectionItem(prototype, allow_delete, button_delete_label, '__name__')|e }}'
-             {% endif %}>
+             {%- endif -%}>
 
             {{ error(form.vars.errors) }}
 
@@ -42,7 +42,7 @@
         <div data-form-collection="item"
              data-form-collection-index="{{ index }}"
              class="collection-item">
-            <div class="collection-box{% if form|length == 1%} unique-field{% endif %}">
+            <div class="collection-box{% if form|length == 1 %} unique-field{% endif %}">
                 {% if allow_delete %}
                     <p class="text-right">
                         <a href="#" data-form-collection="delete" class="btn btn-danger">

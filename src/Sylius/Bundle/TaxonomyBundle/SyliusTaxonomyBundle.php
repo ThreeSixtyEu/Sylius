@@ -18,6 +18,7 @@ use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
  * Flexible categorization system.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
 class SyliusTaxonomyBundle extends AbstractResourceBundle
 {

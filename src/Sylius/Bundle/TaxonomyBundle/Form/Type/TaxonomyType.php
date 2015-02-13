@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  * Taxonomy form form.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
 class TaxonomyType extends AbstractResourceType
 {
@@ -27,8 +28,9 @@ class TaxonomyType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
-                'label' => 'sylius.form.taxonomy.name'
+            ->add('translations', 'a2lix_translationsForms', array(
+                'form_type' => 'sylius_taxonomy_translation',
+                'label'    => 'sylius.form.taxonomy.name'
             ))
         ;
     }

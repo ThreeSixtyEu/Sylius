@@ -7,9 +7,9 @@ sylius:
   form:
     configuration:
       database:
-        0: اتصال قاعدة البيانات
+        header: اتصال قاعدة البيانات
         driver:
-          0: برنامج التشغيل
+          header: برنامج التشغيل
           microsoft_sql_server: Microsoft SQL Server
           mysql: MySQL
           oracle: Oracle
@@ -17,3 +17,4 @@ sylius:
         host: المضيف / Host
       mailer:
         host: المضيف / Host
+

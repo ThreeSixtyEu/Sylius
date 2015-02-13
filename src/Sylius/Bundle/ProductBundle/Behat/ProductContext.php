@@ -29,15 +29,30 @@ class ProductContext extends DefaultContext
 
         foreach ($table->getHash() as $data) {
             $product = $repository->createNew();
+
+            $product->setCurrentLocale($this->getContainer()->getParameter('sylius.locale'));
             $product->setName(trim($data['name']));
             $product->setDescription('...');
-            $product->getMasterVariant()->setPrice($data['price'] * 100);
+            $product->getMasterVariant()->setPrice((int) round($data['price'] * 100));
 
             if (!empty($data['options'])) {
                 foreach (explode(',', $data['options']) as $option) {
                     $option = $this->findOneByName('product_option', trim($option));
                     $product->addOption($option);
                 }
+            }
+
+            if (!empty($data['attributes'])) {
+                $attribute = explode(':', $data['attributes']);
+
+                $productAttribute = $this->findOneByName('product_attribute', trim($attribute[0]));
+                $attributeValue =  $this->getRepository('product_attribute_value')->createNew();
+
+                $attributeValue
+                    ->setAttribute($productAttribute)
+                    ->setValue($attribute[1]);
+
+                $product->addAttribute($attributeValue);
             }
 
             if (isset($data['sku'])) {
@@ -81,28 +96,43 @@ class ProductContext extends DefaultContext
     }
 
     /**
-     * @Given /^there is prototype "([^""]*)" with following configuration:$/
+     * @Given /^there is archetype "([^""]*)" with following configuration:$/
      */
-    public function thereIsPrototypeWithFollowingConfiguration($name, TableNode $table)
+    public function thereIsArchetypeWithFollowingConfiguration($name, TableNode $table)
     {
         $manager = $this->getEntityManager();
-        $repository = $this->getRepository('product_prototype');
+        $repository = $this->getRepository('product_archetype');
 
-        $prototype = $repository->createNew();
-        $prototype->setName($name);
+        $archetype = $repository->createNew();
+        $archetype
+            ->setName($name)
+            ->setCode($name)
+        ;
 
         $data = $table->getRowsHash();
 
         foreach (explode(',', $data['options']) as $optionName) {
-            $prototype->addOption($this->findOneByName('product_option', trim($optionName)));
+            $archetype->addOption($this->findOneByName('product_option', trim($optionName)));
         }
 
         foreach (explode(',', $data['attributes']) as $attributeName) {
-            $prototype->addAttribute($this->findOneByName('product_attribute', trim($attributeName)));
+            $archetype->addAttribute($this->findOneByName('product_attribute', trim($attributeName)));
         }
 
-        $manager->persist($prototype);
+        $manager->persist($archetype);
         $manager->flush();
+    }
+
+    /**
+     * @Then :locale translation for product archetype :archetypeName should exist
+     */
+    public function translationForProductArchetypeShouldExist($locale, $archetypeName)
+    {
+        $archetype = $this->findOneByName('product_archetype_translation', $archetypeName);
+
+        if (!$archetype->getLocale() === $locale) {
+            throw new \Exception('There is no translation for product archetype'. $archetypeName . ' in '.$locale . 'locale');
+        }
     }
 
     /**
@@ -192,5 +222,70 @@ class ProductContext extends DefaultContext
         }
 
         return $attribute;
+    }
+
+    /**
+     * @Given /^the following product translations exist:$/
+     */
+    public function theFollowingProductTranslationsExist(TableNode $table)
+    {
+        $manager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $productTranslation = $this->findOneByName('product_translation', $data['product']);
+            $product = $productTranslation->getTranslatable();
+            $product->setCurrentLocale($data['locale']);
+            $product
+                ->setName($data['name'])
+                ->setDescription('...');
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * @Then :locale translation for product :productName should exist
+     */
+    public function translationForProductShouldExist($locale, $productName)
+    {
+        $product = $this->findOneByName('product_translation', $productName);
+
+        if (!$product->getLocale() === $locale) {
+            throw new \Exception('There is no translation for product'. $productName . ' in '.$locale . 'locale');
+        }
+    }
+
+    /**
+     * @Given the following attribute translations exist
+     */
+    public function theFollowingAttributeTranslationsExist(TableNode $table)
+    {
+        $manager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->findOneByName('product_attribute', $data['attribute']);
+            $attribute
+                ->setCurrentLocale($data['locale'])
+                ->setPresentation($data['presentation']);
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * @Given the following option translations exist
+     */
+    public function theFollowingOptionTranslationsExist(TableNode $table)
+    {
+        $manager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $option = $this->findOneByName('product_option', $data['option']);
+            $option
+                ->setCurrentLocale($data['locale'])
+                ->setPresentation($data['presentation']);
+        }
+
+        $manager->flush();
     }
 }

@@ -23,11 +23,10 @@
         "php": ">=5.3.3",
 
         "symfony/framework-bundle": "~2.3",
-        "sylius/resource-bundle":   "0.13.*@dev",
-        "sylius/flow-bundle":       "0.13.*@dev"
+        "sylius/core-bundle":       "0.13.*@dev"
     },
     "require-dev": {
-        "phpspec/phpspec":   "~2.0",
+        "phpspec/phpspec":   "~2.1",
         "symfony/form":      "~2.2",
         "symfony/validator": "~2.2"
     },

@@ -18,6 +18,7 @@ use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
  * Bundle for managing object options and variants.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
 class SyliusVariationBundle extends AbstractResourceBundle
 {

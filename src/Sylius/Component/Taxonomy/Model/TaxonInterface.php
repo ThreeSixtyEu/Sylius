@@ -12,19 +12,21 @@
 namespace Sylius\Component\Taxonomy\Model;
 
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Translation\Model\TranslatableInterface;
 use Sylius\Component\Resource\Model\SoftDeletableInterface;
 
 /**
  * Interface for taxons.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
-interface TaxonInterface extends SoftDeletableInterface
+interface TaxonInterface extends SoftDeletableInterface, TaxonTranslationInterface, TranslatableInterface
 {
     /**
      * Get the id of taxonomy.
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
@@ -45,7 +47,7 @@ interface TaxonInterface extends SoftDeletableInterface
     /**
      * Is root taxon?
      *
-     * @return Boolean
+     * @return bool
      */
     public function isRoot();
 
@@ -75,7 +77,7 @@ interface TaxonInterface extends SoftDeletableInterface
      *
      * @param TaxonInterface $taxon
      *
-     * @return Boolean
+     * @return bool
      */
     public function hasChild(TaxonInterface $taxon);
 
@@ -106,20 +108,6 @@ interface TaxonInterface extends SoftDeletableInterface
      * @param string $name
      */
     public function setName($name);
-
-    /**
-     * Get slug.
-     *
-     * @return string
-     */
-    public function getSlug();
-
-    /**
-     * Set slug.
-     *
-     * @param string $slug
-     */
-    public function setSlug($slug);
 
     /**
      * Get permalink.

@@ -19,6 +19,7 @@ use Sylius\Component\Promotion\Model\CouponInterface as BaseCouponInterface;
 use Sylius\Component\Promotion\Model\PromotionInterface;
 use Sylius\Component\Resource\Exception\UnexpectedTypeException;
 
+
 /**
  * Order entity.
  *
@@ -71,9 +72,16 @@ class Order extends Cart implements OrderInterface
     /**
      * Promotion coupons.
      *
-     * @var BaseCouponInterface[]
+     * @var Collection|BaseCouponInterface[]
      */
     protected $promotionCoupons;
+
+    /**
+     * Order checkout state.
+     *
+     * @var string
+     */
+    protected $checkoutState = OrderInterface::CHECKOUT_STATE_CART;
 
     /**
      * Order payment state.
@@ -163,6 +171,24 @@ class Order extends Cart implements OrderInterface
     public function setBillingAddress(AddressInterface $address)
     {
         $this->billingAddress = $address;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCheckoutState()
+    {
+        return $this->checkoutState;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCheckoutState($checkoutState)
+    {
+        $this->checkoutState = $checkoutState;
 
         return $this;
     }
@@ -455,7 +481,7 @@ class Order extends Cart implements OrderInterface
     /**
      * Gets the last updated shipment of the order
      *
-     * @return null|ShipmentInterface
+     * @return false|ShipmentInterface
      */
     public function getLastShipment()
     {
@@ -478,7 +504,7 @@ class Order extends Cart implements OrderInterface
      */
     public function isInvoiceAvailable()
     {
-        if (null !== $lastShipment = $this->getLastShipment()) {
+        if (false !== $lastShipment = $this->getLastShipment()) {
             return in_array($lastShipment->getState(), array(ShipmentInterface::STATE_RETURNED, ShipmentInterface::STATE_SHIPPED));
         }
 

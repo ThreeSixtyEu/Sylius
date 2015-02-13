@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  * Option form type.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
 class OptionType extends AbstractResourceType
 {
@@ -51,15 +52,17 @@ class OptionType extends AbstractResourceType
             ->add('name', 'text', array(
                 'label' => 'sylius.form.option.name'
             ))
-            ->add('presentation', 'text', array(
-                'label' => 'sylius.form.option.presentation'
+            ->add('translations', 'a2lix_translationsForms', array(
+                'form_type' => sprintf('sylius_%s_option_translation', $this->variableName),
+                'label'    => 'sylius.form.option.presentation'
             ))
             ->add('values', 'collection', array(
-                'type'         => sprintf('sylius_%s_option_value', $this->variableName),
-                'allow_add'    => true,
+                'type' => sprintf('sylius_%s_option_value', $this->variableName),
+                'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label'        => 'sylius.form.option.values'
+                'label' => false,
+                'button_add_label' => 'sylius.form.option_value.add_value'
             ))
         ;
     }

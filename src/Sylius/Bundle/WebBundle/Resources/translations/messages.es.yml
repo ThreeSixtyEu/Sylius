@@ -80,7 +80,7 @@ sylius:
       products: Productos
       users: Usuarios
     statistics:
-      header: Estadísticas del mes
+      0: Estadísticas del mes
       orders_this_month: Pedidos
       registrations_this_month: Usuarios
       sales_this_month: Ventas
@@ -134,7 +134,7 @@ sylius:
       index: sylius.breadcrumb.promotion_coupon.index
     property:
       index: Propiedades de producto
-    prototype:
+    archetype:
       index: Prototipos de producto
     sales: Ventas
     shipment:
@@ -288,7 +288,7 @@ sylius:
     update_header: Editar grupo
   hide_deleted: Ocultar eliminados
   history:
-    header: Historial
+    0: Historial
     action: Acción
     author: Autor
     data: Fecha
@@ -433,7 +433,7 @@ sylius:
     method: Metodo
     no_results: Sin resultados
     state:
-      header: Estado
+      0: Estado
       checkout: Completar pedido
       completed: Completado
       failed: Fallido
@@ -554,7 +554,7 @@ sylius:
     type: Tipo
     update_header: actualizar encabezado
     updated_at: Última actualización
-  prototype:
+  archetype:
     build: Construir
     build_header: Construir encabezado
     create: Crear prototipo

@@ -80,7 +80,7 @@ sylius:
       products: Vos produits
       users: Utilisateurs
     statistics:
-      header: Statistiques du mois
+      0: Statistiques du mois
       orders_this_month: Nombre total de commandes
       registrations_this_month: "Nombre total d'inscriptions"
       sales_this_month: Ventes
@@ -134,8 +134,8 @@ sylius:
       index: Coupons de réduction
     property:
       index: Propriétés
-    prototype:
-      index: Prototypes
+    archetype:
+      index: archetypes
     sales: Ventes
     shipment:
       index: Expéditions
@@ -288,7 +288,7 @@ sylius:
     update_header: Modifier le groupe
   hide_deleted: Cacher les supprimés
   history:
-    header: Historique
+    0: Historique
     action: Action
     author: Auteur
     data: Données
@@ -433,7 +433,7 @@ sylius:
     method: Moyen de paiement
     no_results: Aucun paiement
     state:
-      header: État
+      0: État
       checkout: Paiement
       completed: Complété
       failed: Échoué
@@ -554,17 +554,17 @@ sylius:
     type: type
     update_header: "Edition d'une propriété"
     updated_at: dernière modification
-  prototype:
-    build: Conception de prototype
-    build_header: "Conception d'un produit d'après un prototype"
-    create: Créer un prototype
-    create_header: Nouveau prototype
-    index_header: Prototypes de produits
+  archetype:
+    build: Conception de archetype
+    build_header: "Conception d'un produit d'après un archetype"
+    create: Créer un archetype
+    create_header: Nouveau archetype
+    index_header: archetypes de produits
     name: nom
-    no_results: Aucun prototype défini
+    no_results: Aucun archetype défini
     options: options
     properties: propriétés
-    update_header: Modification du prototype
+    update_header: Modification du archetype
     updated_at: dernière modification
   province:
     provinces: Province

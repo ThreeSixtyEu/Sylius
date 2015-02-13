@@ -120,8 +120,8 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
     public function createFilterPaginator($criteria = array(), $sorting = array(), $deleted = false)
     {
         $queryBuilder = parent::getCollectionQueryBuilder();
-        $queryBuilder->andWhere($queryBuilder->expr()->isNotNull('o.completedAt'));
         $queryBuilder
+            ->andWhere($queryBuilder->expr()->isNotNull('o.completedAt'))
             ->innerJoin('o.user', 'user')
         ;
 
@@ -204,6 +204,49 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
         $this->_em->getFilters()->enable('softdeleteable');
 
         return $count;
+    }
+
+    /**
+     * Create checkouts paginator.
+     *
+     * @param array   $criteria
+     * @param array   $sorting
+     * @param Boolean $deleted
+     *
+     * @return PagerfantaInterface
+     */
+    public function createCheckoutsPaginator($criteria = array(), $sorting = array(), $deleted = false)
+    {
+        $queryBuilder = parent::getCollectionQueryBuilder();
+        $queryBuilder->andWhere($queryBuilder->expr()->isNull('o.completedAt'));
+
+        if ($deleted) {
+            $this->_em->getFilters()->disable('softdeleteable');
+        }
+
+        if (!empty($criteria['createdAtFrom'])) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->gte('o.createdAt', ':createdAtFrom'))
+                ->setParameter('createdAtFrom', $criteria['createdAtFrom'])
+            ;
+        }
+        if (!empty($criteria['createdAtTo'])) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->lte('o.createdAt', ':createdAtTo'))
+                ->setParameter('createdAtTo', $criteria['createdAtTo'])
+            ;
+        }
+
+        if (empty($sorting)) {
+            if (!is_array($sorting)) {
+                $sorting = array();
+            }
+            $sorting['updatedAt'] = 'desc';
+        }
+
+        $this->applySorting($queryBuilder, $sorting);
+
+        return $this->getPaginator($queryBuilder);
     }
 
     /**

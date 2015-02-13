@@ -19,7 +19,6 @@
             <generator strategy="AUTO" />
         </id>
 
-        <field name="name" column="name" type="string" />
         <field name="configuration" column="configuration" type="array" />
 
         <many-to-one field="category" target-entity="Sylius\Component\Shipping\Model\ShippingCategoryInterface">

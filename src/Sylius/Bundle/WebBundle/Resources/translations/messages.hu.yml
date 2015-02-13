@@ -80,7 +80,7 @@ sylius:
       products: Az Ön termékei
       users: Felhasználók
     statistics:
-      header: Ennek a hónapnak a statisztikája
+      0: Ennek a hónapnak a statisztikája
       orders_this_month: Rendelések összesen
       registrations_this_month: Regisztrációk összesen
       sales_this_month: Értékesítés
@@ -134,7 +134,7 @@ sylius:
       index: Kuponok
     property:
       index: Tulajdonságok
-    prototype:
+    archetype:
       index: Prototípusok
     sales: Értékesítés
     shipment:
@@ -288,7 +288,7 @@ sylius:
     update_header: Csoport szerkesztése
   hide_deleted: Törölt elem elrejtése
   history:
-    header: Előzmények
+    0: Előzmények
     action: Műveletek
     author: Szerző
     data: Adatok
@@ -433,7 +433,7 @@ sylius:
     method: Mód
     no_results: Nincsenek beállított kifizetések.
     state:
-      header: Állapot
+      0: Állapot
       checkout: Fizetés
       completed: Befejezve
       failed: Sikertelen
@@ -554,7 +554,7 @@ sylius:
     type: típus
     update_header: Tulajdonság szerkesztése
     updated_at: Utolsó frissítés
-  prototype:
+  archetype:
     build: Prototípus felépítése
     build_header: Termék felépítése prototípusból
     create: Prototípus létrehozása

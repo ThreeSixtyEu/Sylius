@@ -11,14 +11,15 @@
 
 namespace Sylius\Component\Taxonomy\Model;
 
-use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Translation\Model\TranslatableInterface;
 
 /**
  * Taxonomy model interface.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
+ * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
-interface TaxonomyInterface
+interface TaxonomyInterface extends TranslatableInterface, TaxonomyTranslationInterface, TaxonsAwareInterface
 {
     /**
      * Get taxonomy id.
@@ -40,36 +41,6 @@ interface TaxonomyInterface
      * @param TaxonInterface $root
      */
     public function setRoot(TaxonInterface $root);
-
-    /**
-     * Get all taxons except the root.
-     *
-     * @return Collection|TaxonInterface[]
-     */
-    public function getTaxons();
-
-    /**
-     * Has a taxon?
-     *
-     * @param TaxonInterface $taxon
-     *
-     * @return Boolean
-     */
-    public function hasTaxon(TaxonInterface $taxon);
-
-    /**
-     * Add taxon.
-     *
-     * @param TaxonInterface $taxon
-     */
-    public function addTaxon(TaxonInterface $taxon);
-
-    /**
-     * Remove taxon.
-     *
-     * @param TaxonInterface $taxon
-     */
-    public function removeTaxon(TaxonInterface $taxon);
 
     /**
      * Get name.
