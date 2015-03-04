@@ -28,6 +28,7 @@ class DashboardController extends Controller
     {
         $orderRepository = $this->get('sylius.repository.order');
         $userRepository  = $this->get('sylius.repository.user');
+        $productRepository = $this->get('sylius.repository.product');
 
         return $this->render('SyliusWebBundle:Backend/Dashboard:main.html.twig', array(
             'orders_count'        => $orderRepository->countBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
@@ -36,6 +37,7 @@ class DashboardController extends Controller
             'registrations_count' => $userRepository->countBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
             'sales'               => $orderRepository->revenueBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
             'sales_confirmed'     => $orderRepository->revenueBetweenDates(new \DateTime('1 month ago'), new \DateTime(), OrderInterface::STATE_CONFIRMED),
+            'products'            => $productRepository->findLatest(5),
         ));
     }
 }
