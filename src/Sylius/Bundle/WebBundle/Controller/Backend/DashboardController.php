@@ -37,7 +37,7 @@ class DashboardController extends Controller
             'registrations_count' => $userRepository->countBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
             'sales'               => $orderRepository->revenueBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
             'sales_confirmed'     => $orderRepository->revenueBetweenDates(new \DateTime('1 month ago'), new \DateTime(), OrderInterface::STATE_CONFIRMED),
-            'products'            => $productRepository->findLatest(5),
+            'products'            => $productRepository->findUpcomingEvents(),
         ));
     }
 }
