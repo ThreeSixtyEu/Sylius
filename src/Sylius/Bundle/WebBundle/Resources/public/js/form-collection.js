@@ -15,6 +15,7 @@
         $(document).on('click', 'a[data-collection-button="add"]', function(e) {
             e.preventDefault();
             var collectionContainer = $('#' + $(this).data('collection'));
+            collectionContainer.children('.no-data').remove();
             var isArray = collectionContainer.data('is-php-array');
             var prototype = $('#' + $(this).data('prototype')).data('prototype');
             var item = prototype.replace(/__name__/g, collectionContainer.children().length + (undefined == isArray ? 0 : 1));

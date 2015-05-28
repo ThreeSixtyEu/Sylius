@@ -39,7 +39,7 @@
                 <td>{{ _self.volume_based_delete() }}</td>
             </tr>
         {% else %}
-            <tr>
+            <tr class="no-data">
                 <td colspan="4">{{ "sylius.pricing.volume_based.no_results"|trans }}</td>
             </tr>
         {% endfor %}
