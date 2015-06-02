@@ -21,10 +21,6 @@
             name="Sylius\Bundle\SearchBundle\Model\SearchIndex"
             table="sylius_search_index">
 
-        <options>
-            <option name="engine">MyISAM</option>
-        </options>
-
         <!--
         Need full text index but it's not available until doctrine 2.5
         Dummy index, it's is updating with the index:populate command
