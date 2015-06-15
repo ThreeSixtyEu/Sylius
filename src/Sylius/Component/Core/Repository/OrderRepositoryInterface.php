@@ -40,6 +40,16 @@ interface OrderRepositoryInterface extends BaseOrderRepositoryInterface
     public function countByUserAndCoupon(UserInterface $user, CouponInterface $coupon);
 
     /**
+     * Gets the number of orders placed
+     * for a particular coupon.
+     *
+     * @param CouponInterface $coupon
+     *
+     * @return int
+     */
+    public function countByCoupon(CouponInterface $coupon);
+
+    /**
      * Gets the number of orders placed by the user
      * with particular state.
      *

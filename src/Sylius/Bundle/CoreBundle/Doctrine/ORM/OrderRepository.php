@@ -207,6 +207,32 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countByCoupon(CouponInterface $coupon)
+    {
+        $this->_em->getFilters()->disable('softdeleteable');
+
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder
+            ->select('count(o.id)')
+            ->innerJoin('o.promotionCoupons', 'coupons')
+            ->andWhere('o.completedAt IS NOT NULL')
+            ->andWhere($queryBuilder->expr()->in('coupons', ':coupons'))
+            ->setParameter('coupons', (array) $coupon)
+        ;
+
+        $count = (int) $queryBuilder
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        $this->_em->getFilters()->enable('softdeleteable');
+
+        return $count;
+    }
+
+    /**
      * Create checkouts paginator.
      *
      * @param array   $criteria
