@@ -13,6 +13,7 @@ namespace Sylius\Component\Core\Promotion\Checker;
 
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariant;
 use Sylius\Component\Promotion\Checker\RuleCheckerInterface;
 use Sylius\Component\Promotion\Exception\UnsupportedTypeException;
 use Sylius\Component\Promotion\Model\PromotionSubjectInterface;
@@ -35,7 +36,15 @@ class ContainsProductRuleChecker implements RuleCheckerInterface
 
         /* @var $item OrderItemInterface */
         foreach ($subject->getItems() as $item) {
-            if ($configuration['variant'] == $item->getVariant()->getId()) {
+            /** @var ProductVariant $variant */
+            $variant = $item->getVariant();
+            /** @var ProductVariant $masterVariant */
+            $masterVariant = $variant->getProduct()->getMasterVariant();
+
+            if (
+                $configuration['variant'] == $variant->getId()
+                || (!$variant->isMaster() && $configuration['variant'] == $masterVariant->getId())
+            ) {
                 return !$configuration['exclude'];
             }
         }
