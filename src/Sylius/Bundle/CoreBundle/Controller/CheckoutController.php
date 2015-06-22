@@ -13,6 +13,8 @@ namespace Sylius\Bundle\CoreBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\OrderCheckoutTransitions;
 use Sylius\Component\Core\SyliusCheckoutEvents;
 use Sylius\Component\Core\SyliusOrderEvents;
@@ -179,6 +181,13 @@ class CheckoutController extends FOSRestController
 
         $stateMachine = $this->get('sm.factory')->get($order, OrderCheckoutTransitions::GRAPH);
         $stateMachine->apply(OrderCheckoutTransitions::SYLIUS_FINALIZE);
+
+        if ($order->getLastPayment() && $order->getLastPayment()->getMethod()->getGateway() === 'dummy') {
+            $order->getLastPayment()->setState(PaymentInterface::STATE_COMPLETED);
+            $order->setPaymentState(PaymentInterface::STATE_COMPLETED);
+            $order->setShippingState(ShipmentInterface::STATE_SHIPPED);
+            $order->setState(OrderInterface::STATE_SHIPPED);
+        }
 
         $manager = $this->get('sylius.manager.order');
         $manager->persist($order);
