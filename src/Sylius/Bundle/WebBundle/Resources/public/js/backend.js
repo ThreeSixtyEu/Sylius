@@ -14,6 +14,6 @@
             $(this).toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
             $(this).parent().parent().find('table tbody').toggle();
         });
-        $('.datepicker').datepicker({});
+        $('.datepicker').datepicker({format: 'dd.mm.yyyy'});
     });
 })( jQuery );
