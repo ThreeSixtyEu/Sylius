@@ -2,6 +2,9 @@ Sylius\Component\Core\Model\ProductVariant:
     exclusion_policy: ALL
     xml_root_name: variant
     properties:
+        price:
+            expose: true
+            type: integer
         sku:
             expose: true
             type: string
