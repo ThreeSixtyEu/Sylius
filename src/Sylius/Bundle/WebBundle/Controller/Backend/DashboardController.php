@@ -28,16 +28,23 @@ class DashboardController extends Controller
     {
         $orderRepository = $this->get('sylius.repository.order');
         $userRepository  = $this->get('sylius.repository.user');
-        $productRepository = $this->get('sylius.repository.product');
+
+        $date_from = new \DateTime('30 days ago');
+        $date_to = new \DateTime();
 
         return $this->render('SyliusWebBundle:Backend/Dashboard:main.html.twig', array(
-            'orders_count'        => $orderRepository->countBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
-            'orders'              => $orderRepository->findBy(array(), array('updatedAt' => 'desc'), 5),
-            'users'               => $userRepository->findBy(array(), array('id' => 'desc'), 5),
-            'registrations_count' => $userRepository->countBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
-            'sales'               => $orderRepository->revenueBetweenDates(new \DateTime('1 month ago'), new \DateTime()),
-            'sales_confirmed'     => $orderRepository->revenueBetweenDates(new \DateTime('1 month ago'), new \DateTime(), OrderInterface::STATE_CONFIRMED),
-            'products'            => $productRepository->findUpcomingEvents(),
+            'orders'                     => $orderRepository->findBy(array(), array('updatedAt' => 'desc'), 5),
+            'orders_count'               => $orderRepository->countBetweenDates($date_from, $date_to),
+            'orders_count_confirmed'     => $orderRepository->countBetweenDates($date_from, $date_to, array(
+                    OrderInterface::STATE_CONFIRMED,
+                    OrderInterface::STATE_SHIPPED,
+                )),
+            'sales'                      => $orderRepository->revenueBetweenDates($date_from, $date_to),
+            'sales_confirmed'            => $orderRepository->revenueBetweenDates($date_from, $date_to, array(
+                    OrderInterface::STATE_CONFIRMED,
+                    OrderInterface::STATE_SHIPPED,
+                )),
+            'users'                      => $userRepository->findBy(array(), array('id' => 'desc'), 5),
         ));
     }
 }

@@ -347,10 +347,10 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
     {
         $queryBuilder = $this->getCollectionQueryBuilder();
         if (null !== $state) {
-            $queryBuilder
-                ->andWhere('o.state = :state')
-                ->setParameter('state', $state)
-            ;
+                $queryBuilder
+                    ->andWhere('o.state in (:state)')
+                    ->setParameter('state', (array) $state)
+                ;
         }
 
         return $queryBuilder

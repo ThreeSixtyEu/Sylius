@@ -84,9 +84,11 @@ sylius:
             products: Your products
             users: Users
         statistics:
-            header: This month's statistics
+            header: Statistics for the past 30 days
+            orders_confirmed_this_month: Orders paid
             orders_this_month: Total orders
             registrations_this_month: Total registrations
+            sales_confirmed_this_month: Confirmed sales
             sales_this_month: Sales
     backend_welcome: Hello <b>%name%</b>!
     block:
