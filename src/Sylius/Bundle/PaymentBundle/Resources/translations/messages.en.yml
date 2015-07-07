@@ -29,4 +29,5 @@ sylius:
             description: Description
             enabled: Enabled?
             gateway: Gateway
+            groups_limit: Limited to Groups
             name: Name

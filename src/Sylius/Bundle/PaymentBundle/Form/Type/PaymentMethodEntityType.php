@@ -11,9 +11,13 @@
 
 namespace Sylius\Bundle\PaymentBundle\Form\Type;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
+use Sylius\Component\Core\Model\Group;
+use Sylius\Component\Core\Model\User;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 
 /**
  * Payment method choice type for "doctrine/orm" driver.
@@ -22,23 +26,61 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class PaymentMethodEntityType extends PaymentMethodChoiceType
 {
+
+    /**
+     * @var mixed
+     */
+    protected $user;
+
+    public function __construct($className, SecurityContext $securityContext)
+    {
+        parent::__construct($className);
+
+        if ($securityContext->getToken() !== null) {
+            $this->user = $securityContext->getToken()->getUser();
+        }
+    }
+
+
     /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
-
         $queryBuilder = function (Options $options) {
-            if (!$options['disabled']) {
-                return function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('method')->where('method.enabled = true');
-                };
-            } else {
-                return function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('method');
-                };
+            $groupIds = array();
+            if ($this->user instanceof User) {
+                /** @var Collection $groups */
+                $groups = $this->user->getGroups();
+
+                /** @var Group $group */
+                foreach ($groups as $group) {
+                    $groupIds[] = $group->getId();
+                }
             }
+
+            $getDisabled = $options['disabled'];
+
+            return function (EntityRepository $repository) use ($groupIds, $getDisabled) {
+                $qb = $repository->createQueryBuilder('method');
+                if (!$getDisabled) {
+                    $qb
+                        ->andwhere('method.enabled = :enabled')
+                        ->setParameter('enabled', true)
+                    ;
+                }
+                $qb->leftJoin('method.groups', 'g');
+                if (empty($groupIds)) {
+                    $qb->andWhere('g.id is null');
+                } else {
+                    $qb->andWhere($qb->expr()->orX(
+                        $qb->expr()->isNull('g.id'),
+                        $qb->expr()->in('g.id', $groupIds)
+                    ));
+                }
+                return $qb;
+            };
         };
 
         $resolver

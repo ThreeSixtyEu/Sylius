@@ -10,6 +10,9 @@
  */
 
 namespace Sylius\Component\Payment\Model;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Core\Model\GroupInterface;
 
 /**
  * Payments method model.
@@ -73,6 +76,11 @@ class PaymentMethod implements PaymentMethodInterface
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * @var Collection
+     */
+    protected $groups;
 
     /**
      * Constructor.
@@ -223,4 +231,70 @@ class PaymentMethod implements PaymentMethodInterface
 
         return $this;
     }
+
+	/**
+	 * Returns the groups this payment is assigned to.
+	 *
+	 * @return Collection
+	 */
+	public function getGroups()
+	{
+		return $this->groups ?: $this->groups = new ArrayCollection();
+	}
+
+	/**
+	 * Returns groups as an array of group names.
+	 *
+	 * @return array
+	 */
+	public function getGroupNames()
+	{
+		$names = array();
+		foreach ($this->getGroups() as $group) {
+			$names[] = $group->getName();
+		}
+
+		return $names;
+	}
+
+	/**
+	 * Checks whether this payment method is assigned to a group.
+	 *
+	 * @param string $name
+	 * @return boolean
+	 */
+	public function hasGroup($name)
+	{
+		if ($this->getGroups()->isEmpty()) {
+			return true;
+		}
+
+		return in_array($name, $this->getGroupNames());
+	}
+
+	/**
+	 * @param GroupInterface $group
+	 * @return $this
+	 */
+	public function addGroup(GroupInterface $group)
+	{
+		if (!$this->getGroups()->contains($group)) {
+			$this->getGroups()->add($group);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param GroupInterface $group
+	 * @return $this
+	 */
+	public function removeGroup(GroupInterface $group)
+	{
+		if ($this->getGroups()->contains($group)) {
+			$this->getGroups()->removeElement($group);
+		}
+
+		return $this;
+	}
 }

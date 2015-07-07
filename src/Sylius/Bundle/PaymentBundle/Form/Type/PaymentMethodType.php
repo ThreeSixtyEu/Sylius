@@ -37,6 +37,10 @@ class PaymentMethodType extends AbstractResourceType
             ->add('gateway', 'sylius_payment_gateway_choice', array(
                 'label' => 'sylius.form.payment_method.gateway'
             ))
+            ->add('groups', 'sylius_group_choice', array(
+                'label' => 'sylius.form.payment_method.groups_limit',
+                'multiple' => true,
+            ))
             ->add('enabled', 'checkbox', array(
                 'required' => false,
                 'label'    => 'sylius.form.payment_method.enabled'

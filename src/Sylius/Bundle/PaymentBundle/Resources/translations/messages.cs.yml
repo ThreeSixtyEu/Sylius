@@ -23,4 +23,5 @@ sylius:
       description: Popis
       enabled: Povoleno?
       gateway: Brána
+      groups_limit: Limitováno pro skupiny
       name: Jméno

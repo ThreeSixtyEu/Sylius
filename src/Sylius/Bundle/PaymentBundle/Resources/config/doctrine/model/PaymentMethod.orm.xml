@@ -31,6 +31,20 @@
         <field name="updatedAt" column="updated_at" type="datetime" nullable="true">
             <gedmo:timestampable on="update"/>
         </field>
+
+        <many-to-many field="groups" target-entity="Sylius\Component\Core\Model\GroupInterface">
+            <cascade>
+                <cascade-all />
+            </cascade>
+            <join-table name="sylius_payment_method_group">
+                <join-columns>
+                    <join-column name="method_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="group_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
     </mapped-superclass>
 
 </doctrine-mapping>
