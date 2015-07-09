@@ -426,6 +426,7 @@ sylius:
         create_header: New order
         created_at: Creation time
         details: Order details
+        specifics: Order details
         general_info: General info
         guest: Guest customer
         id: ID
@@ -439,6 +440,8 @@ sylius:
         no_shipments: There are no shipments for this order
         no_shipping_charges: No shipping charges applied
         no_taxes: No taxes applied
+        note: Note
+        note_empty: Empty
         number: Number
         order_state: Order state
         payment: Payment

@@ -46,16 +46,24 @@
         {% include 'SyliusWebBundle:Backend/Address:_show.html.twig' with { 'address': order.shippingAddress } %}
     </div>
     <div class="col col-md-3">
-        <h4>Order Details</h4>
+        <h4>{{ 'sylius.order.specifics'|trans }}</h4>
         <dl>
             <dt>{{ 'sylius.order.created_at'|trans }}</dt>
             <dd>{{ order.createdAt|date }}</dd>
-            <dt>Email</dt>
+            <dt>{{ 'sylius.email'|trans }}</dt>
             <dd>
                 {% if order.user %}
                     <a href="{{ path('sylius_backend_user_show', {'id': order.user.id}) }}">{{ order.user.email }}</a>
                 {% else %}
                     {{ order.email }}
+                {% endif %}
+            </dd>
+            <dt>{{ 'sylius.order.note'|trans }}</dt>
+            <dd class="small">
+                {% if order.note is empty %}
+                    <em>{{ 'sylius.order.note_empty'|trans }}</em>
+                {% else %}
+                    {{ order.note|nl2br }}
                 {% endif %}
             </dd>
         </dl>

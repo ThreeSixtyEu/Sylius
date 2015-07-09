@@ -216,11 +216,15 @@ sylius:
   option:
     manage: Spravovat nastavení
   order:
+    detail: Detail objednávky
+    specifics: Podrobnosti
     billing_address: Fakturační adresa
     id: ID
     index_header: Aktuální objednávky
     items_total: Celkem položek
     no_items: Tato objednávka neobsahuje žádné položky
+    note: Poznámka
+    note_empty: Prázdná
     number: Číslo
     payment_state: Stav platby
     shipments: Zásilky

@@ -32,6 +32,9 @@ class OrderType extends BaseOrderType
         $builder
             ->add('shippingAddress', 'sylius_address')
             ->add('billingAddress', 'sylius_address')
+            ->add('note', 'textarea', array(
+                'required' => false,
+            ))
         ;
     }
 }

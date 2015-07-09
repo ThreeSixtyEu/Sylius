@@ -106,6 +106,11 @@ class Order extends Cart implements OrderInterface
     protected $promotions;
 
     /**
+     * @var string
+     */
+    protected $note = '';
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -549,5 +554,21 @@ class Order extends Cart implements OrderInterface
     public function getPromotions()
     {
         return $this->promotions;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param string $note
+     */
+    public function setNote($note)
+    {
+        $this->note = ( $note === null ? '' : $note );
     }
 }

@@ -8,6 +8,9 @@ Sylius\Component\Core\Model\Order:
         currency:
             expose: true
             type: string
+        note:
+            expose: true
+            type: string
         shippingAddress:
             expose: true
         billingAddress:
