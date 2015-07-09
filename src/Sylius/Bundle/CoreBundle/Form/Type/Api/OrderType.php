@@ -13,6 +13,7 @@ namespace Sylius\Bundle\CoreBundle\Form\Type\Api;
 
 use Sylius\Bundle\OrderBundle\Form\Type\OrderType as BaseOrderType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -39,7 +40,11 @@ class OrderType extends BaseOrderType
                     new NotBlank()
                 )
             ))
-            ->add('note', 'textarea')
+            ->add('note', 'textarea', array(
+                'constraints' => array(
+                    new Length(array('max' => 255))
+                )
+            ))
         ;
     }
 
