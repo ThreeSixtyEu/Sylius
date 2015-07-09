@@ -11,6 +11,7 @@
 
 namespace Sylius\Component\Product\Model;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Archetype\Model\ArchetypeInterface as BaseArchetypeInterface;
@@ -42,9 +43,17 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * Available on.
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $availableOn;
+
+
+    /**
+     * Available until.
+     *
+     * @var DateTime
+     */
+    protected $availableUntil;
 
     /**
      * Attributes.
@@ -70,21 +79,21 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * Creation time.
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $createdAt;
 
     /**
      * Last update time.
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $updatedAt;
 
     /**
      * Deletion time.
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $deletedAt;
 
@@ -94,11 +103,12 @@ class Product extends AbstractTranslatable implements ProductInterface
     public function __construct()
     {
         parent::__construct();
-        $this->availableOn = new \DateTime();
+        $this->availableOn = new DateTime();
+        $this->availableUntil = null;
         $this->attributes = new ArrayCollection();
         $this->variants = new ArrayCollection();
         $this->options = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
     }
 
     /**
@@ -222,7 +232,14 @@ class Product extends AbstractTranslatable implements ProductInterface
      */
     public function isAvailable()
     {
-        return new \DateTime() >= $this->availableOn;
+        $now = new DateTime();
+        return
+            $now >= $this->availableOn
+            && (
+                $this->availableUntil === null ?
+                    true :
+                    ( $now < $this->availableUntil )
+            );
     }
 
     /**
@@ -236,11 +253,27 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAvailableOn(\DateTime $availableOn = null)
+    public function setAvailableOn(DateTime $availableOn = null)
     {
         $this->availableOn = $availableOn;
-
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableUntil()
+    {
+        return $this->availableUntil;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAvailableUntil(DateTime $availableUntil = null)
+    {
+        $this->availableUntil = $availableUntil;
+	    return $this;
     }
 
     /**
@@ -499,7 +532,7 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -517,7 +550,7 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdatedAt(\DateTime $updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
@@ -529,7 +562,7 @@ class Product extends AbstractTranslatable implements ProductInterface
      */
     public function isDeleted()
     {
-        return null !== $this->deletedAt && new \DateTime() >= $this->deletedAt;
+        return null !== $this->deletedAt && new DateTime() >= $this->deletedAt;
     }
 
     /**
@@ -543,7 +576,7 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setDeletedAt(\DateTime $deletedAt)
+    public function setDeletedAt(DateTime $deletedAt)
     {
         $this->deletedAt = $deletedAt;
 

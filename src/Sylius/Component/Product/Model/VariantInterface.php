@@ -52,4 +52,18 @@ interface VariantInterface extends BaseVariantInterface
      * @param null|\DateTime $availableOn
      */
     public function setAvailableOn(\DateTime $availableOn = null);
+
+    /**
+     * Return available until.
+     *
+     * @return \DateTime
+     */
+    public function getAvailableUntil();
+
+    /**
+     * Set available until.
+     *
+     * @param null|\DateTime $availableUntil
+     */
+    public function setAvailableUntil(\DateTime $availableUntil = null);
 }

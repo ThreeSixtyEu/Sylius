@@ -11,6 +11,7 @@
 
 namespace Sylius\Component\Product\Model;
 
+use DateTime;
 use Sylius\Component\Variation\Model\Variant as BaseVariant;
 use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
 
@@ -21,82 +22,119 @@ use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
  */
 class Variant extends BaseVariant implements VariantInterface
 {
-    /**
-     * Available on.
-     *
-     * @var \DateTime
-     */
-    protected $availableOn;
+	/**
+	 * Available on.
+	 *
+	 * @var \DateTime
+	 */
+	protected $availableOn;
 
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
+	/**
+	 * Available until.
+	 *
+	 * @var DateTime
+	 */
+	protected $availableUntil;
 
-        $this->availableOn = new \DateTime();
-    }
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		parent::__construct();
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProduct()
-    {
-        return parent::getObject();
-    }
+		$this->availableOn = new \DateTime();
+		$this->availableUntil = null;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setProduct(ProductInterface $product = null)
-    {
-        return parent::setObject($product);
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getProduct()
+	{
+		return parent::getObject();
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAvailable()
-    {
-        return new \DateTime() >= $this->availableOn;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setProduct(ProductInterface $product = null)
+	{
+		return parent::setObject($product);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableOn()
-    {
-        return $this->availableOn;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isAvailable()
+	{
+		$now = new DateTime();
+		return
+			$now >= $this->availableOn
+			&& (
+			$this->availableUntil === null ?
+				true :
+				( $now < $this->availableUntil )
+			);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setAvailableOn(\DateTime $availableOn = null)
-    {
-        $this->availableOn = $availableOn;
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getAvailableOn()
+	{
+		return $this->availableOn;
+	}
 
-        if ($this->isMaster() && null !== $this->object) {
-            $this->getProduct()->setAvailableOn($availableOn);
-        }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setAvailableOn(\DateTime $availableOn = null)
+	{
+		$this->availableOn = $availableOn;
 
-        return $this;
-    }
+		if ($this->isMaster() && null !== $this->object) {
+			$this->getProduct()->setAvailableOn($availableOn);
+		}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaults(BaseVariantInterface $masterVariant)
-    {
-        parent::setDefaults($masterVariant);
+		return $this;
+	}
 
-        if (!$masterVariant instanceof VariantInterface) {
-            throw new \InvalidArgumentException('Product variants must implement "Sylius\Component\Product\Model\VariantInterface".');
-        }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getAvailableUntil()
+	{
+		return $this->availableUntil;
+	}
 
-        $this->setAvailableOn($masterVariant->getAvailableOn());
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setAvailableUntil(DateTime $availableUntil = null)
+	{
+		$this->availableUntil = $availableUntil;
 
-        return $this;
-    }
+		if ($this->isMaster() && null !== $this->object) {
+			$this->getProduct()->setAvailableUntil($availableUntil);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setDefaults(BaseVariantInterface $masterVariant)
+	{
+		parent::setDefaults($masterVariant);
+
+		if (!$masterVariant instanceof VariantInterface) {
+			throw new \InvalidArgumentException('Product variants must implement "Sylius\Component\Product\Model\VariantInterface".');
+		}
+
+		$this->setAvailableOn($masterVariant->getAvailableOn());
+
+		return $this;
+	}
 }

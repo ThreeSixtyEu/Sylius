@@ -23,30 +23,44 @@ use Sylius\Component\Resource\Model\TimestampableInterface;
  * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
  */
 interface ProductInterface extends
-    ArchetypeSubjectInterface,
-    SlugAwareInterface,
-    SoftDeletableInterface,
-    TimestampableInterface,
-    ProductTranslationInterface
+	ArchetypeSubjectInterface,
+	SlugAwareInterface,
+	SoftDeletableInterface,
+	TimestampableInterface,
+	ProductTranslationInterface
 {
-    /**
-     * Check whether the product is available.
-     *
-     * @return bool
-     */
-    public function isAvailable();
+	/**
+	 * Check whether the product is available.
+	 *
+	 * @return bool
+	 */
+	public function isAvailable();
 
-    /**
-     * Return available on.
-     *
-     * @return \DateTime
-     */
-    public function getAvailableOn();
+	/**
+	 * Return available on.
+	 *
+	 * @return \DateTime
+	 */
+	public function getAvailableOn();
 
-    /**
-     * Set available on.
-     *
-     * @param null|\DateTime $availableOn
-     */
-    public function setAvailableOn(\DateTime $availableOn = null);
+	/**
+	 * Set available on.
+	 *
+	 * @param null|\DateTime $availableOn
+	 */
+	public function setAvailableOn(\DateTime $availableOn = null);
+
+	/**
+	 * Return available until.
+	 *
+	 * @return \DateTime
+	 */
+	public function getAvailableUntil();
+
+	/**
+	 * Set available until.
+	 *
+	 * @param null|\DateTime $availableUntil
+	 */
+	public function setAvailableUntil(\DateTime $availableUntil = null);
 }

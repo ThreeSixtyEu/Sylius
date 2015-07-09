@@ -263,8 +263,11 @@ sylius:
     name: Jméno
     updated_at: Poslední aktualizace
   product:
+    available_now: Aktuálně dostupný
     available_on: Dostupný od
     available_on_demand: K dispozici na požádání
+    available_unlimited: Neomezeno
+    available_until: Dostupný do
     categorization: Kategorizace
     create_header: Nový produkt
     description: Popis
@@ -337,6 +340,9 @@ sylius:
     shipping_address: Doručovací adresa
     username: Uživatelské jméno
   variant:
+    available_on: Dostupnost od
+    available_unlimited: Neomezená
+    available_until: Dostupnost do
     available_on_demand: K dispozici na požádání
     last_update: Poslední aktualizace
     options: Možnosti

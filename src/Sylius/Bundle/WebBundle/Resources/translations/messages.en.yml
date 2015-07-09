@@ -594,8 +594,11 @@ sylius:
         updated_at: Last update
     product:
         add_attribute: Add attribute
+        available_now: Available now
         available_on: Available on
         available_on_demand: Available on demand
+        available_unlimited: Unlimited
+        available_until: Available until
         categorization: Categorization
         contain_variants: Contain Variants
         create: Create product
@@ -850,6 +853,10 @@ sylius:
     variant:
         add_image: Add image
         availability: Availability
+        available_on: Available since
+        available_unlimited: Unlimited
+        available_until: Available until
+        available: Available
         available_on_demand: Available on demand
         create: Create variant
         create_header: New product variant

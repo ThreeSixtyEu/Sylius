@@ -35,6 +35,14 @@ class VariantType extends BaseVariantType
                 'time_widget' => 'text',
                 'label'       => 'sylius.form.product_variant.available_on'
             ))
+            ->add('availableUntil', 'datetime', array(
+                'date_format' => 'y-M-d',
+                'date_widget' => 'choice',
+                'time_widget' => 'text',
+                'label'       => 'sylius.form.product_variant.available_until',
+                'empty_value' => '-',
+                'required'    => false
+            ))
         ;
     }
 }

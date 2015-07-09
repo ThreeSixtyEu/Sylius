@@ -15,6 +15,15 @@
             <div class="col-lg-10">
                 {{ form_row(form.availableOn.date, {'label': false}) }}
                 {{ form_row(form.availableOn.time, {'label': false}) }}
+                {{ form_errors(form.availableOn) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.availableUntil) }}
+            <div class="col-lg-10">
+                {{ form_row(form.availableUntil.date, {'label': false}) }}
+                {{ form_row(form.availableUntil.time, {'label': false}) }}
+                {{ form_errors(form.availableUntil) }}
             </div>
         </div>
         {{ form_row(form.price) }}
