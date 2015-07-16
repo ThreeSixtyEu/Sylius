@@ -11,6 +11,7 @@
 
 namespace Sylius\Component\Core\Promotion\Checker;
 
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\CouponInterface;
 use Sylius\Component\Core\Model\UserAwareInterface;
 use Sylius\Component\Core\Model\UserInterface;
@@ -58,11 +59,19 @@ class PromotionEligibilityChecker extends BasePromotionEligibilityChecker
         // Check to see if there is a per user usage limit on coupon
         if ($subject instanceof PromotionCouponAwareSubjectInterface) {
             $coupon = $subject->getPromotionCoupon();
-            if (null !== $coupon && $promotion === $coupon->getPromotion()) {
+            if ($coupon === null) {
+                return false;
+            }
+            if ( $promotion === $coupon->getPromotion()) {
                 $eligible = $this->isCouponEligibleToLimit($coupon, $promotion, $subject->getUser());
             }
         } elseif ($subject instanceof PromotionCouponsAwareSubjectInterface) {
-            foreach ($subject->getPromotionCoupons() as $coupon) {
+            /** @var Collection $coupons */
+            $coupons = $subject->getPromotionCoupons();
+            if ($coupons->isEmpty()) {
+                return false;
+            }
+            foreach ($coupons as $coupon) {
                 if ($promotion === $coupon->getPromotion()) {
                     $eligible = $this->isCouponEligibleToLimit($coupon, $promotion, $subject->getUser());
 
