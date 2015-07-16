@@ -16,6 +16,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * Cart form.
@@ -50,6 +51,15 @@ class CartType extends BaseCartType
         $couponRepository = $this->couponRepository;
 
         $builder
+            ->add('note', 'textarea', array(
+                'required' => false,
+                'label'        => 'sylius.order.note',
+                'constraints' => array(
+                    new Constraints\Type('string'),
+                    new Constraints\Length(array('max' => 20)),
+                ),
+                'max_length' => 255,
+            ))
             ->add('promotionCoupons', 'collection', array(
                 'type'         => 'sylius_promotion_coupon_to_code',
                 'allow_add'    => true,

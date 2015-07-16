@@ -4,7 +4,7 @@
 sylius:
   form:
     coupon:
-      code: Kód
+      code: Slevový kód
     promotion:
       description: Popis
       name: Jméno

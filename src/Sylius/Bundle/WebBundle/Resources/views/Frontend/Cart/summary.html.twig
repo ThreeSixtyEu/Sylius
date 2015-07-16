@@ -86,6 +86,12 @@
     </div>
 </div>
 
+<div id="sylius-cart-coupons" class="well well-sm">
+    <div id="sylius-cart-coupons-collection">
+        {{ form_row(form.note, {'label_attr': {'class': 'col-lg-12'}}) }}
+    </div>
+</div>
+
 {{ form_rest(form) }}
 <div class="well">
     <button type="submit" class="btn btn-primary btn-lg"><i class="icon-save"></i> {{ 'sylius.cart.summary.save'|trans }}</button>
