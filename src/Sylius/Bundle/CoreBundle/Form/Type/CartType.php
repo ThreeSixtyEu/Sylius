@@ -56,7 +56,7 @@ class CartType extends BaseCartType
                 'label'        => 'sylius.order.note',
                 'constraints' => array(
                     new Constraints\Type('string'),
-                    new Constraints\Length(array('max' => 20)),
+                    new Constraints\Length(array('max' => 255)),
                 ),
                 'max_length' => 255,
             ))
