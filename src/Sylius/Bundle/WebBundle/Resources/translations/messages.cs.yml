@@ -73,7 +73,7 @@ sylius:
       products: Produkty
       users: Uživatelé
     statistics:
-      header: Statistiky za posledních 30 dní
+      header: Celkové statistiky
       orders_confirmed_this_month: Objednávek zaplaceno
       orders_this_month: Celkem objednávek
       registrations_this_month: Celkem registrací

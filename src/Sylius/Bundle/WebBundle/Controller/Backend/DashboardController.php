@@ -29,7 +29,8 @@ class DashboardController extends Controller
         $orderRepository = $this->get('sylius.repository.order');
         $userRepository  = $this->get('sylius.repository.user');
 
-        $date_from = new \DateTime('30 days ago');
+        $date_from = new \DateTime(/*'30 days ago'*/);
+	    $date_from->setTimestamp(0);
         $date_to = new \DateTime();
 
         return $this->render('SyliusWebBundle:Backend/Dashboard:main.html.twig', array(
