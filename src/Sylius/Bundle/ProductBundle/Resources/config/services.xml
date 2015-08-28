@@ -25,6 +25,8 @@
 
         <parameter key="sylius.validator.product.unique.class">Sylius\Bundle\ProductBundle\Validator\ProductUniqueValidator</parameter>
         <parameter key="sylius.form.type.product_translation.class">Sylius\Bundle\ProductBundle\Form\Type\ProductTranslationType</parameter>
+
+        <parameter key="sylius.form.type.product_payment_constraint.class">Sylius\Bundle\ProductBundle\Form\Type\PaymentConstraintType</parameter>
     </parameters>
 
     <services>
@@ -32,6 +34,11 @@
             <argument>%sylius.model.product.class%</argument>
             <argument>%sylius.validation_group.product%</argument>
             <tag name="form.type" alias="sylius_product" />
+        </service>
+        <service id="sylius.form.type.product_payment_constraint" class="%sylius.form.type.product_payment_constraint.class%">
+            <argument>%sylius.model.product_payment_constraint.class%</argument>
+            <argument>%sylius.validation_group.product_payment_constraint%</argument>
+            <tag name="form.type" alias="sylius_product_payment_constraint" />
         </service>
         <service id="sylius.form.type.product_archetype" class="%sylius.form.type.product_archetype.class%">
             <argument>%sylius.model.product_archetype.class%</argument>

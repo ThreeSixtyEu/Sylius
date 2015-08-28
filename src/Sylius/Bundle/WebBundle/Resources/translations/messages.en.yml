@@ -325,6 +325,9 @@ sylius:
             add_menu_node: Add menu element
         option_value:
             add_value: Add value
+        payment_constraint:
+            allowed_since: Allow since
+            allowed_until: Allow until
         profile:
             email: Email
             firstName: First name
@@ -597,6 +600,7 @@ sylius:
         updated_at: Last update
     product:
         add_attribute: Add attribute
+        add_payment_constraint: Add payment constraint
         available_now: Available now
         available_on: Available on
         available_on_demand: Available on demand
@@ -629,6 +633,7 @@ sylius:
         attributes: Attributes
         restricted_zone: Restricted zone
         remove_attribute: Remove attribute
+        remove_constraint: Remove constraint
         shipping_category: Shipping category
         show: View more
         show_header: Product details <small>Viewing product "<strong>%product%</strong>"</small>
@@ -639,6 +644,7 @@ sylius:
             categorization: Categorization
             images: Images
             options: Options
+            payment_constraints: Payment constraints
             product: Product
             attributes: Attributes
         tax_category: Tax category

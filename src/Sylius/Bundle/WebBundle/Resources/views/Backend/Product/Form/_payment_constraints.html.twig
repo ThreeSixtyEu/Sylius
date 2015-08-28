@@ -1,0 +1,19 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+<div class="tab-pane" id="payment-constraints">
+    <div id="sylius-assortment-product-paymentConstraints" class="collection-container" data-prototype="{{ ('<div class="sylius-assortment-product-paymentConstraints-paymentConstraint row"><div class="col-md-10" id="sylius_product_paymentConstraints___name__">' ~ form_row(form.paymentConstraints.vars.prototype.paymentMethod, {'attr': {'class': 'attribute-chooser'}}))|e }}{{ form_row(form.paymentConstraints.vars.prototype.allowedSince)|e }}{{ (form_row(form.paymentConstraints.vars.prototype.allowedUntil) ~ '</div>')|e }}{{ ('<div class="col-md-2"><a href="#" class="btn btn-danger" data-collection-button="delete" data-collection="sylius-assortment-product-paymentConstraints" data-collection-item="paymentConstraint"><i class="glyphicon glyphicon-trash"></i>&nbsp;'~'sylius.product.remove_constraint'|trans~'</a></div></div>')|e }}">
+        {% for constraintForm in form.paymentConstraints %}
+        <div class="sylius-assortment-product-paymentConstraints-paymentConstraint row">
+            <div class="col-md-10">
+                {{ form_widget(constraintForm) }}
+            </div>
+            <div class="col-md-2">
+                <a href="#" class="btn btn-danger" data-collection-button="delete" data-collection="sylius-assortment-product-paymentConstraints" data-collection-item="paymentConstraint"><i class="glyphicon glyphicon-trash"></i>&nbsp;{{ 'sylius.product.remove_constraint'|trans }}</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="#" class="btn btn-success btn-block" data-collection-button="add" data-prototype="sylius-assortment-product-paymentConstraints" data-collection="sylius-assortment-product-paymentConstraints">
+        {{ 'sylius.product.add_payment_constraint'|trans }}
+    </a>
+</div>

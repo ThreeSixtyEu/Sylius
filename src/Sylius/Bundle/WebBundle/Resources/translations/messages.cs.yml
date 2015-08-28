@@ -189,6 +189,9 @@ sylius:
     login:
       email: Email
       password: Heslo
+    payment_constraint:
+      allowed_since: Povolena od
+      allowed_until: Povolena do
     profile:
       email: Email
       firstName: Křestní Jméno
@@ -267,6 +270,8 @@ sylius:
     name: Jméno
     updated_at: Poslední aktualizace
   product:
+    add_attribute: Přidat atribut
+    add_payment_constraint: Přidat omezení platby
     available_now: Aktuálně dostupný
     available_on: Dostupný od
     available_on_demand: K dispozici na požádání
@@ -281,6 +286,8 @@ sylius:
     options: Možnosti
     properties: Vlastnosti
     restricted_zone: Zóna s omezeným přístupem
+    remove_attribute: Odebrat atribut
+    remove_constraint: Odebrat omezení
     shipping_category: Typ dopravy
     sku: SKU
     stock: Aktuálně skladem
@@ -288,6 +295,7 @@ sylius:
       categorization: Kategorizace
       images: Obrázky
       options: Možnosti
+      payment_constraints: Omezení plateb
       product: Produkt
       properties: Vlastnosti
     tax_category: Typ daně

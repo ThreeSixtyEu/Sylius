@@ -43,6 +43,13 @@ class ProductType extends AbstractResourceType
                 'multiple' => true,
                 'label'    => 'sylius.form.product.options'
             ))
+            ->add('paymentConstraints', 'collection', array(
+                'required'     => false,
+                'type'         => 'sylius_product_payment_constraint',
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false
+            ))
         ;
     }
 
