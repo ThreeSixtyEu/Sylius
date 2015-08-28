@@ -11,9 +11,11 @@
 
 namespace Sylius\Bundle\PaymentBundle\Form\Type;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\Group;
+use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\User;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -49,6 +51,7 @@ class PaymentMethodEntityType extends PaymentMethodChoiceType
     {
         parent::setDefaultOptions($resolver);
         $queryBuilder = function (Options $options) {
+
             $groupIds = array();
             if ($this->user instanceof User) {
                 /** @var Collection $groups */
@@ -61,8 +64,10 @@ class PaymentMethodEntityType extends PaymentMethodChoiceType
             }
 
             $getDisabled = $options['disabled'];
+            /** @var Collection|OrderItemInterface[] $orderItems */
+            $orderItems = $options['order_items'];
 
-            return function (EntityRepository $repository) use ($groupIds, $getDisabled) {
+            return function (EntityRepository $repository) use ($groupIds, $getDisabled, $orderItems) {
                 $qb = $repository->createQueryBuilder('method');
                 if (!$getDisabled) {
                     $qb
@@ -70,6 +75,7 @@ class PaymentMethodEntityType extends PaymentMethodChoiceType
                         ->setParameter('enabled', true)
                     ;
                 }
+
                 $qb->leftJoin('method.groups', 'g');
                 if (empty($groupIds)) {
                     $qb->andWhere('g.id is null');
@@ -79,12 +85,26 @@ class PaymentMethodEntityType extends PaymentMethodChoiceType
                         $qb->expr()->in('g.id', $groupIds)
                     ));
                 }
+
+                if ($orderItems !== null && !$orderItems->isEmpty()) {
+                    $removedPaymentIds = array();
+                    /** @var OrderItemInterface $item */
+                    foreach ($orderItems as $item) {
+                        $removedPaymentIds = array_merge($removedPaymentIds, $item->getVariant()->getProduct()->getConstrainedPaymentIds());
+                    }
+
+                    if (!empty($removedPaymentIds)) {
+                        $qb->andWhere($qb->expr()->notIn('method', $removedPaymentIds));
+                    }
+                }
+
                 return $qb;
             };
         };
 
         $resolver
             ->setDefaults(array(
+                'order_items' => new ArrayCollection(),
                 'query_builder' => $queryBuilder
             ))
         ;

@@ -11,8 +11,10 @@
 
 namespace Sylius\Bundle\CoreBundle\Form\Type\Checkout;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -32,15 +34,25 @@ class PaymentStepType extends AbstractResourceType
 
         $builder
             ->add('paymentMethod', 'sylius_payment_method_choice', array(
-                'label'         => 'sylius.form.checkout.payment_method',
-                'expanded'      => true,
-                'property_path' => 'lastPayment.method',
-                'constraints'   => array(
+                'label'          => 'sylius.form.checkout.payment_method',
+                'expanded'       => true,
+                'property_path'  => 'lastPayment.method',
+                'order_items' => $options['order_items'],
+                'constraints'    => array(
                     $notBlank
                 )
             ))
         ;
     }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+        $resolver->setDefaults(array(
+            'order_items' => new ArrayCollection(),
+        ));
+    }
+
 
     /**
      * {@inheritdoc}

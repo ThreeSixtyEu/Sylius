@@ -63,6 +63,7 @@ class SyliusProductBundle extends AbstractResourceBundle
             'Sylius\Component\Product\Model\OptionInterface'               => 'sylius.model.product_option.class',
             'Sylius\Component\Product\Model\OptionValueInterface'          => 'sylius.model.product_option_value.class',
             'Sylius\Component\Product\Model\ArchetypeInterface'            => 'sylius.model.product_archetype.class',
+            'Sylius\Component\Product\Model\PaymentConstraintInterface'    => 'sylius.model.product_payment_constraint.class',
         );
     }
 

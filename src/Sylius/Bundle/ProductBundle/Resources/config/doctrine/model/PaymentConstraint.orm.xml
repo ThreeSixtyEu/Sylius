@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="Sylius\Component\Product\Model\PaymentConstraint" table="sylius_product_payment_constraint">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="allowedSince" column="allowed_since" type="datetime">
+            <gedmo:versioned />
+        </field>
+
+        <field name="allowedUntil" column="allowed_until" type="datetime">
+            <gedmo:versioned />
+        </field>
+
+        <many-to-one field="paymentMethod" target-entity="Sylius\Component\Payment\Model\PaymentMethod">
+            <join-column name="payment_method_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        </many-to-one>
+
+        <gedmo:loggable />
+    </mapped-superclass>
+
+</doctrine-mapping>

@@ -74,6 +74,6 @@ class PaymentStep extends CheckoutStep
 
     protected function createCheckoutPaymentForm(OrderInterface $order)
     {
-        return $this->createForm('sylius_checkout_payment', $order);
+        return $this->createForm('sylius_checkout_payment', $order, array('order_items' => $order->getItems()));
     }
 }

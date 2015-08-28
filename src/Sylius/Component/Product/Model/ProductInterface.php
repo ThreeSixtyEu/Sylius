@@ -11,7 +11,9 @@
 
 namespace Sylius\Component\Product\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Archetype\Model\ArchetypeSubjectInterface;
+use Sylius\Component\Payment\Model\PaymentInterface;
 use Sylius\Component\Resource\Model\SlugAwareInterface;
 use Sylius\Component\Resource\Model\SoftDeletableInterface;
 use Sylius\Component\Resource\Model\TimestampableInterface;
@@ -63,4 +65,27 @@ interface ProductInterface extends
 	 * @param null|\DateTime $availableUntil
 	 */
 	public function setAvailableUntil(\DateTime $availableUntil = null);
+
+	/**
+	 * Get payment constraints.
+	 *
+	 * @return Collection|PaymentConstraint[]
+	 */
+	public function getPaymentConstraints();
+
+	/**
+	 * Set payment constraints.
+	 *
+	 * @param Collection $paymentConstraints
+	 * @return $this
+	 */
+	public function setPaymentConstraints(Collection $paymentConstraints);
+
+	/**
+	 * Get a list of payment IDs that are supposed to be unavailable for a specific date
+	 *
+	 * @param \DateTime $forDate the date to check against; defaults to <em>now</em>
+	 * @return int[]
+	 */
+	public function getConstrainedPaymentIds(\DateTime $forDate = null);
 }

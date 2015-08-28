@@ -281,7 +281,7 @@ class CheckoutController extends FOSRestController
 
     private function createCheckoutPaymentForm(OrderInterface $order)
     {
-        return $this->createApiForm('sylius_checkout_payment', $order);
+        return $this->createApiForm('sylius_checkout_payment', $order, array('order_items' => $order->getItems()));
     }
 
     private function createApiForm($type, $value = null, array $options = array())

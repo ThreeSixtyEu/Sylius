@@ -77,6 +77,13 @@ class Product extends AbstractTranslatable implements ProductInterface
     protected $options;
 
     /**
+     * Payment constraints.
+     *
+     * @var Collection|PaymentConstraint[]
+     */
+    protected $paymentConstraints;
+
+    /**
      * Creation time.
      *
      * @var DateTime
@@ -108,6 +115,7 @@ class Product extends AbstractTranslatable implements ProductInterface
         $this->attributes = new ArrayCollection();
         $this->variants = new ArrayCollection();
         $this->options = new ArrayCollection();
+        $this->paymentConstraints = new ArrayCollection();
         $this->createdAt = new DateTime();
     }
 
@@ -519,6 +527,45 @@ class Product extends AbstractTranslatable implements ProductInterface
     public function hasOption(BaseOptionInterface $option)
     {
         return $this->options->contains($option);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPaymentConstraints()
+    {
+        return $this->paymentConstraints;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setPaymentConstraints(Collection $paymentConstraints)
+    {
+        $this->paymentConstraints = $paymentConstraints;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getConstrainedPaymentIds(DateTime $forDate = null)
+    {
+        if ($forDate === null) {
+            $forDate = new DateTime();
+        }
+
+        $constraints = $this->getPaymentConstraints();
+        $restrictedPaymentIds = array();
+
+        /** @var PaymentConstraintInterface $constraint */
+        foreach ($constraints as $constraint) {
+            if ($constraint->getAllowedSince() > $forDate || $constraint->getAllowedUntil() < $forDate) {
+                $restrictedPaymentIds[] = $constraint->getPaymentMethod()->getId();
+            }
+        }
+
+        return array_unique($restrictedPaymentIds, SORT_NUMERIC);
     }
 
     /**
