@@ -5,7 +5,7 @@
         {% set type = type == 'error' ? 'danger' : type %}
         <div class="alert alert-{{ type }}">
             <button type="button" data-dismiss="alert" class="close" aria-hidden="true">&times;</button>
-            {{ message }}
+            {{ message|trans({}, 'flashes') }}
         </div>
     {% endfor %}
 {% endfor %}
