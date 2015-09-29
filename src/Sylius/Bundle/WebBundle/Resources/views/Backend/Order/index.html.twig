@@ -5,29 +5,37 @@
 {% from 'SyliusWebBundle:Backend/Order:macros.html.twig' import list %}
 
 {% block topbar %}
-<ol class="breadcrumb">
-    <li>{{ 'sylius.breadcrumb.sales'|trans }}</li>
-    <li>{{ 'sylius.breadcrumb.order.index'|trans }}</li>
-</ol>
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.sales'|trans }}</li>
+        <li>{{ 'sylius.breadcrumb.order.index'|trans }}</li>
+    </ol>
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <div class="actions-menu">
-        {{ buttons.create(path('sylius_backend_order_create'), 'sylius.order.create'|trans) }}
-        {% if app.request.query.get('deleted') %}
-            <a href="{{ path('sylius_backend_order_index', {'deleted': false}) }}" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> {{ 'sylius.hide_deleted'|trans }}</a>
-        {% else %}
-            <a href="{{ path('sylius_backend_order_index', {'deleted': true}) }}" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> {{ 'sylius.show_deleted'|trans }}</a>
-        {% endif %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {% set request_query = app.request.query.all %}
+            {{ buttons.generic(path('sylius_backend_order_index', request_query|merge({'multi-comment': true})), 'funlife.order.multi_comment.do'|trans, 'list') }}
+            {{ buttons.create(path('sylius_backend_order_create'), 'sylius.order.create'|trans) }}
+        </div>
+        <h1><span class="glyphicon glyphicon-shopping-cart"></span> {{ 'sylius.order.index_header'|trans|raw }}</h1>
     </div>
-    <h1><span class="glyphicon glyphicon-shopping-cart"></span> {{ 'sylius.order.index_header'|trans|raw }}</h1>
-</div>
 
-{% render(controller('sylius.controller.backend.form:filterAction', {'type': 'sylius_order_filter', 'template': 'SyliusWebBundle:Backend/Order:filterForm.html.twig'})) %}
+    <div class="hidden-print bottom-offset-base">
+        <button href="#filter" class="btn btn-primary" data-toggle="collapse"><i class="glyphicon gyphicon-search"></i> {{ 'funlife.eshop.form.filter.toggle'|trans({}, 'form') }}</button>
+    </div>
+    <div id="filter" class="navbar navbar-default hidden-print navbar-with-inline-filter {{ app.request.query.has('order_filter') ? 'in' : 'collapse' }}">
+        {{ form_start(filter_form, {'attr': {'class': 'form-horizontal col-xs-12 padding-base-vertical'}}) }}
+        {{ form_rest(filter_form) }}
+        <div>
+            <button type="submit" id="order_filter_submit" name="order_filter[submit]" class="btn btn-primary col-lg-offset-2"><i class="glyphicon glyphicon-search"></i> {{ 'funlife.eshop.form.filter.submit'|trans({}, 'form') }}</button>
+            <a class="btn btn-warning" href="{{ path('sylius_backend_order_index') }}"><i class="glyphicon glyphicon-refresh"></i> {{ 'funlife.eshop.form.filter.reset'|trans({}, 'form') }}</a>
+        </div>
+        {{ form_end(filter_form) }}
+    </div>
 
-{{ pagination(orders) }}
-{{ list(orders) }}
-{{ pagination(orders) }}
+    {{ pagination(orders) }}
+    {{ list(orders) }}
+    {{ pagination(orders) }}
 
 {% endblock %}
