@@ -15,7 +15,6 @@
     <div class="page-header">
         <div class="actions-menu">
             {% set request_query = app.request.query.all %}
-            {{ buttons.generic(path('sylius_backend_order_index', request_query|merge({'multi-comment': true})), 'funlife.order.multi_comment.do'|trans, 'list') }}
             {{ buttons.create(path('sylius_backend_order_create'), 'sylius.order.create'|trans) }}
         </div>
         <h1><span class="glyphicon glyphicon-shopping-cart"></span> {{ 'sylius.order.index_header'|trans|raw }}</h1>
