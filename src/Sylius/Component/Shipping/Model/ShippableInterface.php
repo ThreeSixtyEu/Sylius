@@ -59,4 +59,11 @@ interface ShippableInterface
      * @return ShippingCategoryInterface
      */
     public function getShippingCategory();
+
+    /**
+     * Get the value of an item.
+     *
+     * @return integer
+     */
+    public function getShippingValue();
 }

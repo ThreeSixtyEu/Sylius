@@ -492,4 +492,12 @@ class ProductVariant extends BaseVariant implements ProductVariantInterface
     {
         return $this->depth * $this->height * $this->width;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingValue()
+    {
+        return $this->getPrice();
+    }
 }

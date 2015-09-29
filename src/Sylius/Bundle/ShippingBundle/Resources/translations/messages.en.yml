@@ -36,6 +36,10 @@ sylius:
                 label: Flat rate per item
                 amount: Amount
 
+            percentage_rate_configuration:
+                label: Fraction (in percent) of all items' value
+                percentage: Percentage
+
             weight_rate_configuration:
                 label: Weight based rate
                 amount: Amount

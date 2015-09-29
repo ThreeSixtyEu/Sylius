@@ -281,13 +281,25 @@ class Shipment implements ShipmentInterface, TimestampableInterface
         return $volume;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getShippingItemCount()
     {
         return $this->items->count();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getShippingItemTotal()
     {
-        return 0;
+        $total = 0;
+
+        foreach ($this->items as $item) {
+            $total += $item->getShippable()->getShippingValue();
+        }
+
+        return $total;
     }
 }

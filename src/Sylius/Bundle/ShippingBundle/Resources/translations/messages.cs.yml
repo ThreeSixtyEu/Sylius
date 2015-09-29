@@ -2,9 +2,14 @@
 # (c) Paweł Jędrzejewski
 
 sylius:
-  form:
-    shipping_category:
-      description: Popis
-      name: Jméno
-    shipping_method:
-      name: Jméno
+    form:
+        shipping_calculator:
+            percentage_rate_configuration:
+                label: Podíl celkové hodnoty objednávky (v procentech)
+                percentage: Procentní podíl
+
+        shipping_category:
+            description: Popis
+            name: Jméno
+        shipping_method:
+            name: Jméno
