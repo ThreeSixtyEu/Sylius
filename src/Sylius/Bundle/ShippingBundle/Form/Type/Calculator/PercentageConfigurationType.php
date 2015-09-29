@@ -32,7 +32,7 @@ class PercentageConfigurationType extends AbstractType
     {
         $builder
             ->add('percentage', 'percent', array(
-                'label' => 'sylius.form.shipping_calculator.percentage_rate_configuration.amount',
+                'label' => 'sylius.form.shipping_calculator.percentage_rate_configuration.percentage',
                 'constraints' => array(
                     new NotBlank(),
                     new Range(array('min' => 0, 'max' => 1000)),
