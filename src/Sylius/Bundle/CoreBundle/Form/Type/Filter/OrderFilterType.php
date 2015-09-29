@@ -13,7 +13,7 @@ namespace Sylius\Bundle\CoreBundle\Form\Type\Filter;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Funlife\Bundle\EshopBundle\Repository\ProductRepository;
+use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
 use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -95,7 +95,7 @@ class OrderFilterType extends AbstractResourceType
             ))
             ->add('product', 'filter_entity', array(
                 'label' => 'funlife.eshop.form.payment.product',
-                'class' => 'Funlife\Bundle\EshopBundle\Entity\Product',
+                'class' => 'Sylius\Component\Core\Model\Product',
                 'property' => 'name',
                 'query_builder' => function (ProductRepository $repository) {
                     $qb = $repository->createQueryBuilder('product');
