@@ -95,9 +95,10 @@ class OrderFilterType extends AbstractResourceType
             ))
             ->add('product', 'filter_entity', array(
                 'label' => 'funlife.eshop.form.payment.product',
-                'class' => 'Sylius\Component\Core\Model\Product',
+                //TODO: correcting to Sylius\Component\Core\Model\Product causes translatable error
+                'class' => 'Funlife\Bundle\EshopBundle\Entity\Product',
                 'property' => 'name',
-                'query_builder' => function (ProductRepository $repository) {
+                'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('product');
                     $qb->andWhere($qb->expr()->isNull('product.deletedAt'));
                     return $qb;
