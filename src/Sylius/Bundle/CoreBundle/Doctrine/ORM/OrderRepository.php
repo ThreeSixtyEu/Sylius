@@ -382,4 +382,12 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
 
         return $queryBuilder->andWhere($queryBuilder->expr()->isNotNull('o.completedAt'));
     }
+
+    /**
+     * Disables the softdeleteable filter on the Order entity
+     */
+    public function disableSoftdeleteableFilter()
+    {
+        $this->_em->getFilters()->disable('softdeleteable');
+    }
 }

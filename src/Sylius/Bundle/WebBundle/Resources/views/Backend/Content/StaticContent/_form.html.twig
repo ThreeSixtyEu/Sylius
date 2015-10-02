@@ -1,10 +1,14 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
 {% import 'SyliusWebBundle:Backend/Content/Form:forms.html.twig' as forms %}
 
 <fieldset>
     {{ forms.readonly(form.parent,form.parent.vars.value,'/cms/pages') }}
+    {{ form_row(form.id, {'attr': {'class': 'input-lg'}}) }}
     {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
+    {#{{ form_row(form.locale, {'attr': {'class': 'input-lg'}}) }}#}
     {{ form_row(form.title, {'attr': {'class': 'input-lg'}}) }}
+    {#{{ form_row(form.routes) }}#}
+    {#{{ form_row(form.menuNodes) }}#}
     {{ form_row(form.body) }}
-    {{ form_row(form.routes) }}
 </fieldset>
 {{ form_widget(form._token) }}
