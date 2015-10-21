@@ -36,10 +36,11 @@ class LocaleExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFunctions()
     {
         return array(
             new \Twig_SimpleFunction('sylius_locale', array($this, 'getLocale')),
+            new \Twig_SimpleFunction('sylius_locales', array($this, 'getLocales')),
         );
     }
 
@@ -51,6 +52,14 @@ class LocaleExtension extends \Twig_Extension
     public function getLocale()
     {
         return $this->helper->getLocale();
+    }
+
+    /**
+     * @return array]
+     */
+    public function getLocales()
+    {
+        return $this->helper->getLocales();
     }
 
     /**

@@ -39,9 +39,6 @@ class StaticContentType extends AbstractResourceType
             ->add('name', 'text', array(
                 'label' => 'sylius.form.static_content.internal_name'
             ))
-            ->add('locale', 'text', array(
-                'label' => 'sylius.form.static_content.title'
-            ))
             ->add('title', 'text', array(
                 'label' => 'sylius.form.static_content.title'
             ))
@@ -72,6 +69,9 @@ class StaticContentType extends AbstractResourceType
                 'label'    => 'sylius.form.static_content.publish_end_date',
             ))
             ;
+
+        $opt = isset($_GET['contentLocale']) ? array('data' => $_GET['contentLocale']): array();
+        $builder->add('locale', 'hidden', $opt);
 
     }
 

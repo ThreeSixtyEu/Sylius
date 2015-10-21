@@ -2,6 +2,8 @@
 
 {% import 'SyliusWebBundle:Backend/Content/Form:forms.html.twig' as forms %}
 
+{% include 'SyliusWebBundle:Backend/Content:changeLocaleTab.html.twig' %}
+
 <fieldset>
     {{ forms.readonly(form.parentDocument,form.parentDocument.vars.value,'/cms/blocks') }}
     {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
@@ -9,6 +11,7 @@
     {{ form_row(form.linkUrl) }}
     {{ form_row(form.filter) }}
     {{ form_row(form.image) }}
+    {{ form_row(form.locale) }}
     <br>
 </fieldset>
 {{ form_widget(form._token) }}

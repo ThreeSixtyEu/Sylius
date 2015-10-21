@@ -23,6 +23,7 @@
     <services>
         <service id="sylius.templating.helper.locale" class="%sylius.templating.helper.locale.class%">
             <argument type="service" id="sylius.context.locale" />
+            <argument type="service" id="sylius.locale_provider" />
             <tag name="templating.helper" alias="sylius_locale" />
         </service>
     </services>

@@ -75,6 +75,9 @@ class MenuNodeType extends AbstractResourceType
             ))
         ;
 
+        $opt = isset($_GET['contentLocale']) ? array('data' => $_GET['contentLocale']): array();
+        $builder->add('locale', 'hidden', $opt);
+
     }
 
     /**
