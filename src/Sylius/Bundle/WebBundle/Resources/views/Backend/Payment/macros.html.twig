@@ -5,45 +5,67 @@
 {% import 'SyliusWebBundle:Backend/Macros:misc.html.twig' as misc %}
 
 {% if payments|length > 0 %}
-<table class="table">
-    <thead>
+    <table class="table">
+        <thead>
         <tr>
             <th>{{ sylius_resource_sort('id', 'sylius.payment.id'|trans) }}</th>
             <th>{{ sylius_resource_sort('method', 'sylius.payment.method'|trans) }}</th>
             <th>{{ sylius_resource_sort('amount', 'sylius.payment.amount'|trans) }}</th>
             <th>{{ sylius_resource_sort('state', 'sylius.payment.state.header'|trans) }}</th>
+            <th>{{ 'funlife.eshop.payment.order_number'|trans }}</th>
             <th>{{ sylius_resource_sort('createdAt', 'sylius.payment.created_at'|trans) }}</th>
             <th>{{ sylius_resource_sort('updatedAt', 'sylius.payment.updated_at'|trans) }}</th>
-            <th></th>
+            <th class="hidden-print"></th>
         </tr>
-    </thead>
-    <tbody>
-    {% for payment in payments %}
-        <tr id="{{ payment.id }}">
-            <td>{{ payment.id }}</td>
-            <td><span class="label label-primary">{{ payment.method }}</span></td>
-            <td>
-                {{ payment.amount|sylius_price(payment.currency) }}
-            </td>
-            <td>{{ misc.state_label(payment.state, 'payment') }}</td>
-            <td>{{ payment.createdAt|date }}</td>
-            <td>{{ payment.updatedAt|date }}</td>
-            <td>
-                <div class="pull-right">
-                    {{ buttons.edit(path('sylius_backend_payment_update', {'id': payment.id})) }}
-                    {{ buttons.delete(path('sylius_backend_payment_delete', {'id': payment.id})) }}
-                    <a href="{{ path('sylius_backend_payment_history', {'id': payment.id}) }}" class="btn btn-info">
-                        <i class="glyphicon glyphicon-calendar"></i>
-                         {{ 'sylius.history'|trans }}
+        </thead>
+        <tbody>
+        {% set sum = 0 %}
+        {% for payment in payments %}
+            {% set sum = sum + payment.amount %}
+            <tr id="{{ payment.id }}">
+                <td>{{ payment.id }}</td>
+                <td><span class="label label-primary">{{ payment.method }}</span></td>
+                <td>
+                    {{ payment.amount|sylius_price(payment.currency) }}
+                </td>
+                <td>{{ misc.state_label(payment.state, 'payment') }}</td>
+                <td>
+                    <a href="{{ path('sylius_backend_order_show', {'id': payment.order.id}) }}">
+                        <strong>#{{ payment.order.number }}</strong>
                     </a>
-                </div>
+                </td>
+                <td>{{ payment.createdAt|date }}</td>
+                <td>{{ payment.updatedAt|date }}</td>
+                <td class="hidden-print">
+                    <div class="pull-right">
+                        {{ buttons.edit(path('sylius_backend_payment_update', {'id': payment.id})) }}
+                        {{ buttons.delete(path('sylius_backend_payment_delete', {'id': payment.id})) }}
+                        {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_payment_history') %}
+                            <a href="{{ path('sylius_backend_payment_history', {'id': payment.id}) }}" class="btn btn-info">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                {{ 'funlife.eshop.payment.detail'|trans }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+        <tr>
+            <td colspan="2">
+                {% if payments.havetopaginate %}
+                    {{ 'funlife.eshop.payment.partial_sum'|trans({'%currentpage%': payments.currentpage, '%totalpages%': payments.nbpages}) }}
+                {% else %}
+                    {{ 'funlife.eshop.payment.sum'|trans }}
+                {% endif %}
             </td>
+            <td>{{ sum|sylius_price }}</td>
+            <td colspan="5"></td>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
 {% else %}
-{{ alerts.info('sylius.payment.no_results'|trans) }}
+    {{ alerts.info('sylius.payment.no_results'|trans) }}
 {% endif %}
 
 {% endmacro %}

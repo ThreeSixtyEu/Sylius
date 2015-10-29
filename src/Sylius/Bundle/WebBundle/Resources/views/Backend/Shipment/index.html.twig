@@ -15,8 +15,12 @@
 <div class="page-header">
     <div class="actions-menu">
         {{ buttons.manage(path('sylius_backend_order_index'), 'sylius.order.manage'|trans) }}
-        {{ buttons.create(path('sylius_backend_shipping_category_index'), 'sylius.shipping_category.manage'|trans) }}
-        {{ buttons.create(path('sylius_backend_shipping_method_index'), 'sylius.shipping_method.manage'|trans) }}
+        {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_shipping_category_index') %}
+            {{ buttons.create(path('sylius_backend_shipping_category_index'), 'sylius.shipping_category.manage'|trans) }}
+        {% endif %}
+        {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_shipping_method_index') %}
+            {{ buttons.create(path('sylius_backend_shipping_method_index'), 'sylius.shipping_method.manage'|trans) }}
+        {% endif %}
     </div>
     <h1><i class="glyphicon glyphicon-plane"></i> {{ 'sylius.shipment.index_header'|trans|raw }}</h1>
 </div>

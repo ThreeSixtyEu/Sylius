@@ -14,7 +14,6 @@ namespace Sylius\Bundle\CoreBundle\Controller;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Order\OrderTransitions;
-use Sylius\Bundle\CoreBundle\Doctrine\ORM\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,17 +26,17 @@ class OrderController extends ResourceController
      */
     public function indexAction(Request $request)
     {
-        $this->getOrderRepository()->disableSoftdeleteableFilter();
+        $this->getRepository()->disableSoftdeleteableFilter();
 
         $form = $this->createForm($this->get('sylius.form.type.order_filter'));
 
-        $orders = $this->getOrderRepository()->getQueryBuilderForOrderIndex();
+        $orders = $this->getRepository()->getQueryBuilderForOrderIndex();
 
         $form->submit($request->query->get($form->getName()));
         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($form, $orders);
 
         $sorting = $request->query->get('sorting', null);
-        $orders = $this->getOrderRepository()->createPaginatorFromQueryBuilder($orders, null, $sorting);
+        $orders = $this->getRepository()->createPaginatorFromQueryBuilder($orders, null, $sorting);
         $orders->setCurrentPage($request->get('page', 1));
         $orders->setMaxPerPage(50);
 
@@ -147,12 +146,5 @@ class OrderController extends ResourceController
         ;
 
         return $this->handleView($view);
-    }
-
-    /**
-     * @return OrderRepository
-     */
-    public function getOrderRepository() {
-        return $this->get('doctrine')->getManager()->getRepository('\Sylius\Component\Core\Model\Order');
     }
 }

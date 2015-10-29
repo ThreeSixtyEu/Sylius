@@ -25,9 +25,9 @@
     <tbody>
     {% for log in logs %}
         <tr>
-            <td><span class="label label-{{ log.action == 'danger' ? 'warning' : (log.action == 'update' ? 'success' : 'primary') }}">{{ log.action|upper }}</span></td>
-            <td>{{ log.loggedAt|date }} (#{{ log.version }})</td>
-            <td>
+            <td><span class="label label-{{ log.action == 'danger' ? 'warning' : (log.action == 'update' ? 'success' : 'primary') }}">{{ ('sylius.history.actions.'~log.action)|trans }}</span></td>
+            <td>{{ log.loggedAt|date(DATE) }} (#{{ log.version }})</td>
+            <td class="word-break-all">
                 {% if log.data is not empty %}
                 <ul>
                     {% for key, value in log.data %}
@@ -51,8 +51,8 @@
             </td>
             <td>{{ log.username|default('unknown') }}</td>
             <td>
-                {% if revert_route is defined and (log.version != 1 or length > 1) and not loop.first and not disabled is defined %}
-                    {{ buttons.patch(path(revert_route, {'id': log.objectId, 'version': log.version}), 'sylius.history.revert'|trans) }}
+                {% if url is defined and (log.version != 1 or length > 1) and not loop.first and not disabled is defined %}
+                    {{ buttons.patch(path(url, {'id': log.objectId, 'version': log.version}), 'sylius.history.revert'|trans) }}
                 {% endif %}
             </td>
         </tr>

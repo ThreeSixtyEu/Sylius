@@ -14,7 +14,9 @@
 {% block content %}
 <div class="page-header">
     <div class="actions-menu">
-        {{ buttons.create(path('sylius_backend_product_create'), 'sylius.product.create'|trans) }}
+        {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_product_create') %}
+            {{ buttons.create(path('sylius_backend_product_create'), 'sylius.product.create'|trans) }}
+        {% endif %}
         {{ buttons.manage(path('sylius_backend_product_index'), 'sylius.product.manage'|trans) }}
     </div>
     <h1><i class="glyphicon glyphicon-tasks"></i> {{ 'sylius.stockable.index_header'|trans|raw }}</h1>

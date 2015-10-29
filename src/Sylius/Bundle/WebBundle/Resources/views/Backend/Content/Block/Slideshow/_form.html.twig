@@ -2,27 +2,39 @@
 
 {% import 'SyliusWebBundle:Backend/Content/Form:forms.html.twig' as forms %}
 
+{% include 'SyliusWebBundle:Backend/Content:changeLocaleTab.html.twig' %}
+
 <fieldset>
     <div class="row">
         <div class="col-md-6 row-split">
             {{ forms.readonly(form.parentDocument,form.parentDocument.vars.value,'/cms/blocks') }}
             {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
             {{ form_row(form.title, {'attr': {'class': 'input-lg'}}) }}
+            {{ form_row(form.locale)  }}
         </div>
         <div class="col-md-6">
-            {{ form_row(form.children) }}
+            <div id="sylius-menu-childrens" class="collection-container" data-prototype="{{ _self.prototype(form.children.vars.prototype,form)|e }}">
+                {% for children in form.children %}
+                    {{ _self.prototype(children,form) }}
+                {% endfor %}
+            </div>
+            <a href="#" class="btn btn-primary btn-lg" data-collection-button="add" data-prototype="sylius-menu-childrens" data-collection="sylius-menu-childrens">{{ "sylius.form.slideshow.add_slide"|trans }}</a>
         </div>
     </div>
 </fieldset>
 {{ form_widget(form._token) }}
 
-{% macro prototype(item) %}
-    <div>
+{% macro prototype(item,form) %}
+    <div class="sylius-menu-childrens-slide row">
         {{ form_row(item.name)  }}
-        {{ form_row(item.label)  }}
         {{ form_row(item.linkUrl)  }}
         {{ form_row(item.filter)  }}
         {{ form_row(item.image)  }}
+        {{ form_row(item.locale)  }}
+        {% if item.name.vars.value is not empty %}
+            {{ sonata_block_render(cmf_find("/cms/blocks/"~form.name.vars.value~"/"~item.name.vars.value)) }}
+        {% endif %}
+        <a href="#" class="btn btn-danger top-offset-base" data-collection-button="delete" data-collection="sylius-menu-childrens" data-collection-item="slide"><i class="glyphicon glyphicon-trash"></i>&nbsp;{{ 'sylius.form.slideshow.remove_slide'|trans }}</a>
+        <hr />
     </div>
-    <hr />
 {% endmacro %}

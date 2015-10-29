@@ -14,9 +14,15 @@
 {% block content %}
 <div class="page-header">
     <div class="actions-menu">
-        {{ buttons.create(path('sylius_backend_product_archetype_create'), 'sylius.archetype.create'|trans) }}
-        {{ buttons.manage(path('sylius_backend_product_option_index'), 'sylius.product_option.manage'|trans) }}
-        {{ buttons.manage(path('sylius_backend_product_attribute_index'), 'sylius.product_attribute.manage'|trans) }}
+        {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_product_archetype_create') %}
+            {{ buttons.create(path('sylius_backend_product_archetype_create'), 'sylius.archetype.create'|trans) }}
+        {% endif %}
+        {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_product_option_index') %}
+            {{ buttons.manage(path('sylius_backend_product_option_index'), 'sylius.product_option.manage'|trans) }}
+        {% endif %}
+        {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_product_attribute_index') %}
+            {{ buttons.manage(path('sylius_backend_product_attribute_index'), 'sylius.product_attribute.manage'|trans) }}
+        {% endif %}
     </div>
     <h1><i class="glyphicon glyphicon-compressed"></i> {{ 'sylius.archetype.index_header'|trans|raw }}</h1>
 </div>

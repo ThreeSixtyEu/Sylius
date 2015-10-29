@@ -41,8 +41,12 @@
             <td>
                 <div class="pull-right">
                 {{ buttons.create(path('sylius_backend_product_create', {'archetype': archetype.code}), 'sylius.product.create'|trans) }}
-                {{ buttons.edit(path('sylius_backend_product_archetype_update', {'id': archetype.id})) }}
-                {{ buttons.delete(path('sylius_backend_product_archetype_delete', {'id': archetype.id})) }}
+                {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_product_archetype_update') %}
+                    {{ buttons.edit(path('sylius_backend_product_archetype_update', {'id': archetype.id})) }}
+                {% endif %}
+                {% if is_granted('HAS_ACCESS_TO_ROUTE', 'sylius_backend_product_archetype_delete') %}
+                    {{ buttons.delete(path('sylius_backend_product_archetype_delete', {'id': archetype.id})) }}
+                {% endif %}
                 </div>
             </td>
         </tr>

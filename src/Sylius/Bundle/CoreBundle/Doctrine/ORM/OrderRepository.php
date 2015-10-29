@@ -11,6 +11,8 @@
 
 namespace Sylius\Bundle\CoreBundle\Doctrine\ORM;
 
+use Doctrine\ORM\QueryBuilder;
+use Pagerfanta\Pagerfanta;
 use Pagerfanta\PagerfantaInterface;
 use Sylius\Bundle\CartBundle\Doctrine\ORM\CartRepository;
 use Sylius\Component\Core\Model\CouponInterface;
@@ -20,6 +22,34 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 
 class OrderRepository extends CartRepository implements OrderRepositoryInterface
 {
+    /**
+     * @return QueryBuilder
+     */
+    public function getQueryBuilderForOrderIndex()
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder
+            ->andWhere($queryBuilder->expr()->isNotNull('o.completedAt'))
+            ->leftJoin('o.user', 'user')
+            ->addSelect('user')
+        ;
+        return $queryBuilder;
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array|null $criteria
+     * @param array|null $orderBy
+     * @return Pagerfanta
+     */
+    public function createPaginatorFromQueryBuilder(QueryBuilder $queryBuilder, array $criteria = null, array $orderBy = null)
+    {
+        $this->applyCriteria($queryBuilder, $criteria);
+        $this->applySorting($queryBuilder, $orderBy);
+
+        return $this->getPaginator($queryBuilder);
+    }
+
     /**
      * Create user orders paginator.
      *
