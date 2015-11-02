@@ -16,14 +16,7 @@ class Version20150202213852 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->connection->executeQuery('CREATE TABLE sylius_channel (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, color VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, enabled TINYINT(1) NOT NULL, url VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_16C8119E77153098 (code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->connection->insert('sylius_channel', array(
-            'code'      => 'WEB',
-            'name'      => 'Default Web',
-            'color'     => 'green',
-            'enabled'   => true,
-            'created_at'    => 'NOW()',
-            'updated_at'    => 'NOW()'
-        ));
+        $this->connection->executeQuery('INSERT INTO sylius_channel (code, name, color, enabled, created_at, updated_at) VALUES ("WEB", "Default Web", "green", true, NOW(), NOW())');
         $channelId = $this->connection->lastInsertId();
 
         $this->connection->executeQuery('CREATE TABLE sylius_product_channels (product_id INT NOT NULL, channel_id INT NOT NULL, INDEX IDX_F9EF269B4584665A (product_id), INDEX IDX_F9EF269B72F5A1AA (channel_id), PRIMARY KEY(product_id, channel_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
