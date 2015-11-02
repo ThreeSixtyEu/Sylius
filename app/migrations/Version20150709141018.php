@@ -1,6 +1,6 @@
 <?php
 
-namespace Funlife\Migrations;
+namespace Sylius\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
