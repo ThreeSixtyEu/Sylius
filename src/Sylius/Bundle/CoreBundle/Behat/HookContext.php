@@ -14,6 +14,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\DBAL\Driver\PDOMySql\Driver as PDOMySqlDriver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -43,13 +44,28 @@ class HookContext implements Context, KernelAwareContext
         $entityManager = $this->getService('doctrine.orm.entity_manager');
         $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
 
-        $entityManager->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
+        $isMySqlDriver = $entityManager->getConnection()->getDriver() instanceof PDOMySqlDriver;
+        if ($isMySqlDriver) {
+            $entityManager->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
+        }
 
         $purger = new ORMPurger($entityManager);
         $purger->purge();
 
-        $entityManager->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+        if ($isMySqlDriver) {
+            $entityManager->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+        }
+
         $entityManager->clear();
+
+        /*
+        $process = new Process(sprintf('%s/console sylius:rbac:initialize --env=test', $this->getContainer()->getParameter('kernel.root_dir')));
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException('Could not initialize permissions.');
+        }
+        */
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Sylius\Bundle\InstallerBundle\Command;
 
-use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,6 +28,13 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln(sprintf('Installing Sylius assets for environment <info>%s</info>.', $this->getEnvironment()));
+
+        try {
+            $this->ensureDirectoryExistsAndIsWritable(self::WEB_ASSETS_DIRECTORY, $output);
+            $this->ensureDirectoryExistsAndIsWritable(self::WEB_BUNDLES_DIRECTORY, $output);
+        } catch (\RuntimeException $exception) {
+            return 1;
+        }
 
         $commands = array(
             'assets:install',

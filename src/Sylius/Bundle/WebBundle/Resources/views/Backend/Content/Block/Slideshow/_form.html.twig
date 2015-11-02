@@ -7,6 +7,9 @@
 <fieldset>
     <div class="row">
         <div class="col-md-6 row-split">
+            {{ form_row(form.publishable) }}
+            {{ form_row(form.publishStartDate) }}
+            {{ form_row(form.publishEndDate) }}
             {{ forms.readonly(form.parentDocument,form.parentDocument.vars.value,'/cms/blocks') }}
             {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
             {{ form_row(form.title, {'attr': {'class': 'input-lg'}}) }}

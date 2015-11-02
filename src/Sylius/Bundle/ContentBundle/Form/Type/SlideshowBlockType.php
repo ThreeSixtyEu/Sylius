@@ -13,6 +13,7 @@ namespace Sylius\Bundle\ContentBundle\Form\Type;
 
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Slideshow block type.
@@ -42,14 +43,40 @@ class SlideshowBlockType extends AbstractResourceType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => false,
-                'button_add_label' => 'sylius.form.slideshow.add_slide',
+                'button_add_label' => 'sylius.form.slideshow_block.add_slide',
+                'cascade_validation' => true,
+            ))
+            ->add('publishable', null, array(
+                'label' => 'sylius.form.slideshow_block.publishable'
+            ))
+            ->add('publishStartDate', 'datetime', array(
+                'label' => 'sylius.form.slideshow_block.publish_start_date',
+                'empty_value' =>/** @Ignore */ array('year' => '-', 'month' => '-', 'day' => '-'),
+                'time_widget' => 'text',
+            ))
+            ->add('publishEndDate', 'datetime', array(
+                'label' => 'sylius.form.slideshow_block.publish_end_date',
+                'empty_value' =>/** @Ignore */ array('year' => '-', 'month' => '-', 'day' => '-'),
+                'time_widget' => 'text',
             ))
         ;
 
         $opt = isset($_GET['contentLocale']) ? array('data' => $_GET['contentLocale']): array();
         $builder->add('locale', 'hidden', $opt);
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(            
+            'cascade_validation' => true,
+        ));
+        
+        parent::setDefaultOptions($resolver);
+    }
+    
     /**
      * {@inheritdoc}
      */

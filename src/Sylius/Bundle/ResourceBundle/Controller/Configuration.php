@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Resource controller configuration.
  *
- * @author Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
+ * @author Paweł Jędrzejewski <pawel@sylius.org>
  * @author Saša Stamenković <umpirsky@gmail.com>
  * @author Gustavo Perdomo <gperdomor@gmail.com>
  */
@@ -204,7 +204,7 @@ class Configuration
             return null;
         }
 
-        return '#' . $redirect['hash'];
+        return '#'.$redirect['hash'];
     }
 
     /**
@@ -302,7 +302,15 @@ class Configuration
         $defaultSorting = array_merge($this->parameters->get('sorting', array()), $sorting);
 
         if ($this->isSortable()) {
-            return $this->getRequestParameter('sorting', $defaultSorting);
+            $sorting = $this->getRequestParameter('sorting');
+            foreach ($defaultSorting as $key => $value) {
+                //do not override request parameters by $defaultSorting values
+                if (!isset($sorting[$key])){
+                    $sorting[$key] = $value;
+                }
+            }
+
+            return $sorting;
         }
 
         return $defaultSorting;
@@ -316,14 +324,18 @@ class Configuration
         );
     }
 
-    public function getMethod($default)
+    public function getRepositoryMethod($default)
     {
-        return $this->parameters->get('method', $default);
+        $repository = $this->parameters->get('repository', array('method' => $default));
+
+        return is_array($repository) ? $repository['method'] : $repository;
     }
 
-    public function getArguments(array $default = array())
+    public function getRepositoryArguments(array $default = array())
     {
-        return $this->parameters->get('arguments', $default);
+        $repository = $this->parameters->get('repository', array());
+
+        return isset($repository['arguments']) ? $repository['arguments'] : $default;
     }
 
     public function getFactoryMethod($default)
@@ -365,5 +377,25 @@ class Configuration
     public function getEvent($default = null)
     {
         return $this->parameters->get('event', $default);
+    }
+
+    public function getPermission($default = null)
+    {
+        return $this->parameters->get('permission', $default);
+    }
+
+    public function isHeaderRedirection()
+    {
+        $redirect = $this->parameters->get('redirect');
+
+        if (!is_array($redirect) || !isset($redirect['header'])) {
+            return false;
+        }
+
+        if ('xhr' === $redirect['header']) {
+            return $this->getRequest()->isXmlHttpRequest();
+        }
+
+        return (bool) $redirect['header'];
     }
 }

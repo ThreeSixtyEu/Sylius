@@ -12,7 +12,7 @@
 namespace Sylius\Bundle\TranslationBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Sylius\Bundle\ResourceBundle\DependencyInjection\AbstractResourceExtension;
+use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 
 /**
  * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
@@ -24,11 +24,14 @@ class SyliusTranslationExtension extends AbstractResourceExtension
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        $this->configure(
+        $config = $this->configure(
             $config,
             new Configuration(),
             $container,
-            self::CONFIGURE_LOADER
+            self::CONFIGURE_LOADER | self::CONFIGURE_PARAMETERS | self::CONFIGURE_DATABASE
         );
+
+        $container->setParameter('sylius.translation.default_locale', $config['default_locale']);
+        $container->setAlias('sylius.translation.locale_provider', $config['locale_provider']);
     }
 }

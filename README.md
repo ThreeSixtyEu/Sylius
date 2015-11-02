@@ -1,10 +1,12 @@
 ![Sylius](https://dl.dropboxusercontent.com/u/46579820/sylius-logo.jpg)
 
 [![Gitter chat](https://badges.gitter.im/Sylius/Sylius.png)](https://gitter.im/Sylius/Sylius)
-[![License](https://poser.pugx.org/sylius/sylius/license.svg)](https://packagist.org/packages/sylius/sylius)
-[![Build status...](https://secure.travis-ci.org/Sylius/Sylius.png?branch=master)](http://travis-ci.org/Sylius/Sylius)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/Sylius/Sylius/badges/quality-score.png?s=f6d89b8aad6e15cab61134e7c0544ee1313f7f31)](https://scrutinizer-ci.com/g/Sylius/Sylius/)
-[![HHVM Status](http://hhvm.h4cc.de/badge/sylius/sylius.svg)](http://hhvm.h4cc.de/package/sylius/sylius)
+[![License](https://img.shields.io/packagist/l/Sylius/Sylius.svg)](https://packagist.org/packages/sylius/sylius)
+[![Version](https://img.shields.io/packagist/v/Sylius/Sylius.svg)](https://packagist.org/packages/sylius/sylius)
+[![Build status...](https://img.shields.io/travis/Sylius/Sylius/master.svg)](http://travis-ci.org/Sylius/Sylius)
+[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/Sylius/Sylius.svg)](https://scrutinizer-ci.com/g/Sylius/Sylius/)
+[![HHVM Status](https://img.shields.io/hhvm/Sylius/Sylius.svg)](http://hhvm.h4cc.de/package/sylius/sylius)
+[![Dependency Status](https://www.versioneye.com/php/sylius:sylius/0.13.0/badge.svg)](https://www.versioneye.com/php/sylius:sylius/0.13.0)
 
 Sylius is an open source e-commerce solution for **PHP**, based on the [**Symfony2**](http://symfony.com) framework.
 
@@ -24,7 +26,7 @@ Quick Installation
 
 ```bash
 $ wget http://getcomposer.org/composer.phar
-$ php composer.phar create-project sylius/sylius -s dev
+$ php composer.phar create-project sylius/sylius:v0.14.0
 $ cd sylius
 $ php app/console sylius:install
 ```
@@ -55,10 +57,11 @@ $ php app/console doctrine:database:create --env=test
 $ php app/console doctrine:schema:create --env=test
 ```
 
-You can run Behat using the following command:
+You can run Behat using the following commands:
 
 ```bash
-$ bin/behat
+$ bin/behat # In order to run tests which don't need JS support
+$ bin/behat -p javascript # In order to run tests which need JS support
 ```
 
 Troubleshooting
@@ -76,7 +79,7 @@ If you are using the supplied Vagrant development environment, please see the re
 Contributing
 ------------
 
-All informations about contributing to Sylius can be found on [this page](http://docs.sylius.org/en/latest/contributing/index.html).
+[This page](http://docs.sylius.org/en/latest/contributing/index.html) contains all the information about contributing to Sylius.
 
 Sylius on Twitter
 -----------------

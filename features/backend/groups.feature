@@ -1,21 +1,20 @@
 @users
-Feature: User groups management
+Feature: Customer groups management
     In order to manage customers
     As a store owner
     I want to be able to group them
 
     Background:
-        Given there is default currency configured
-          And I am logged in as administrator
+        Given store has default configuration
           And the following zones are defined:
             | name         | type    | members                       |
             | German lands | country | Germany, Austria, Switzerland |
           And there are following groups:
-            | name                | roles             |
-            | Wholesale Customers | ROLE_WHOLESALE    |
-            | Retail Customers    | ROLE_RETAIL       |
-            | Administrators      | ROLE_SYLIUS_ADMIN |
-            | Sales               | ROLE_SYLIUS_SALES |
+            | name                |
+            | Wholesale Customers |
+            | Retail Customers    |
+            | Administrators      |
+            | Sales               |
           And there are following users:
             | email              | enabled | groups                | address                                                |
             | marc@example.com   | yes     | Administrators, Sales | Klaus Schmitt, Heine-Straße 12, 99734, Berlin, Germany |
@@ -24,6 +23,7 @@ Feature: User groups management
             | martha@example.com | yes     | Retail Customers      |                                                        |
             | rick@example.com   | no      | Retail Customers      | Lars Meine, Fun-Straße 1, 90032, Vienna, Austria       |
             | dale@example.com   | yes     | Wholesale Customers   |                                                        |
+          And I am logged in as administrator
 
     Scenario: Seeing index of all groups
         Given I am on the dashboard page
@@ -46,17 +46,16 @@ Feature: User groups management
         Given I am on the group creation page
          When I fill in the following:
             | Name  | Dealers                   |
-            | Roles | ROLE_DEALER, ROLE_MANAGER |
           And I press "Create"
          Then I should be on the group index page
           And I should see group with name "Dealers" in the list
 
-    Scenario: Selecting the groups for user
-        Given I am editing user with username "rick@example.com"
+    Scenario: Selecting the groups for customer
+        Given I am editing customer with email "rick@example.com"
          When I select "Retail Customers" from "Groups"
           And I press "Save changes"
-         Then I should be on the page of user with username "rick@example.com"
-          And "User has been successfully updated." should appear on the page
+         Then I should be on the page of customer with email "rick@example.com"
+          And "Customer has been successfully updated." should appear on the page
 
     Scenario: Accessing the editing form from the list
         Given I am on the group index page

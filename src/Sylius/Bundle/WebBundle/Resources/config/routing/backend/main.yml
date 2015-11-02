@@ -12,9 +12,9 @@ sylius_backend_dashboard:
     path: /dashboard
     defaults: { _controller: sylius.controller.backend.dashboard:mainAction }
 
-sylius_backend_user:
-    resource: @SyliusWebBundle/Resources/config/routing/backend/user.yml
-    prefix: /users
+sylius_backend_customer:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/customer.yml
+    prefix: /customers
 
 sylius_backend_group:
     resource: @SyliusWebBundle/Resources/config/routing/backend/group.yml
@@ -88,6 +88,10 @@ sylius_backend_shipment:
     resource: @SyliusWebBundle/Resources/config/routing/backend/shipment.yml
     prefix: /shipments
 
+sylius_backend_email:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/email.yml
+    prefix: /emails
+
 sylius_backend_payment_method:
     resource: @SyliusWebBundle/Resources/config/routing/backend/payment_method.yml
     prefix: /payment-methods
@@ -132,6 +136,18 @@ sylius_backend_contact_request:
     resource: @SyliusWebBundle/Resources/config/routing/backend/contact_request.yml
     prefix: /contact-requests
 
+sylius_backend_role:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/role.yml
+    prefix: /roles
+
+sylius_backend_permission:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/permission.yml
+    prefix: /permissions
+
+sylius_backend_channel:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/channel.yml
+    prefix: /channels
+
 sylius_backend_settings:
     resource: @SyliusWebBundle/Resources/config/routing/backend/settings.yml
     prefix: /settings
@@ -142,3 +158,7 @@ sylius_backend_security:
 sylius_backend_content:
     resource: @SyliusWebBundle/Resources/config/routing/backend/content/main.yml
     prefix: /content
+
+sylius_backend_report:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/report.yml
+    prefix: /reports

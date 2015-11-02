@@ -26,9 +26,14 @@ class PaymentSpec extends ObjectBehavior
         $this->shouldHaveType('Sylius\Component\Payment\Model\Payment');
     }
 
-    function it_implements_Sylius_payment_interface()
+    function it_implements_sylius_payment_interface()
     {
         $this->shouldImplement('Sylius\Component\Payment\Model\PaymentInterface');
+    }
+
+    function it_implements_sylius_subject_interface()
+    {
+        $this->shouldImplement('Sylius\Component\Payment\Model\PaymentSubjectInterface');
     }
 
     function it_has_no_id_by_default()
@@ -119,6 +124,20 @@ class PaymentSpec extends ObjectBehavior
 
         $this->setCreatedAt($date);
         $this->getCreatedAt()->shouldReturn($date);
+    }
+
+    function its_deletion_date_is_mutable(\DateTime $deletionTime)
+    {
+        $this->setDeletedAt($deletionTime);
+        $this->getDeletedAt()->shouldReturn($deletionTime);
+    }
+
+    function it_can_be_deleted()
+    {
+        $date = new \DateTime('last year');
+
+        $this->setDeletedAt($date);
+        $this->isDeleted()->shouldReturn(true);
     }
 
     function it_has_no_last_update_date_by_default()

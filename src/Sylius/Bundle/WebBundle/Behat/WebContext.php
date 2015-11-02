@@ -13,10 +13,8 @@ namespace Sylius\Bundle\WebBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Sylius\Bundle\ResourceBundle\Behat\DefaultContext;
+use Sylius\Bundle\ResourceBundle\Behat\WebContext as BaseWebContext;
 use Symfony\Component\Intl\Intl;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Behat\Behat\Context\SnippetAcceptingContext;
 
 /**
@@ -24,8 +22,26 @@ use Behat\Behat\Context\SnippetAcceptingContext;
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
  */
-class WebContext extends DefaultContext implements SnippetAcceptingContext
+class WebContext extends BaseWebContext implements SnippetAcceptingContext
 {
+    /**
+     * @Given /^I am on user login page?$/
+     * @When /^I go to user login page?$/
+     */
+    public function iAmOnTheLoginPage()
+    {
+        $this->getSession()->visit($this->generatePageUrl('sylius_user_security_login'));
+    }
+
+    /**
+     * @Then /^I should (?:|still )be on user login page$/
+     * @Then /^I should be redirected to user login page$/
+     */
+    public function iShouldBeOnTheLoginPage()
+    {
+        $this->assertRoute('sylius_user_security_login');
+    }
+
     /**
      * @Given /^go to "([^""]*)" tab$/
      */
@@ -51,35 +67,12 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Given /^I am on the (.+) (page|step)?$/
-     * @When /^I go to the (.+) (page|step)?$/
-     */
-    public function iAmOnThePage($page)
-    {
-        $this->getSession()->visit($this->generatePageUrl($page));
-    }
-
-    /**
-     * @Then /^I should be on the (.+) (page|step)$/
-     * @Then /^I should be redirected to the (.+) (page|step)$/
-     * @Then /^I should still be on the (.+) (page|step)$/
-     */
-    public function iShouldBeOnThePage($page)
-    {
-        $this->assertSession()->addressEquals($this->generatePageUrl($page));
-
-        try {
-            $this->assertStatusCodeEquals(200);
-        } catch (UnsupportedDriverActionException $e) {
-        }
-    }
-
-    /**
-     * @Given /^I should be on the store homepage$/
+     * @Then /^I should (?:|still )be on the store homepage$/
+     * @Then /^I should be redirected to the store homepage$/
      */
     public function iShouldBeOnTheStoreHomepage()
     {
-        $this->assertSession()->addressEquals($this->generateUrl('sylius_homepage'));
+        $this->assertRoute('sylius_homepage');
     }
 
     /**
@@ -95,15 +88,15 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iAmOnMyAccountHomepage()
     {
-        $this->getSession()->visit($this->generatePageUrl('sylius_account_homepage'));
+        $this->getSession()->visit($this->generatePageUrl('sylius_account_profile_show'));
     }
 
     /**
-     * @Given /^I should be on my account homepage$/
+     * @Then /^I should (?:|still )be on my account homepage$/
      */
     public function iShouldBeOnMyAccountHomepage()
     {
-        $this->assertSession()->addressEquals($this->generateUrl('sylius_account_homepage'));
+        $this->assertRoute('sylius_account_profile_show');
     }
 
     /**
@@ -111,23 +104,15 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iAmOnMyAccountPasswordPage()
     {
-        $this->getSession()->visit($this->generatePageUrl('fos_user_change_password'));
+        $this->getSession()->visit($this->generatePageUrl('sylius_account_change_password'));
     }
 
     /**
-     * @Given /^I should be on my account password page$/
+     * @Then /^I should (?:|still )be on my account password page$/
      */
     public function iShouldBeOnMyAccountPasswordPage()
     {
-        $this->assertSession()->addressEquals($this->generateUrl('fos_user_change_password'));
-    }
-
-    /**
-     * @Then /^I should still be on my account password page$/
-     */
-    public function iShouldStillBeOnMyAccountPasswordPage()
-    {
-        $this->assertSession()->addressEquals($this->generateUrl('fos_user_change_password'));
+        $this->assertRoute('sylius_account_change_password');
     }
 
     /**
@@ -135,31 +120,23 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iAmOnMyAccountProfileEditionPage()
     {
-        $this->getSession()->visit($this->generatePageUrl('fos_user_profile_edit'));
+        $this->getSession()->visit($this->generatePageUrl('sylius_account_profile_update'));
     }
 
     /**
-     * @Given /^I should be on my account profile edition page$/
+     * @Then /^I should (?:|still )be on my account profile edition page$/
      */
     public function iShouldBeOnMyProfileEditionPage()
     {
-        $this->assertSession()->addressEquals($this->generateUrl('fos_user_profile_edit'));
+        $this->assertRoute('sylius_account_profile_update');
     }
 
     /**
-     * @Given /^I should still be on my account profile edition page$/
-     */
-    public function iShouldStillBeOnMyProfileEditionPage()
-    {
-        $this->assertSession()->addressEquals($this->generateUrl('fos_user_profile_edit'));
-    }
-
-    /**
-     * @Given /^I should be on my account profile page$/
+     * @Then /^I should (?:|still )be on my account profile page$/
      */
     public function iShouldBeOnMyProfilePage()
     {
-        $this->assertSession()->addressEquals($this->generateUrl('fos_user_profile_show'));
+        $this->assertRoute('sylius_account_profile_show');
     }
 
     /**
@@ -167,7 +144,7 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iShouldBeOnMyAccountOrdersPage()
     {
-        $this->assertSession()->addressEquals($this->generateUrl('sylius_account_order_index'));
+        $this->assertRoute('sylius_account_order_index');
     }
 
     /**
@@ -187,21 +164,11 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Then /^I should be on my account addresses page$/
+     * @Then /^I should (?:|still )be on my account addresses page$/
      */
     public function iShouldBeOnMyAccountAddressesPage()
     {
-        $this->assertSession()->addressEquals($this->generateUrl('sylius_account_address_index'));
-        $this->assertStatusCodeEquals(200);
-    }
-
-    /**
-     * @Given /^I should still be on my account addresses page$/
-     */
-    public function iShouldStillBeOnMyAccountAddressesPage()
-    {
-        $this->assertSession()->addressEquals($this->generateUrl('sylius_account_address_index'));
-        $this->assertStatusCodeEquals(200);
+        $this->assertRoute('sylius_account_address_index');
     }
 
     /**
@@ -213,39 +180,19 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Then /^I should be on my account address creation page$/
+     * @Then /^I should (?:|still )be on my account address creation page$/
      */
     public function iShouldBeOnMyAccountAddressCreationPage()
     {
-        $this->assertSession()->addressEquals($this->generatePageUrl('sylius_account_address_create'));
-        $this->assertStatusCodeEquals(200);
+        $this->assertRoute('sylius_account_address_create');
     }
 
     /**
-     * @Then /^I should still be on my account address creation page$/
-     */
-    public function iShouldStillBeOnMyAccountAddressCreationPage()
-    {
-        $this->assertSession()->addressEquals($this->generateUrl('sylius_account_address_create'));
-        $this->assertStatusCodeEquals(200);
-    }
-
-    /**
-     * @Then /^I should be on login page$/
-     */
-    public function iShouldBeOnLoginPage()
-    {
-        $this->assertSession()->addressEquals($this->generatePageUrl('fos_user_security_login'));
-        $this->assertStatusCodeEquals(200);
-    }
-
-    /**
-     * @Then /^I should be on registration page$/
+     * @Then /^I should (?:|still )be on registration page$/
      */
     public function iShouldBeOnRegistrationPage()
     {
-        $this->assertSession()->addressEquals($this->generatePageUrl('fos_user_registration_register'));
-        $this->assertStatusCodeEquals(200);
+        $this->assertRoute('sylius_user_registration');
     }
 
     /**
@@ -257,31 +204,6 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
         $shipment = $this->findOneBy('shipment', array('method' => $shippingMethod));
 
         $this->getSession()->visit($this->generatePageUrl('backend_shipment_show', array('id' => $shipment->getId())));
-    }
-
-    /**
-     * @Given /^I am on the page of ([^""]*) with ([^""]*) "([^""]*)"$/
-     * @Given /^I go to the page of ([^""]*) with ([^""]*) "([^""]*)"$/
-     */
-    public function iAmOnTheResourcePage($type, $property, $value)
-    {
-        $type = str_replace(' ', '_', $type);
-
-        $entityManager = $this->getEntityManager();
-        $entityManager->getFilters()->disable('softdeleteable');
-        $resource = $this->findOneBy($type, array($property => $value));
-        $entityManager->getFilters()->enable('softdeleteable');
-
-        $this->getSession()->visit($this->generatePageUrl(sprintf('backend_%s_show', $type), array('id' => $resource->getId())));
-    }
-
-    /**
-     * @Given /^I am on the page of ([^""(w)]*) "([^""]*)"$/
-     * @Given /^I go to the page of ([^""(w)]*) "([^""]*)"$/
-     */
-    public function iAmOnTheResourcePageByName($type, $name)
-    {
-        $this->iAmOnTheResourcePage($type, 'name', $name);
     }
 
     /**
@@ -297,67 +219,6 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Then /^I should be on the page of ([^""]*) with ([^""]*) "([^""]*)"$/
-     * @Then /^I should still be on the page of ([^""]*) with ([^""]*) "([^""]*)"$/
-     */
-    public function iShouldBeOnTheResourcePage($type, $property, $value)
-    {
-        $type = str_replace(' ', '_', $type);
-
-        $entityManager = $this->getEntityManager();
-        $entityManager->getFilters()->disable('softdeleteable');
-        $resource = $this->findOneBy($type, array($property => $value));
-        $entityManager->getFilters()->enable('softdeleteable');
-
-        $this->assertSession()->addressEquals($this->generatePageUrl(sprintf('backend_%s_show', $type), array('id' => $resource->getId())));
-        $this->assertStatusCodeEquals(200);
-    }
-
-    /**
-     * @Then /^I should be on the page of ([^""(w)]*) "([^""]*)"$/
-     * @Then /^I should still be on the page of ([^""(w)]*) "([^""]*)"$/
-     */
-    public function iShouldBeOnTheResourcePageByName($type, $name)
-    {
-        $this->iShouldBeOnTheResourcePage($type, 'name', $name);
-    }
-
-    /**
-     * @Given /^I am (building|viewing|editing) ([^""]*) with ([^""]*) "([^""]*)"$/
-     */
-    public function iAmDoingSomethingWithResource($action, $type, $property, $value)
-    {
-        $type = str_replace(' ', '_', $type);
-
-        $action = str_replace(array_keys($this->actions), array_values($this->actions), $action);
-        $resource = $this->findOneBy($type, array($property => $value));
-
-        $this->getSession()->visit($this->generatePageUrl(sprintf('backend_%s_%s', $type, $action), array('id' => $resource->getId())));
-    }
-
-    /**
-     * @Given /^I am (building|viewing|editing) ([^""(w)]*) "([^""]*)"$/
-     */
-    public function iAmDoingSomethingWithResourceByName($action, $type, $name)
-    {
-        $this->iAmDoingSomethingWithResource($action, $type, 'name', $name);
-    }
-
-    /**
-     * @Then /^I should be (building|viewing|editing) ([^"]*) with ([^"]*) "([^""]*)"$/
-     */
-    public function iShouldBeDoingSomethingWithResource($action, $type, $property, $value)
-    {
-        $type = str_replace(' ', '_', $type);
-
-        $action = str_replace(array_keys($this->actions), array_values($this->actions), $action);
-        $resource = $this->findOneBy($type, array($property => $value));
-
-        $this->assertSession()->addressEquals($this->generatePageUrl(sprintf('sylius_backend_%s_%s', $type, $action), array('id' => $resource->getId())));
-        $this->assertStatusCodeEquals(200);
-    }
-
-    /**
      * @Given /^I remove property choice number (\d+)$/
      */
     public function iRemovePropertyChoiceInput($number)
@@ -368,14 +229,6 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
             ->find('css', sprintf('.sylius_property_choices_%d_delete', $number))
             ->click()
         ;
-    }
-
-    /**
-     * @Then /^I should be (building|viewing|editing) ([^""(w)]*) "([^""]*)"$/
-     */
-    public function iShouldBeDoingSomethingWithResourceByName($action, $type, $name)
-    {
-        $this->iShouldBeDoingSomethingWithResource($action, $type, 'name', $name);
     }
 
     /**
@@ -406,30 +259,6 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     {
         $this->iAmOnTheProductPage($productName);
         $this->pressButton('Add to cart');
-    }
-
-    /**
-     * @Then /^(?:.* )?"([^"]*)" should appear on the page$/
-     */
-    public function textShouldAppearOnThePage($text)
-    {
-        $this->assertSession()->pageTextContains($text);
-    }
-
-    /**
-     * @Then /^(?:.* )?"([^"]*)" should not appear on the page$/
-     */
-    public function textShouldNotAppearOnThePage($text)
-    {
-        $this->assertSession()->pageTextNotContains($text);
-    }
-
-    /**
-     * @When /^I click "([^"]+)"$/
-     */
-    public function iClick($link)
-    {
-        $this->clickLink($link);
     }
 
     /**
@@ -495,14 +324,21 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Given /^I should see an? "(?P<element>[^"]*)" element near "([^"]*)"$/
+     * @Then I should not see :position in the menu
      */
-    public function iShouldSeeAElementNear($element, $value)
+    public function iShouldNotSeeInTheMenu($position)
     {
-        $tr = $this->assertSession()->elementExists('css', sprintf('table tbody tr:contains("%s")', $value));
-        $this->assertSession()->elementExists('css', $element, $tr);
+        $this->assertSession()->elementNotContains('css', sprintf('.sidebar-nav'), $position);
     }
-    
+
+    /**
+     * @Then I should see :position in the menu
+     */
+    public function iShouldSeeInTheMenu($position)
+    {
+        $this->assertSession()->elementContains('css', sprintf('.sidebar-nav'), $position);
+    }
+
     /**
      * @Then I should not see :button button
      */
@@ -514,45 +350,10 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     /**
      * @Then I should not see :button button near :user in :table table
      */
-    public function iShouldNotSeeButtonInColumnInTable($button, $user, $table)
+    public function iShouldNotSeeButtonInColumnInTable($button, $customer, $table)
     {   
-        $this->assertSession()->elementExists('css', "#".$table." tr[data-user='$user']");
-        $this->assertSession()->elementNotExists('css', "#".$table." tr[data-user='$user'] form input[value=".strtoupper($button)."]");
-    }
-
-    /**
-     * @When /^I click "([^"]*)" near "([^"]*)"$/
-     * @When /^I press "([^"]*)" near "([^"]*)"$/
-     */
-    public function iClickNear($button, $value)
-    {
-        $tr = $this->assertSession()->elementExists('css', sprintf('table tbody tr:contains("%s")', $value));
-
-        $locator = sprintf('button:contains("%s")', $button);
-
-        if ($tr->has('css', $locator)) {
-            $tr->find('css', $locator)->press();
-        } else {
-            $tr->clickLink($button);
-        }
-    }
-
-    /**
-     * @Then /^I should see "([^"]*)" field error$/
-     */
-    public function iShouldSeeFieldError($field)
-    {
-        $this->assertSession()->elementExists('xpath', sprintf(
-            "//div[contains(@class, 'error')]//label[text()[contains(., '%s')]]", ucfirst($field)
-        ));
-    }
-
-    /**
-     * @Given /^I should see (\d+) validation errors$/
-     */
-    public function iShouldSeeFieldsOnError($amount)
-    {
-        $this->assertSession()->elementsCount('css', '.form-error', $amount);
+        $this->assertSession()->elementExists('css', "#".$table." tr[data-customer='$customer']");
+        $this->assertSession()->elementNotExists('css', "#".$table." tr[data-customer='$customer'] form input[value=".strtoupper($button)."]");
     }
 
     /**
@@ -602,62 +403,20 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iShouldBrowseTheStoreInLocale($name)
     {
+        $text = 'Welcome to Sylius';
+
         switch ($name) {
-            case 'English':
-                $text = 'Welcome to Sylius';
-            break;
             case 'Polish':
+            case 'Polish (Poland)':
                 $text = 'Witaj w Sylius';
             break;
             case 'German':
+            case 'German (Germany)':
                 $text = 'Englisch';
             break;
         }
 
         $this->assertSession()->pageTextContains($text);
-    }
-
-    /**
-     * @Given /^I leave "([^"]*)" empty$/
-     * @Given /^I leave "([^"]*)" field blank/
-     */
-    public function iLeaveFieldEmpty($field)
-    {
-        $this->fillField($field, '');
-    }
-
-    /**
-     * For example: I should see product with name "Wine X" in that list.
-     *
-     * @Then /^I should see [\w\s]+ with [\w\s]+ "([^""]*)" in (that|the) list$/
-     */
-    public function iShouldSeeResourceWithValueInThatList($value)
-    {
-        $this->assertSession()->elementTextContains('css', 'table', $value);
-    }
-
-    /**
-     * For example: I should not see product with name "Wine X" in that list.
-     *
-     * @Then /^I should not see [\w\s]+ with [\w\s]+ "([^""]*)" in (that|the) list$/
-     */
-    public function iShouldNotSeeResourceWithValueInThatList($value)
-    {
-        $this->assertSession()->elementTextNotContains('css', 'table', $value);
-    }
-
-    /**
-     * For example: I should see 10 products in that list.
-     *
-     * @Then /^I should see (\d+) ([^""]*) in (that|the) list$/
-     */
-    public function iShouldSeeThatMuchResourcesInTheList($amount, $type)
-    {
-        if (1 === count($this->getSession()->getPage()->findAll('css', 'table'))) {
-            $this->assertSession()->elementsCount('css', 'table tbody > tr', $amount);
-        } else {
-            $this->assertSession()->elementsCount('css', sprintf('table#%s tbody > tr', str_replace(' ', '-', $type)), $amount);
-        }
     }
 
     /**
@@ -687,9 +446,9 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iShouldBeOnTheProductPage($name)
     {
-        $this->iAmOnTheProductPage($name);
+        $product = $this->findOneBy('product', array('name' => $name));
 
-        $this->assertStatusCodeEquals(200);
+        $this->assertSession()->addressEquals($this->generateUrl($product));
     }
 
     /**
@@ -709,9 +468,7 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iShouldBeOnTheOrderPage($action, $number)
     {
-        $this->iAmOnTheOrderPage($action, $number);
-
-        $this->assertStatusCodeEquals(200);
+        $this->assertSession()->addressEquals($this->generatePageUrl('sylius_account_order_'.$action, array('number' => $number)));
     }
 
     /**
@@ -729,31 +486,11 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
      */
     public function iLogInWith($email, $password)
     {
-        $this->getSession()->visit($this->generatePageUrl('fos_user_security_login'));
+        $this->getSession()->visit($this->generatePageUrl('sylius_user_security_login'));
 
         $this->fillField('Email', $email);
         $this->fillField('Password', $password);
-        $this->pressButton('login');
-    }
-
-    /**
-     * @Then /^I should be logged in$/
-     */
-    public function iShouldBeLoggedIn()
-    {
-        if (!$this->getSecurityContext()->isGranted('ROLE_USER')) {
-            throw new AuthenticationException('User is not authenticated.');
-        }
-    }
-
-    /**
-     * @Then /^I should not be logged in$/
-     */
-    public function iShouldNotBeLoggedIn()
-    {
-        if ($this->getSecurityContext()->isGranted('ROLE_USER')) {
-            throw new AuthenticationException('User was not expected to be logged in, but he is.');
-        }
+        $this->pressButton('Login');
     }
 
     /**
@@ -832,56 +569,6 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Given /^I click "([^"]*)" from the confirmation modal$/
-     */
-    public function iClickOnConfirmationModal($button)
-    {
-        $this->assertSession()->elementExists('css', '#confirmation-modal');
-
-        $modalContainer = $this->getSession()->getPage()->find('css', '#confirmation-modal');
-        $primaryButton = $modalContainer->find('css', sprintf('a:contains("%s")' ,$button));
-
-        $this->getSession()->wait(100);
-
-        if (!preg_match('/in/', $modalContainer->getAttribute('class'))) {
-            throw new \Exception('The confirmation modal was not opened...');
-        }
-
-        $this->getSession()->wait(100);
-
-        $primaryButton->press();
-    }
-
-    /**
-     * Assert that given code equals the current one.
-     *
-     * @param integer $code
-     */
-    protected function assertStatusCodeEquals($code)
-    {
-        $this->assertSession()->statusCodeEquals($code);
-    }
-
-    /**
-     * @Given /^I wait (\d+) (seconds|second)$/
-     */
-    public function iWait($time)
-    {
-        $this->getSession()->wait($time*1000);
-    }
-
-    /**
-     * @Given I deleted :type with :property :value
-     */
-    public function iDeletedResource($type, $property, $value)
-    {
-        $user = $this->findOneBy($type, array($property => $value));
-        $entityManager = $this->getEntityManager();
-        $entityManager->remove($user);
-        $entityManager->flush();
-    }
-
-    /**
      * @Given I view deleted elements
      */
     public function iViewDeletedElements()
@@ -906,5 +593,72 @@ class WebContext extends DefaultContext implements SnippetAcceptingContext
         sort($allSurnames);
         
         $this->assertSession()->elementTextContains('css', '#'.$id.' > tbody > tr > td > p', $allSurnames[0]);
+    }
+
+    /**
+     * @Given I registered with email :email and password :password
+     */
+    public function iRegisteredWithEmailAndPassword($email, $password)
+    {
+        $this->getSession()->visit($this->generatePageUrl('sylius_user_registration'));
+
+        $this->fillField('First name', $this->faker->firstName);
+        $this->fillField('Last name', $this->faker->lastName);
+        $this->fillField('Email', $email);
+        $this->fillField('Password', $password);
+        $this->fillField('Verification', $password);
+        $this->pressButton('Register');
+    }
+
+    /**
+     * @When /^(?:|I )fill in guest email with "(?P<value>(?:[^"]|\\")*)"$/
+     */
+    public function fillGuestEmail($value)
+    {
+        $value = $this->fixStepArgument($value);
+        $this->getSession()->getPage()->fillField('sylius_customer_guest[email]', $value);
+    }
+
+    /**
+     * @When /^I display ([^""]*)$/
+     */
+    public function iDisplayPage($page)
+    {
+        $pageMapping = array(
+            'my orders history' => 'sylius_account_order_index',
+            'my address book'   => 'sylius_account_address_index'
+        );
+
+        $this->getSession()->visit($this->generatePageUrl($pageMapping[$page]));
+    }
+
+    /**
+     * @When I restart my browser
+     */
+    public function iRestartMyBrowser()
+    {
+        $session = $this->getSession();
+        $cookie = $session->getCookie('REMEMBERME');
+
+        $session->restart();
+        $session->setCookie('REMEMBERME', $cookie);
+    }
+
+    /**
+     * @Given /^I go to page for product with empty slug$/
+     */
+    public function iGoToPageForProductWithEmptySlug()
+    {
+        $this->visitPath('/p/');
+    }
+
+    private function assertRoute($route)
+    {
+        $this->assertSession()->addressEquals($this->generatePageUrl($route));
+
+        try {
+            $this->assertStatusCodeEquals(200);
+        } catch (UnsupportedDriverActionException $e) {
+        }
     }
 }

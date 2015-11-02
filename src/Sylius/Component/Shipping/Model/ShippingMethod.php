@@ -52,13 +52,6 @@ class ShippingMethod extends AbstractTranslatable implements ShippingMethodInter
     protected $enabled = true;
 
     /**
-     * Name.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * Calculator name.
      *
      * @var string
@@ -99,6 +92,7 @@ class ShippingMethod extends AbstractTranslatable implements ShippingMethodInter
     public function __construct()
     {
         parent::__construct();
+
         $this->rules = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
@@ -325,13 +319,5 @@ class ShippingMethod extends AbstractTranslatable implements ShippingMethodInter
             ShippingMethodInterface::CATEGORY_REQUIREMENT_MATCH_ANY  => 'At least 1 item have to match method category',
             ShippingMethodInterface::CATEGORY_REQUIREMENT_MATCH_ALL  => 'All items have to match method category',
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTranslationEntityClass()
-    {
-        return get_class().'Translation';
     }
 }

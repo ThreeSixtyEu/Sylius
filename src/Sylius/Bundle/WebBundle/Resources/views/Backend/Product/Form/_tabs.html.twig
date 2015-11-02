@@ -7,4 +7,7 @@
     <li><a href="#payment-constraints" data-toggle="tab">{{ 'sylius.product.tabs.payment_constraints'|trans }}</a></li>
     <li><a href="#categorization" data-toggle="tab">{{ 'sylius.product.tabs.categorization'|trans }}</a></li>
     <li><a href="#images" data-toggle="tab">{{ 'sylius.product.tabs.images'|trans }}</a></li>
+    {% if form.channels|length > 0 %}
+    <li><a href="#channels" data-toggle="tab">{{ 'sylius.product.tabs.channels'|trans }}</a></li>
+    {% endif %}
 </ul>

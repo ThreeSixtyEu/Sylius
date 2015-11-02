@@ -25,7 +25,7 @@ class BuildAttributeValueFormListenerSpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $formFactory)
     {
-        $this->beConstructedWith($formFactory);
+        $this->beConstructedWith($formFactory, 'server');
     }
 
     function it_subscribes_to_pre_set_data_event()
@@ -65,7 +65,6 @@ class BuildAttributeValueFormListenerSpec extends ObjectBehavior
 
         $formFactory->createNamed('value', 'checkbox', null, array('label' => 'My name', 'auto_initialize' => false))->willReturn($valueField)->shouldBeCalled();
 
-        $form->remove('attribute')->shouldBeCalled()->willReturn($form);
         $form->add($valueField)->shouldBeCalled()->willReturn($form);
 
         $this->buildForm($event);
@@ -102,7 +101,6 @@ class BuildAttributeValueFormListenerSpec extends ObjectBehavior
             ->shouldBeCalled()
         ;
 
-        $form->remove('attribute')->shouldBeCalled()->willReturn($form);
         $form->add($valueField)->shouldBeCalled()->willReturn($form);
 
         $this->buildForm($event);

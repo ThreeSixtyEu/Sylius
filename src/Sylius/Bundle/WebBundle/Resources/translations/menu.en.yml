@@ -9,8 +9,9 @@ sylius:
                 blocks: Blocks
                 configuration: Configuration
                 countries: Countries
-                customer: Customers
+                customer: Customer
                 content: Content
+                channels: Channels
                 dashboard: Dashboard
                 currencies: Currencies
                 general_settings: General settings
@@ -37,8 +38,12 @@ sylius:
                 tax_rates: Tax rates
                 taxation_settings: Taxation settings
                 taxonomies: Categorization
-                users: Users
+                customers: Customers
                 zones: Zones
+                emails: Emails
+                roles: Roles
+                permissions: Permissions
+                report: Reports
             sidebar:
                 api_clients: API clients
                 assortment: Assortment
@@ -46,7 +51,8 @@ sylius:
                 configuration: Configuration
                 content: Content
                 countries: Countries
-                customer: Customers
+                channels: Channels
+                customer: Customer
                 dashboard: Dashboard
                 currencies: Currencies
                 general_settings: General settings
@@ -65,9 +71,11 @@ sylius:
                 payments: Payments
                 products: Products
                 promotions: Promotions
+                report: Reports
                 attributes: Configure attributes
                 archetypes: Product archetypes
                 sales: Orders
+                security_settings: Security settings
                 shipments: Shipments
                 shipping_categories: Shipping categories
                 shipping_methods: Shipping methods
@@ -77,8 +85,15 @@ sylius:
                 tax_rates: Tax rates
                 taxation_settings: Taxation settings
                 taxonomies: Categorization
-                users: Users
+                customers: Customers
                 zones: Zones
+                emails: Emails
+                roles: Roles
+                permissions: Permissions
+                marketing: Marketing
+                support: Support
+                contact_requests: Requests
+                contact_topics: Configure Topics
     frontend:
         menu:
             account:

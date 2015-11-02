@@ -2,8 +2,14 @@
 
 {% include 'SyliusWebBundle:Backend/Content:changeLocaleTab.html.twig' %}
 
+{% import 'SyliusWebBundle:Backend/Content/Form:forms.html.twig' as forms %}
+
 <fieldset>
-    {{ form_row(form.id, {'attr': {'class': 'input-lg'}}) }}
+    {{ form_row(form.publishable) }}
+    {{ form_row(form.publishStartDate) }}
+    {{ form_row(form.publishEndDate) }}
+    {{ forms.readonly(form.parentDocument,form.parentDocument.vars.value,'/cms/blocks') }}
+    {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
     {{ form_row(form.body) }}
     {{ form_row(form.locale) }}
 </fieldset>

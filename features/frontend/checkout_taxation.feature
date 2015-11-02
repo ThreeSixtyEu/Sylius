@@ -5,7 +5,8 @@ Feature: Checkout taxation
     I want to apply taxes during checkout
 
     Background:
-        Given there are following taxonomies defined:
+        Given store has default configuration
+          And there are following taxonomies defined:
             | name     |
             | Category |
           And taxonomy "Category" has following taxons:
@@ -26,9 +27,12 @@ Feature: Checkout taxation
             | zone | name        |
             | UK   | DHL Express |
           And the following payment methods exist:
-            | name  | gateway | enabled |
-            | Dummy | dummy   | yes     |
-          And there is default currency configured
+            | name  | gateway | enabled | calculator | calculator_configuration |
+            | Dummy | dummy   | yes     | fixed      | amount: 0                |
+          And all products are assigned to the default channel
+          And the default channel has following configuration:
+            | taxonomy | payment | shipping    |
+            | Category | Dummy   | DHL Express |
           And I am logged in user
           And I added product "PHP Top" to cart
           And I go to the checkout start page

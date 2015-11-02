@@ -13,6 +13,7 @@ namespace Sylius\Bundle\CoreBundle\Form\Type\Checkout;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -25,6 +26,22 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class PaymentStepType extends AbstractResourceType
 {
     /**
+     * @var ChannelContextInterface
+     */
+    protected $channelContext;
+
+    /**
+     * @param string                  $dataClass
+     * @param array                   $validationGroups
+     * @param ChannelContextInterface $channelContext
+     */
+    public function __construct($dataClass, array $validationGroups = array(), ChannelContextInterface $channelContext)
+    {
+        parent::__construct($dataClass, $validationGroups);
+        $this->channelContext = $channelContext;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -34,11 +51,12 @@ class PaymentStepType extends AbstractResourceType
 
         $builder
             ->add('paymentMethod', 'sylius_payment_method_choice', array(
-                'label'          => 'sylius.form.checkout.payment_method',
-                'expanded'       => true,
-                'property_path'  => 'lastPayment.method',
+                'label'         => 'sylius.form.checkout.payment_method',
+                'expanded'      => true,
+                'property_path' => 'lastPayment.method',
+                'channel'       => $this->channelContext->getChannel(),
                 'order_items' => $options['order_items'],
-                'constraints'    => array(
+                'constraints'   => array(
                     $notBlank
                 )
             ))

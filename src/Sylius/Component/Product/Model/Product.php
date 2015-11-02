@@ -43,10 +43,9 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * Available on.
      *
-     * @var DateTime
+     * @var \DateTime
      */
     protected $availableOn;
-
 
     /**
      * Available until.
@@ -86,21 +85,21 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * Creation time.
      *
-     * @var DateTime
+     * @var \DateTime
      */
     protected $createdAt;
 
     /**
      * Last update time.
      *
-     * @var DateTime
+     * @var \DateTime
      */
     protected $updatedAt;
 
     /**
      * Deletion time.
      *
-     * @var DateTime
+     * @var \DateTime
      */
     protected $deletedAt;
 
@@ -261,9 +260,10 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAvailableOn(DateTime $availableOn = null)
+    public function setAvailableOn(\DateTime $availableOn = null)
     {
         $this->availableOn = $availableOn;
+
         return $this;
     }
 
@@ -579,7 +579,7 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -597,7 +597,7 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdatedAt(DateTime $updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
@@ -609,7 +609,7 @@ class Product extends AbstractTranslatable implements ProductInterface
      */
     public function isDeleted()
     {
-        return null !== $this->deletedAt && new DateTime() >= $this->deletedAt;
+        return null !== $this->deletedAt && new \DateTime() >= $this->deletedAt;
     }
 
     /**
@@ -623,18 +623,16 @@ class Product extends AbstractTranslatable implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setDeletedAt(DateTime $deletedAt)
+    public function setDeletedAt(\DateTime $deletedAt = null)
     {
         $this->deletedAt = $deletedAt;
 
-        return $this;
-    }
+        if(null === $deletedAt) {
+            foreach($this->variants as $variant) {
+                $variant->setDeletedAt(null);
+            }
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTranslationEntityClass()
-    {
-        return get_class().'Translation';
+        return $this;
     }
 }

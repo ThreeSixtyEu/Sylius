@@ -5,7 +5,11 @@ Feature: Checkout finalization
     I want to be able to complete the checkout process
 
     Background:
-        Given there are following taxonomies defined:
+        Given store has default configuration
+          And there are following users:
+            | email             | password | enabled |
+            | john@example.com  | foo1     | yes     |
+          And there are following taxonomies defined:
             | name     |
             | Category |
           And taxonomy "Category" has following taxons:
@@ -20,9 +24,12 @@ Feature: Checkout finalization
             | zone | name        |
             | UK   | DHL Express |
           And the following payment methods exist:
-            | name  | gateway | enabled |
-            | Dummy | dummy   | yes     |
-          And there is default currency configured
+            | name  | gateway | enabled | calculator | calculator_configuration |
+            | Dummy | dummy   | yes     | fixed      | amount: 0                |
+          And all products are assigned to the default channel
+          And the default channel has following configuration:
+            | taxonomy | payment | shipping    |
+            | Category | Dummy   | DHL Express |
 
     Scenario: Placing the order
         Given I am logged in user
@@ -47,21 +54,29 @@ Feature: Checkout finalization
           And I added product "PHP Top" to cart
           And I go to the checkout start page
          When I press "Proceed with your order"
-         Then I should see "This value should not be blank."
+         Then I should see "Please enter your email"
 
     Scenario: Placing the order as Guest with invalid email address
         Given I am not logged in
           And I added product "PHP Top" to cart
-          And I go to the checkout start page
-         And I fill in "sylius_checkout_guest[email]" with "example"
+         When I go to the checkout start page
+          And I fill in guest email with "example"
           And I press "Proceed with your order"
-         Then I should see "This value is not a valid email address."
+         Then I should see "This email is invalid"
+
+    Scenario: Trying to place an order as Guest with already registered email address
+        Given I am not logged in
+          And I added product "PHP Top" to cart
+         When I go to the checkout start page
+          And I fill in guest email with "john@example.com"
+          And I press "Proceed with your order"
+         Then I should see "This email is already registered, please login or use forgotten password"
 
     Scenario: Placing the order as Guest
         Given I am not logged in
           And I added product "PHP Top" to cart
           And I go to the checkout start page
-          And I fill in "sylius_checkout_guest[email]" with "example@example.com"
+          And I fill in guest email with "example@example.com"
           And I press "Proceed with your order"
           And I fill in the shipping address to United Kingdom
           And I press "Continue"

@@ -112,11 +112,11 @@ class ExtensionsRequirements extends RequirementCollection
                 $on,
                 $status ? $on : $off,
                 true,
-                $translator->trans('sylius.extensions.help', array('%extension%' => 'exit'), 'requirements')
+                $translator->trans('sylius.extensions.help', array('%extension%' => 'exif'), 'requirements')
             ))
             ->add(new Requirement(
                 $translator->trans('sylius.extensions.intl', array(), 'requirements'),
-                $status = class_exists('Locale'),
+                $status = extension_loaded('intl'),
                 $on,
                 $status ? $on : $off,
                 false,
@@ -124,7 +124,7 @@ class ExtensionsRequirements extends RequirementCollection
             ))
         ;
 
-        if (class_exists('Locale')) {
+        if (extension_loaded('intl')) {
             if (defined('INTL_ICU_VERSION')) {
                 $version = INTL_ICU_VERSION;
             } else {
@@ -151,6 +151,7 @@ class ExtensionsRequirements extends RequirementCollection
         $status = (function_exists('apc_store') && ini_get('apc.enabled'))
             || function_exists('eaccelerator_put') && ini_get('eaccelerator.enable')
             || function_exists('xcache_set')
+            || function_exists('zend_optimizer_version')
         ;
 
         $this

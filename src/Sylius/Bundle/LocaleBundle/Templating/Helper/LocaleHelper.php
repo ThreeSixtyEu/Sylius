@@ -11,7 +11,7 @@
 
 namespace Sylius\Bundle\LocaleBundle\Templating\Helper;
 
-use Sylius\Bundle\LocaleBundle\Provider\LocaleProviderInterface;
+use Sylius\Component\Locale\Provider\LocaleProviderInterface;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
@@ -41,13 +41,11 @@ class LocaleHelper extends Helper
     }
 
     /**
-     * Get currently used locale.
-     *
      * @return string
      */
-    public function getLocale()
+    public function getCurrentLocale()
     {
-        return $this->localeContext->getLocale();
+        return $this->localeContext->getCurrentLocale();
     }
 
     /**
@@ -55,7 +53,7 @@ class LocaleHelper extends Helper
      */
     public function getLocales()
     {
-        return $this->localeProvider->getLocales();
+        return $this->localeProvider->getAvailableLocales();
     }
 
     /**

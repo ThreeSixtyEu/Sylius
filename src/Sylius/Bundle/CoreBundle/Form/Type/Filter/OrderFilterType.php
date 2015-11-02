@@ -93,6 +93,10 @@ class OrderFilterType extends AbstractResourceType
                     ShipmentInterface::STATE_READY   => 'funlife.eshop.form.shipment.state.ready',
                 ),
             ))
+            ->add('channel', 'sylius_channel_choice', array(
+                'required'    => false,
+                'empty_value' => 'sylius.form.order_filter.channel'
+            ))
             ->add('product', 'filter_entity', array(
                 'label' => 'funlife.eshop.form.payment.product',
                 //TODO: correcting to Sylius\Component\Core\Model\Product causes translatable error

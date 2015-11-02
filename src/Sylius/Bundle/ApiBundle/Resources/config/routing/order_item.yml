@@ -7,10 +7,13 @@ sylius_api_order_item_index:
     defaults:
         _controller: sylius.controller.order_item:indexAction
         _sylius:
-            method: findByOrder
-            arguments: [$orderId]
-            paginate: false
-        sorting: { updatedAt: desc }
+            repository:
+                method: findByOrder
+                arguments: [$orderId]
+            paginate: $limit
+            sortable: true
+            sorting:
+                updatedAt: desc
 
 sylius_api_order_item_create:
     path: /

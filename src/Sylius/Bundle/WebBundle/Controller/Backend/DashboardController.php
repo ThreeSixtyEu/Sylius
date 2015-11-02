@@ -27,6 +27,7 @@ class DashboardController extends Controller
     public function mainAction()
     {
         $orderRepository = $this->get('sylius.repository.order');
+        $customerRepository  = $this->get('sylius.repository.customer');
         $userRepository  = $this->get('sylius.repository.user');
 
         $date_from = new \DateTime(/*'30 days ago'*/);
@@ -45,7 +46,7 @@ class DashboardController extends Controller
                     OrderInterface::STATE_CONFIRMED,
                     OrderInterface::STATE_SHIPPED,
                 )),
-            'users'                      => $userRepository->findBy(array(), array('id' => 'desc'), 5),
+            'customers'                      => $customerRepository->findBy(array(), array('id' => 'desc'), 5),
         ));
     }
 }

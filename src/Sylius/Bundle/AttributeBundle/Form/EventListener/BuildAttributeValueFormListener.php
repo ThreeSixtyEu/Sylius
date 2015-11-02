@@ -33,16 +33,25 @@ class BuildAttributeValueFormListener implements EventSubscriberInterface
      *
      * @var FormFactoryInterface
      */
-    private $factory;
+    protected $factory;
+
+    /**
+     * Attributes subject name.
+     *
+     * @var string
+     */
+    protected $subjectName;
 
     /**
      * Constructor.
      *
      * @param FormFactoryInterface $factory
+     * @param string               $subjectName
      */
-    public function __construct(FormFactoryInterface $factory)
+    public function __construct(FormFactoryInterface $factory, $subjectName)
     {
         $this->factory = $factory;
+        $this->subjectName = $subjectName;
     }
 
     /**
@@ -64,7 +73,10 @@ class BuildAttributeValueFormListener implements EventSubscriberInterface
         $form = $event->getForm();
 
         if (null === $attributeValue) {
-            $form->add($this->factory->createNamed('value', 'text', null, array('auto_initialize' => false)));
+            $form->add($this->factory->createNamed('value', 'text', null, array(
+                'label' => sprintf('sylius.form.attribute.%s_attribute_value.value', $this->subjectName),
+                'auto_initialize' => false,
+            )));
 
             return;
         }
@@ -77,32 +89,23 @@ class BuildAttributeValueFormListener implements EventSubscriberInterface
 
         $this->verifyValue($attributeValue);
 
-        // If we're editing the attribute value, let's just render the value field, not full selection.
         $form
-            ->remove('attribute')
             ->add($this->factory->createNamed('value', $attributeValue->getType(), null, $options))
         ;
     }
 
     /**
-     * Verify value before set to form
+     * Verify value before set to form.
      *
      * @param AttributeValueInterface $attributeValue
      */
-    private function verifyValue(AttributeValueInterface $attributeValue)
+    protected function verifyValue(AttributeValueInterface $attributeValue)
     {
         switch ($attributeValue->getType()) {
 
             case AttributeTypes::CHECKBOX:
                 if (!is_bool($attributeValue->getValue())) {
                     $attributeValue->setValue(false);
-                }
-
-                break;
-
-            case AttributeTypes::CHOICE:
-                if (!is_array($attributeValue->getValue())) {
-                    $attributeValue->setValue(null);
                 }
 
                 break;

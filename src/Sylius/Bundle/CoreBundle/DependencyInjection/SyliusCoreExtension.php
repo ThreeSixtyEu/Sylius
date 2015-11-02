@@ -11,8 +11,7 @@
 
 namespace Sylius\Bundle\CoreBundle\DependencyInjection;
 
-use Sylius\Bundle\ResourceBundle\DependencyInjection\AbstractResourceExtension;
-use Symfony\Component\Config\Loader\LoaderInterface;
+use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Reference;
@@ -32,6 +31,7 @@ class SyliusCoreExtension extends AbstractResourceExtension implements PrependEx
         'sylius_addressing',
         'sylius_api',
         'sylius_attribute',
+        'sylius_channel',
         'sylius_contact',
         'sylius_currency',
         'sylius_inventory',
@@ -41,28 +41,29 @@ class SyliusCoreExtension extends AbstractResourceExtension implements PrependEx
         'sylius_payum',
         'sylius_product',
         'sylius_promotion',
+        'sylius_report',
         'sylius_search',
         'sylius_sequence',
         'sylius_settings',
         'sylius_shipping',
+        'sylius_mailer',
         'sylius_taxation',
         'sylius_taxonomy',
+        'sylius_user',
         'sylius_variation',
+        'sylius_translation',
+        'sylius_rbac',
     );
 
     protected $configFiles = array(
-        'services',
-        'controller',
-        'form',
-        'api_form',
-        'templating',
-        'twig',
-    );
-
-    private $emails = array(
-        'order_comment',
-        'order_confirmation',
-        'customer_welcome',
+        'services.xml',
+        'controller.xml',
+        'form.xml',
+        'api_form.xml',
+        'templating.xml',
+        'twig.xml',
+        'reports.xml',
+        'email.xml',
     );
 
     /**
@@ -70,17 +71,15 @@ class SyliusCoreExtension extends AbstractResourceExtension implements PrependEx
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        list($config, $loader) = $this->configure(
+        $config = $this->configure(
             $config,
             new Configuration(),
             $container,
             self::CONFIGURE_LOADER | self::CONFIGURE_DATABASE | self::CONFIGURE_PARAMETERS
         );
 
-        $loader->load(sprintf('mailer/mailer.%s', $this->configFormat));
-        $loader->load(sprintf('state_machine.%s', $this->configFormat));
+        $this->loadServiceDefinitions($container, 'state_machine.xml');
 
-        $this->loadEmailsConfiguration($config['emails'], $container, $loader);
         $this->loadCheckoutConfiguration($config['checkout'], $container);
 
         $definition = $container->findDefinition('sylius.context.currency');
@@ -128,26 +127,6 @@ class SyliusCoreExtension extends AbstractResourceExtension implements PrependEx
         $container->setParameter('sylius.sylius_by_classes', $syliusByClasses);
         $container->setParameter('sylius.route_collection_limit', $config['route_collection_limit']);
         $container->setParameter('sylius.route_uri_filter_regexp', $config['route_uri_filter_regexp']);
-    }
-
-    /**
-     * @param array            $config    The email section of the config for this bundle
-     * @param ContainerBuilder $container
-     * @param LoaderInterface  $loader
-     */
-    protected function loadEmailsConfiguration(array $config, ContainerBuilder $container, LoaderInterface $loader)
-    {
-        foreach ($this->emails as $emailType) {
-            $loader->load(sprintf('mailer/%s_mailer.%s', $emailType, $this->configFormat));
-
-            $fromEmail = isset($config[$emailType]['from_email']) ? $config[$emailType]['from_email'] : $config['from_email'];
-            $container->setParameter(sprintf('sylius.email.%s.from_email', $emailType), array($fromEmail['address'] => $fromEmail['sender_name']));
-            $container->setParameter(sprintf('sylius.email.%s.template', $emailType), $config[$emailType]['template']);
-
-            if ($config['enabled'] && $config[$emailType]['enabled']) {
-                $loader->load(sprintf('mailer/%s_listener.%s', $emailType, $this->configFormat));
-            }
-        }
     }
 
     /**

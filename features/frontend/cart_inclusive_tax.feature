@@ -5,14 +5,14 @@ Feature: Tax included in price
     I want to apply taxes during checkout
 
     Background:
-        Given there are following taxonomies defined:
+        Given store has default configuration
+          And there are following taxonomies defined:
             | name     |
             | Category |
           And taxonomy "Category" has following taxons:
             | Clothing > PHP T-Shirts |
-          And there is default currency configured
           And the following zones are defined:
-            | name  | type    | members        |
+            | name    | type    | members        |
             | Germany | country | Germany        |
           And there are following tax categories:
             | name          |
@@ -23,6 +23,10 @@ Feature: Tax included in price
           And the following products exist:
             | name    | price | taxons       | tax category  |
             | PHP Top | 85    | PHP T-Shirts | Taxable Goods |
+          And all products are assigned to the default channel
+          And the default channel has following configuration:
+            | taxonomy |
+            | Category |
           And the default tax zone is "Germany"
 
     Scenario: Correct amounts are displayed for inclusive taxes

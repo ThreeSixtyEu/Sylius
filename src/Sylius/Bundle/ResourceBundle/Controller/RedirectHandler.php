@@ -12,6 +12,7 @@
 namespace Sylius\Bundle\ResourceBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -83,7 +84,13 @@ class RedirectHandler
      */
     public function redirect($url, $status = 302)
     {
-        return new RedirectResponse($url . $this->config->getRedirectHash(), $status);
+        if ($this->config->isHeaderRedirection()) {
+            return new Response('', 200, array(
+                'X-SYLIUS-LOCATION' => $url.$this->config->getRedirectHash(),
+            ));
+        }
+
+        return new RedirectResponse($url.$this->config->getRedirectHash(), $status);
     }
 
     /**

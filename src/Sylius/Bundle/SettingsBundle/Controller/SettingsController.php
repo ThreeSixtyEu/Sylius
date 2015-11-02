@@ -11,11 +11,14 @@
 
 namespace Sylius\Bundle\SettingsBundle\Controller;
 
+use FOS\RestBundle\Controller\FOSRestController;
 use Sylius\Bundle\SettingsBundle\Form\Factory\SettingsFormFactoryInterface;
 use Sylius\Bundle\SettingsBundle\Manager\SettingsManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sylius\Bundle\SettingsBundle\Model\Settings;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
@@ -24,8 +27,36 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
  */
-class SettingsController extends Controller
+class SettingsController extends FOSRestController
 {
+    /**
+     * Get a specific settings data.
+     * This controller action only used for Rest API.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function showAction(Request $request)
+    {
+        $namespace = $request->get('namespace');
+
+        try {
+            $settings = $this->getSettingsManager()->loadSettings($namespace);
+        } catch (MissingOptionsException $e) {
+            // When a Settings is not persisted yet, it won't have any initial value in database,
+            // so we create a new empty instance.
+            $settings = new Settings(array());
+        }
+
+        $view = $this
+            ->view()
+            ->setData($settings)
+        ;
+
+        return $this->handleView($view);
+    }
+
     /**
      * Edit configuration with given namespace.
      *
@@ -37,14 +68,21 @@ class SettingsController extends Controller
     public function updateAction(Request $request, $namespace)
     {
         $manager = $this->getSettingsManager();
-        $settings = $manager->loadSettings($namespace);
+
+        try {
+            $settings = $manager->loadSettings($namespace);
+        } catch (MissingOptionsException $e) {
+            // When it is the first time that a Settings is being persisted,
+            // it won't have any initial value in database, so we should create a new instance.
+            $settings = new Settings(array());
+        }
+
+        $isApiRequest = $this->isApiRequest($request);
 
         $form = $this
             ->getSettingsFormFactory()
-            ->create($namespace)
+            ->create($namespace, $settings, $isApiRequest ? array('csrf_protection' => false) : array())
         ;
-
-        $form->setData($settings);
 
         if ($form->handleRequest($request)->isValid()) {
             $messageType = 'success';
@@ -55,6 +93,11 @@ class SettingsController extends Controller
                 $message = $this->getTranslator()->trans($exception->getMessage(), array(), 'validators');
                 $messageType = 'error';
             }
+
+            if ($isApiRequest) {
+                return $this->handleView($this->view($settings, 204));
+            }
+
             $request->getSession()->getBag('flashes')->add($messageType, $message);
 
             if ($request->headers->has('referer')) {
@@ -64,7 +107,7 @@ class SettingsController extends Controller
 
         return $this->render($request->attributes->get('template', 'SyliusSettingsBundle:Settings:update.html.twig'), array(
             'settings' => $settings,
-            'form'     => $form->createView()
+            'form'     => $form->createView(),
         ));
     }
 
@@ -96,5 +139,34 @@ class SettingsController extends Controller
     protected function getTranslator()
     {
         return $this->get('translator');
+    }
+
+    /**
+     * Check that user can change given namespace.
+     *
+     * @param string $namespace
+     *
+     * @return bool
+     */
+    protected function isGrantedOr403($namespace)
+    {
+        if (!$this->container->has('sylius.authorization_checker')) {
+            return true;
+        }
+
+        if (!$this->get('sylius.authorization_checker')->isGranted(sprintf('sylius.settings.%s', $namespace))) {
+            throw new AccessDeniedException();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    private function isApiRequest(Request $request)
+    {
+        return 'html' !== $request->getRequestFormat();
     }
 }

@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * Command executor
@@ -56,6 +57,9 @@ class CommandExecutor
     /**
      * @param $command
      * @param array $parameters
+     * @param OutputInterface $output
+     *
+     * @return $this
      *
      * @throws \Exception
      */
@@ -63,12 +67,16 @@ class CommandExecutor
     {
         $parameters = array_merge(
             array('command' => $command),
-            $parameters,
-            $this->getDefaultParameters()
+            $this->getDefaultParameters(),
+            $parameters
         );
 
         $this->application->setAutoExit(false);
         $exitCode = $this->application->run(new ArrayInput($parameters), $output ?: new NullOutput());
+
+        if (1 === $exitCode) {
+            throw new RuntimeException('This command terminated with a permission error');
+        }
 
         if (0 !== $exitCode) {
             $this->application->setAutoExit(true);
@@ -94,6 +102,10 @@ class CommandExecutor
 
         if ($this->input->hasOption('env')) {
             $defaultParameters['--env'] = $this->input->hasOption('env') ? $this->input->getOption('env') : Kernel::ENV_DEV;
+        }
+        
+        if ($this->input->hasOption('no-interaction') && true === $this->input->getOption('no-interaction')) {
+            $defaultParameters['--no-interaction'] = true;
         }
 
         if ($this->input->hasOption('verbose') && true === $this->input->getOption('verbose')) {

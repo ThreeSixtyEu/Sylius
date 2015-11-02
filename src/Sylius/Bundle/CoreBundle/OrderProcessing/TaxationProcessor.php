@@ -77,8 +77,7 @@ class TaxationProcessor implements TaxationProcessorInterface
         TaxRateResolverInterface $taxRateResolver,
         ZoneMatcherInterface $zoneMatcher,
         Settings $taxationSettings
-    )
-    {
+    ) {
         $this->adjustmentRepository = $adjustmentRepository;
         $this->calculator = $calculator;
         $this->taxRateResolver = $taxRateResolver;
@@ -121,7 +120,7 @@ class TaxationProcessor implements TaxationProcessorInterface
         $order->calculateTotal();
     }
 
-    private function processTaxes(OrderInterface $order, $zone)
+    protected function processTaxes(OrderInterface $order, $zone)
     {
         $taxes = array();
         foreach ($order->getItems() as $item) {
@@ -147,7 +146,7 @@ class TaxationProcessor implements TaxationProcessorInterface
         return $taxes;
     }
 
-    private function addAdjustments(array $taxes, OrderInterface $order)
+    protected function addAdjustments(array $taxes, OrderInterface $order)
     {
         foreach ($taxes as $description => $tax) {
             $adjustment = $this->adjustmentRepository->createNew();

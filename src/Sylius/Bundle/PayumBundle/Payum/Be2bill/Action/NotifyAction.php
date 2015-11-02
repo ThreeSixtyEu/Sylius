@@ -13,37 +13,28 @@ namespace Sylius\Bundle\PayumBundle\Payum\Be2bill\Action;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Payum\Be2Bill\Api;
+use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Symfony\Reply\HttpResponse;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
 use SM\Factory\FactoryInterface;
 use Sylius\Bundle\PayumBundle\Payum\Action\AbstractPaymentStateAwareAction;
 use Sylius\Bundle\PayumBundle\Payum\Request\GetStatus;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @author Alexandre Bacco <alexandre.bacco@gmail.com>
  */
-class NotifyAction extends AbstractPaymentStateAwareAction
+class NotifyAction extends AbstractPaymentStateAwareAction implements ApiAwareInterface
 {
-    /**
-     * @var Api
-     */
-    protected $api;
-
     /**
      * @var RepositoryInterface
      */
     protected $paymentRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
 
     /**
      * @var ObjectManager
@@ -55,21 +46,34 @@ class NotifyAction extends AbstractPaymentStateAwareAction
      */
     protected $identifier;
 
+    /**
+     * @var Api
+     */
+    protected $api;
+
     public function __construct(
-        Api $api,
         RepositoryInterface $paymentRepository,
-        EventDispatcherInterface $eventDispatcher,
         ObjectManager $objectManager,
         FactoryInterface $factory,
         $identifier
     ) {
         parent::__construct($factory);
 
-        $this->api               = $api;
         $this->paymentRepository = $paymentRepository;
-        $this->eventDispatcher   = $eventDispatcher;
         $this->objectManager     = $objectManager;
         $this->identifier        = $identifier;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setApi($api)
+    {
+        if (!$api instanceof Api) {
+            throw new UnsupportedApiException('Not supported.');
+        }
+
+        $this->api = $api;
     }
 
     /**
@@ -97,7 +101,7 @@ class NotifyAction extends AbstractPaymentStateAwareAction
         $payment = $this->paymentRepository->findOneBy(array($this->identifier => $details['ORDERID']));
 
         if (null === $payment) {
-            throw new BadRequestHttpException('Paymenet cannot be retrieved.');
+            throw new BadRequestHttpException('Payment cannot be retrieved.');
         }
 
         if ((int) $details['AMOUNT'] !== $payment->getAmount()) {
