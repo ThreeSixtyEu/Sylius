@@ -30,8 +30,8 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
             ->andWhere($queryBuilder->expr()->isNotNull('o.completedAt'))
-            ->leftJoin('o.user', 'user')
-            ->addSelect('user')
+            ->leftJoin('o.customer', 'customer')
+            ->addSelect('customer')
         ;
         return $queryBuilder;
     }
@@ -42,7 +42,7 @@ class OrderRepository extends CartRepository implements OrderRepositoryInterface
      * @param array|null $orderBy
      * @return Pagerfanta
      */
-    public function createPaginatorFromQueryBuilder(QueryBuilder $queryBuilder, array $criteria = null, array $orderBy = null)
+    public function createPaginatorFromQueryBuilder(QueryBuilder $queryBuilder, array $criteria = array(), array $orderBy = array())
     {
         $this->applyCriteria($queryBuilder, $criteria);
         $this->applySorting($queryBuilder, $orderBy);
