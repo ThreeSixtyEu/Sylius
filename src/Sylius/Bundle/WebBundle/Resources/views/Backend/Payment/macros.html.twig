@@ -21,6 +21,8 @@
         <tbody>
         {% set sum = 0 %}
         {% for payment in payments %}
+            {% set order = payment.order %}
+            {% set address = order.billingAddress %}
             {% set sum = sum + payment.amount %}
             <tr id="{{ payment.id }}">
                 <td>
