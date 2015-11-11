@@ -69,6 +69,7 @@ class PaymentMethodChoiceType extends ResourceChoiceType
         $queryBuilder = function (Options $options) {
             $repositoryOptions = array(
                 'disabled' => $options['disabled'],
+                'order_items' => $options['order_items'],
             );
 
             return function (PaymentMethodRepositoryInterface $repository) use ($repositoryOptions) {
@@ -80,6 +81,7 @@ class PaymentMethodChoiceType extends ResourceChoiceType
             ->setDefaults(array(
                 'query_builder' => $queryBuilder,
                 'disabled'      => false,
+                'order_items' => array(),
             ))
         ;
     }
