@@ -51,19 +51,11 @@
             <dl>
                 <dt>{{ 'funlife.eshop.payment.info.customer.name'|trans }}</dt>
                 <dd>
-                    {% if order.user %}
-                        {{ order.user.firstName }} {{ order.user.lastName }}
-                    {% else %}
-                        {{ order.billingAddress.firstName }} {{ order.billingAddress.lastName }}
-                    {% endif %}
+                    {{ order.customer.firstName }} {{ order.customer.lastName }}
                 </dd>
                 <dt>{{ 'funlife.eshop.payment.info.customer.email'|trans }}</dt>
                 <dd>
-                    {% if order.user %}
-                        <a href="{{ path('sylius_backend_user_show', {'id': order.user.id}) }}">{{ order.user.email }}</a>
-                    {% else %}
-                        {{ order.email }}
-                    {% endif %}
+                    <a href="{{ path('sylius_backend_customer_show', {'id': order.customer.id}) }}">{{ order.customer.email }}</a>
                 </dd>
             </dl>
         </div>
