@@ -2,8 +2,7 @@
 
 namespace Sylius\Bundle\CoreBundle\EventListener;
 
-use Sylius\Component\Locale\Context\LocaleContextInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
@@ -14,30 +13,29 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class ContentLocaleListener
 {
 	/**
-	 * @var LocaleContextInterface
+	 * @var LocaleChooserInterface
 	 */
-	private $localeContext;
+	private $localeChooser;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param LocaleContextInterface $localeContext
+	 * @param LocaleChooserInterface $localeChooser
 	 */
-	public function __construct(LocaleContextInterface $localeContext)
+	public function __construct(LocaleChooserInterface $localeChooser)
 	{
-		$this->localeContext = $localeContext;
+		$this->localeChooser = $localeChooser;
 	}
 
 	/**
 	 * @param GetResponseEvent $event
 	 */
-	public function onRequest(GetResponseEvent $event)
+	public function onKernelRequest(GetResponseEvent $event)
 	{
 		$request = $event->getRequest();
 
-		if ($request->get('contentLocale') && $request->getLocale() !== $request->get('contentLocale')) {
-			$this->localeContext->setLocale($request->get('contentLocale'));
-			$event->setResponse(new RedirectResponse($request->getRequestUri()));
+		if ($request->get('contentLocale')) {
+			$this->localeChooser->setLocale($request->get('contentLocale'));
 		}
 	}
 }

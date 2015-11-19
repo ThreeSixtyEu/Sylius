@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
 	{% for locale in sylius_locales() %}
-		<li{% if locale == app.request.get('contentLocale', app.request.locale) %} class="active"{% endif %}><a href="?contentLocale={{ locale }}">{{ locale }}</a></li>
+		<li{% if locale == app.request.get('contentLocale') %} class="active"{% endif %}><a href="?contentLocale={{ locale }}">{{ locale }}</a></li>
 	{% endfor %}
 </ul>
