@@ -75,6 +75,15 @@ class CurrencyHelper extends Helper
     }
 
     /**
+     * Get the current currency.
+     *
+     * @return string
+     */
+    public function getCurrency() {
+        return $this->currencyContext->getCurrency();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
