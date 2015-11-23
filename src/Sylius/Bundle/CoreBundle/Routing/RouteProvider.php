@@ -172,7 +172,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      *
      * @return array
      */
-    private function getRepositories()
+    protected function getRepositories()
     {
         $repositories = array();
 
@@ -199,7 +199,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      *
      * @return Route
      */
-    private function createRouteFromEntity($entity, $value = null)
+    protected function createRouteFromEntity($entity, $value = null)
     {
         $className = ClassUtils::getClass($entity);
         $fieldName = $this->routeConfigs[$className]['field'];
