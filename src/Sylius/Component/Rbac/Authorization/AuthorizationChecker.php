@@ -12,6 +12,7 @@
 namespace Sylius\Component\Rbac\Authorization;
 
 use Sylius\Component\Rbac\Model\IdentityInterface;
+use Sylius\Component\Rbac\Model\RoleInterface;
 use Sylius\Component\Rbac\Provider\CurrentIdentityProviderInterface;
 use Sylius\Component\Rbac\Resolver\RolesResolverInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -59,6 +60,46 @@ class AuthorizationChecker implements AuthorizationCheckerInterface
      */
     public function isGranted($permissionCode)
     {
+        $roles = $this->getRoles();
+
+        if (false === $roles) {
+            return false;
+        }
+
+        foreach ($roles as $role) {
+            if ($this->permissionMap->hasPermission($role, $permissionCode)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasRole($roleCode)
+    {
+        $roles = $this->getRoles();
+
+        if (false === $roles) {
+            return false;
+        }
+
+        foreach ($roles as $role) {
+            if ($role->getCode() === $roleCode) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array|boolean|RoleInterface[]
+     */
+    protected function getRoles()
+    {
         $identity = $this->currentIdentityProvider->getIdentity();
 
         if (null === $identity) {
@@ -69,14 +110,6 @@ class AuthorizationChecker implements AuthorizationCheckerInterface
             throw new \InvalidArgumentException('Current identity must implement "Sylius\Component\Rbac\Model\IdentityInterface".');
         }
 
-        $roles = $this->rolesResolver->getRoles($identity);
-
-        foreach ($roles as $role) {
-            if ($this->permissionMap->hasPermission($role, $permissionCode)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->rolesResolver->getRoles($identity);
     }
 }
