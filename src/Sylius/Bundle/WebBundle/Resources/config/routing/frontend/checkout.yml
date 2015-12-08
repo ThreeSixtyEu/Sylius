@@ -25,6 +25,10 @@ sylius_checkout_addressing:
     path: /addressing
     defaults: { _controller: sylius.controller.process:displayAction, scenarioAlias: 'sylius_checkout', 'stepName': 'addressing' }
 
+sylius_checkout_payment_shipping:
+    path: /payment_shipping
+    defaults: { _controller: sylius.controller.process:displayAction, scenarioAlias: 'sylius_checkout', 'stepName': 'payment_shipping' }
+
 sylius_checkout_shipping:
     path: /shipping
     defaults: { _controller: sylius.controller.process:displayAction, scenarioAlias: 'sylius_checkout', 'stepName': 'shipping' }

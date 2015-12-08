@@ -34,6 +34,10 @@ class SyliusCheckoutEvents
     const PAYMENT_PRE_COMPLETE = 'sylius.checkout.payment.pre_complete';
     const PAYMENT_COMPLETE     = 'sylius.checkout.payment.complete';
 
+    const PAYMENT_SHIPPING_INITIALIZE   = 'sylius.checkout.payment_shipping.initialize';
+    const PAYMENT_SHIPPING_PRE_COMPLETE = 'sylius.checkout.payment_shipping.pre_complete';
+    const PAYMENT_SHIPPING_COMPLETE     = 'sylius.checkout.payment_shipping.complete';
+
     const PURCHASE_INITIALIZE   = 'sylius.checkout.purchase.initialize';
     const PURCHASE_PRE_COMPLETE = 'sylius.checkout.purchase.pre_complete';
     const PURCHASE_COMPLETE     = 'sylius.checkout.purchase.complete';
