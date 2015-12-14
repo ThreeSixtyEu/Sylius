@@ -51,7 +51,7 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * Shipping category.
      *
-     * @var ShippingCategoryInterface
+     * @var ShippingCategoryInterface[]
      */
     protected $shippingCategory;
 
@@ -71,6 +71,7 @@ class Product extends BaseProduct implements ProductInterface
 
         $this->setMasterVariant(new ProductVariant());
         $this->taxons = new ArrayCollection();
+        $this->shippingCategory = new ArrayCollection();
 
         $this->variantSelectionMethod = self::VARIANT_SELECTION_CHOICE;
     }
@@ -233,12 +234,16 @@ class Product extends BaseProduct implements ProductInterface
         return $this->shippingCategory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingCategory(ShippingCategoryInterface $category = null)
+    public function addShippingCategory(ShippingCategoryInterface $category)
     {
-        $this->shippingCategory = $category;
+        $this->shippingCategory->add($category);
+
+        return $this;
+    }
+
+    public function removeShippingCategory(ShippingCategoryInterface $category)
+    {
+        $this->shippingCategory->removeElement($category);
 
         return $this;
     }

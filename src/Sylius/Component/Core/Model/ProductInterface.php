@@ -107,12 +107,9 @@ interface ProductInterface extends BaseProductInterface, TaxableInterface, Taxon
      */
     public function getShippingCategory();
 
-    /**
-     * Set product shipping category.
-     *
-     * @param ShippingCategoryInterface $category
-     */
-    public function setShippingCategory(ShippingCategoryInterface $category = null);
+    public function addShippingCategory(ShippingCategoryInterface $category);
+
+    public function removeShippingCategory(ShippingCategoryInterface $category);
 
     /**
      * Get address zone restriction.
