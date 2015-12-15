@@ -57,6 +57,9 @@ class SyliusVariationExtension extends AbstractResourceExtension
             if (!isset($config['validation_groups'][$variable]['variant'])) {
                 $config['validation_groups'][$variable]['variant'] = array('sylius');
             }
+            if (!isset($config['validation_groups'][$variable]['variant_translation'])) {
+                $config['validation_groups'][$variable]['variant_translation'] = array('sylius');
+            }
             if (!isset($config['validation_groups'][$variable]['option'])) {
                 $config['validation_groups'][$variable]['option'] = array('sylius');
             }
@@ -95,11 +98,13 @@ class SyliusVariationExtension extends AbstractResourceExtension
     private function createVariableServices(ContainerBuilder $container, $driver, $variable, array $config)
     {
         $variantAlias = $variable.'_variant';
+        $variantTranslationAlias = $variable.'_variant_translation';
         $optionAlias = $variable.'_option';
         $optionTranslationAlias = $variable.'_option_translation';
         $optionValueAlias = $variable.'_option_value';
 
         $variantClasses = $config[$variantAlias];
+        $variantTranslationClasses = $config[$variantTranslationAlias];
         $optionClasses = $config[$optionAlias];
         $optionTranslationClasses = $config[$optionTranslationAlias];
         $optionValueClasses = $config[$optionValueAlias];
@@ -127,6 +132,14 @@ class SyliusVariationExtension extends AbstractResourceExtension
         ;
 
         $container->setDefinition('sylius.form.type.'.$variantAlias.'_match', $variantMatchFormType);
+
+        $variantTranslationFormType = new Definition($variantTranslationClasses['form']);
+        $variantTranslationFormType
+            ->setArguments(array($variantTranslationClasses['model'], '%sylius.validation_group.'.$variantTranslationAlias.'%', $variable))
+            ->addTag('form.type', array('alias' => 'sylius_'.$variantTranslationAlias))
+        ;
+
+        $container->setDefinition('sylius.form.type.'.$variantTranslationAlias, $variantTranslationFormType);
 
         $optionFormType = new Definition($optionClasses['form']);
         $optionFormType
