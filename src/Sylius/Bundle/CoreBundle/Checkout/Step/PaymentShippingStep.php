@@ -36,23 +36,7 @@ class PaymentShippingStep extends CheckoutStep
 	 */
 	public function displayAction(ProcessContextInterface $context)
 	{
-		$order = $this->getCurrentCart();
-		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::PAYMENT_SHIPPING_INITIALIZE, $order);
-
-		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::PAYMENT_INITIALIZE, $order);
-		$formPayment = $this->createCheckoutPaymentForm($order);
-
-		if ($this->requireAddress($order)) {
-			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_INITIALIZE, $order);
-			$formAddressing = $this->createCheckoutAddressingForm($order, $this->getUser());
-		} else {
-			$formAddressing = null;
-		}
-
-		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
-		$formShipping = $this->createCheckoutShippingForm($order, null);
-
-		return $this->renderStep($context, $order, $formPayment, $formShipping, $formAddressing);
+		return $this->forwardAction($context);
 	}
 
 	/**
@@ -72,6 +56,11 @@ class PaymentShippingStep extends CheckoutStep
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
 		$formShippingPre = $this->createCheckoutShippingForm($order, null);
 		$formShippingPre->handleRequest($request);
+
+		if ($formShippingPre->get('country')->getData() === null) {
+			$choices = $formShippingPre->get('country')->getConfig()->getOption('choice_list')->getChoices();
+			$formShippingPre->get('country')->setData(reset($choices));
+		}
 
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
 		$formShipping = $this->createCheckoutShippingForm($order, $formShippingPre->get('country')->getData());

@@ -22,7 +22,7 @@ class Version20151214163901 extends AbstractMigration
         $this->addSql('ALTER TABLE sylius_shipping_category_product ADD CONSTRAINT FK_7E1A8FBE4584665A FOREIGN KEY (product_id) REFERENCES sylius_product (id)');
         $this->addSql('ALTER TABLE sylius_shipping_category_product ADD CONSTRAINT FK_7E1A8FBE4F6AB213 FOREIGN KEY (shipping_category_id) REFERENCES sylius_shipping_category (id)');
         $this->addSql('ALTER TABLE sylius_product DROP FOREIGN KEY FK_677B9B749E2D1A41');
-        $this->addSql('INSERT INTO sylius_shipping_category_product (product_id, shipping_category_id) SELECT p.id, p.shipping_category_id FROM sylius_product p');
+        $this->addSql('INSERT INTO sylius_shipping_category_product (product_id, shipping_category_id) SELECT p.id, p.shipping_category_id FROM sylius_product p WHERE p.shipping_category_id IS NOT NULL');
         $this->addSql('DROP INDEX IDX_677B9B749E2D1A41 ON sylius_product');
         $this->addSql('ALTER TABLE sylius_product DROP shipping_category_id');
     }

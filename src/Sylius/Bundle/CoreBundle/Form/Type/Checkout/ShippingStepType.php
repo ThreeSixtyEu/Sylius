@@ -35,8 +35,8 @@ class ShippingStepType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('country', 'sylius_country_choice', array(
+            'label' => 'sylius.form.address.country',
             'mapped' => false,
-            'empty_value' => '----',
         ));
 
         $builder->add('shipments', 'collection', array(
