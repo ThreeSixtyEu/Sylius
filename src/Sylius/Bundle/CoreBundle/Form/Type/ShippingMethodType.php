@@ -28,8 +28,14 @@ class ShippingMethodType extends BaseShippingMethodType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('zone', 'sylius_zone_choice', array(
+        $builder
+            ->add('zone', 'sylius_zone_choice', array(
                 'label' => 'sylius.form.shipping_method.zone'
-            ));
+            ))
+            ->add('requireAddress', 'checkbox', array(
+                'required' => false,
+                'label' => 'funlife.form.shipping_method.require_address'
+            ))
+        ;
     }
 }

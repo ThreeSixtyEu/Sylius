@@ -30,6 +30,13 @@ class ShippingMethod extends BaseShippingMethod implements ShippingMethodInterfa
     protected $zone;
 
     /**
+     * ShippingMethod require address
+     *
+     * @var boolean
+     */
+    protected $requireAddress;
+
+    /**
      * {@inheritdoc}
      */
     public function getZone()
@@ -53,5 +60,23 @@ class ShippingMethod extends BaseShippingMethod implements ShippingMethodInterfa
     protected function getTranslationEntityClass()
     {
         return parent::getTranslationEntityClass();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRequireAddress($requireAddress)
+    {
+        $this->requireAddress = $requireAddress;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequireAddress()
+    {
+        return $this->requireAddress;
     }
 }

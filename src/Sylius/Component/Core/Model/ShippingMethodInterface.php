@@ -34,4 +34,15 @@ interface ShippingMethodInterface extends BaseShippingMethodInterface
      * @param ZoneInterface $zone
      */
     public function setZone(ZoneInterface $zone);
+
+    /**
+     * @param boolean $requireAddress
+     * @return ShippingMethod
+     */
+    public function setRequireAddress($requireAddress);
+
+    /**
+     * @return boolean
+     */
+    public function getRequireAddress();
 }
