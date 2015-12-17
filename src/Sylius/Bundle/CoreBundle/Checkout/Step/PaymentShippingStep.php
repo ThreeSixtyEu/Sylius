@@ -66,30 +66,34 @@ class PaymentShippingStep extends CheckoutStep
 		$formShipping = $this->createCheckoutShippingForm($order, $formShippingPre->get('country')->getData());
 		$formShipping->handleRequest($request);
 
-		if ($this->requireAddress($order)) {
-			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_INITIALIZE, $order);
-			$formAddressing = $this->createCheckoutAddressingForm($order, $this->getUser());
-			$country = $formShippingPre->get('country')->getData();
-			$formAddressing->get('shippingAddress')->get('country')->setData($country);
 
-			$requestData = $request->get($formAddressing->getName());
-			$requestData['shippingAddress']['country'] = $country->getId();
-			$request->request->set($formAddressing->getName(), $requestData);
+		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_INITIALIZE, $order);
+		if (is_null($order->getShippingAddress()) || $order->getShippingAddress()->getFirstName() == 'anon.') {
+			$order->setShippingAddress(new Address());
+		}
+		$formAddressing = $this->createCheckoutAddressingForm($order, $this->getUser());
+		$country = $formShippingPre->get('country')->getData();
+		$formAddressing->get('shippingAddress')->get('country')->setData($country);
+
+		$requestData = $request->get($formAddressing->getName());
+		$requestData['shippingAddress']['country'] = $country->getId();
+		$request->request->set($formAddressing->getName(), $requestData);
+
+		if ($this->requireAddress($order)) {
 			$formAddressing->handleRequest($request);
-		} else {
-			$formAddressing = null;
 		}
 
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
 		$formShipping = $this->createCheckoutShippingForm($order, $formShippingPre->get('country')->getData());
 		$formShipping->handleRequest($request);
 
-		if ($formPayment->isValid() && $formShipping->isValid() && ($formAddressing === null || $formAddressing->isValid())) {
+		if ($formPayment->isValid() && $formShipping->isValid() && (!$this->requireAddress($order) || $formAddressing->isValid())) {
 			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_PRE_COMPLETE, $order);
 			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::PAYMENT_PRE_COMPLETE, $order);
 			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_PRE_COMPLETE, $order);
+			$compareAddr = new Address();
 
-			if (!$this->requireAddress($order) && $order->getShippingAddress() == null) {
+			if (!$this->requireAddress($order) && $order->getShippingAddress() == $compareAddr) {
 				$address = new Address();
 				$address->setFirstName('anon.');
 				$address->setLastName('anon.');
@@ -124,6 +128,7 @@ class PaymentShippingStep extends CheckoutStep
 			'formPayment' => $formPayment->createView(),
 			'formShipping' => $formShipping->createView(),
 			'formAddressing' => $formAddressing ? $formAddressing->createView() : $formAddressing,
+			'requireAddress' => $this->requireAddress($order),
 			'context' => $context
 		));
 	}

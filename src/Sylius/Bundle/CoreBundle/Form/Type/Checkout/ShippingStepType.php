@@ -116,15 +116,17 @@ class ShippingStepType extends AbstractResourceType
         /** @var ChoiceList $choiceList */
         $choiceList = $methodType->getConfig()->getOption('choice_list');
 
-        $requireAddress = new ArrayCollection();
+        $requireAddress = array();
         /** @var ShippingMethod $shippingMethod */
+        $i = 0;
         foreach ($choiceList->getChoices() as $shippingMethod) {
             if ($shippingMethod->getRequireAddress()) {
-                $requireAddress->add($shippingMethod);
+                $requireAddress[] = $i;
             }
+            $i++;
         }
 
-        $view->vars['shipping_methods_requiring_address'] = $requireAddress;
+        $view->vars['shipping_methods_requiring_address'] = json_encode(array('ids' => $requireAddress));
     }
 
     /**

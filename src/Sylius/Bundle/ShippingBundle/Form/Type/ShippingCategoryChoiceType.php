@@ -46,7 +46,6 @@ abstract class ShippingCategoryChoiceType extends AbstractType
         $resolver
             ->setDefaults(array(
                 'class' => $this->className,
-                'multiple' => true,
             ))
         ;
     }
