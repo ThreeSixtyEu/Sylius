@@ -11,15 +11,20 @@
 
 namespace Sylius\Bundle\CoreBundle\Form\Type\Checkout;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Sylius\Component\Addressing\Model\Country;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Addressing\Model\ZoneMemberCountry;
+use Sylius\Component\Core\Model\ShippingMethod;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -100,6 +105,26 @@ class ShippingStepType extends AbstractResourceType
                 'criteria' => array('array')
             ))
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $methodType = $form->get('shipments')->get(0)->get('method');
+        /** @var ChoiceList $choiceList */
+        $choiceList = $methodType->getConfig()->getOption('choice_list');
+
+        $requireAddress = new ArrayCollection();
+        /** @var ShippingMethod $shippingMethod */
+        foreach ($choiceList->getChoices() as $shippingMethod) {
+            if ($shippingMethod->getRequireAddress()) {
+                $requireAddress->add($shippingMethod);
+            }
+        }
+
+        $view->vars['shipping_methods_requiring_address'] = $requireAddress;
     }
 
     /**
