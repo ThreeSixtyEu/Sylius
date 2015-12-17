@@ -12,6 +12,7 @@
 namespace Sylius\Bundle\CurrencyBundle\Twig;
 
 use Sylius\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelper;
+use Symfony\Component\Intl\Intl;
 
 /**
  * Sylius currency Twig helper.
@@ -45,6 +46,15 @@ class CurrencyExtension extends \Twig_Extension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFunctions() {
+        return array(
+          new \Twig_SimpleFunction('currency', array($this, 'getCurrency')),
+          new \Twig_SimpleFunction('currency_symbol', array($this, 'getCurrencySymbol')),
+        );    }
+
+    /**
      * Convert amount to target currency.
      *
      * @param integer     $amount
@@ -68,6 +78,29 @@ class CurrencyExtension extends \Twig_Extension
     public function convertAndFormatAmount($amount, $currency = null)
     {
         return $this->helper->convertAndFormatAmount($amount, $currency);
+    }
+
+    /**
+     * Get translated currency symbol
+     *
+     * @param $currency
+     *
+     * @return null|string
+     */
+    public function getCurrencySymbol($currency = null) {
+        if (is_null($currency)) {
+            $currency = $this->getCurrency();
+        }
+        return Intl::getCurrencyBundle()->getCurrencySymbol($currency);
+    }
+
+    /**
+     * Get current currency
+     *
+     * @return string
+     */
+    public function getCurrency() {
+        return $this->helper->getCurrency();
     }
 
     /**
