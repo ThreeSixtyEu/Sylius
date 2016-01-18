@@ -1,0 +1,23 @@
+{% block content %}
+<h3>{{ 'sylius.checkout.shipping.header'|trans|raw }}</h3>
+
+{{ form_errors(form.shipments) }}
+<div class="well" id="shippings" data-shippings-requires-addressing="{{ form.vars.shipping_methods_requiring_address }}">
+
+	<fieldset>
+		{{ form_row(form.country) }}
+		{% for shipment in order.shipments %}
+			{% set shipmentForm = form.shipments[loop.index0] %}
+			{% if loop.first %}{{ form_errors(shipmentForm.method) }}{% endif %}
+
+			<div class="no-cols clearfix checkbox-row">
+				{{ form_widget(shipmentForm.method, {'attr': {'checked': 'checked'}}) }}
+			</div>
+
+		{% endfor %}
+	</fieldset>
+
+{{ form_widget(form._token) }}
+
+</div>
+{% endblock %}
