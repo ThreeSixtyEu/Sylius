@@ -159,7 +159,7 @@ class PaymentShippingStep extends CheckoutStep
 			}, $this->zones);
 		}
 
-		return $this->createForm('sylius_checkout_shipping', $order, $options);
+		return $this->createForm('sylius_checkout_shipping_country_specific', $order, $options);
 	}
 
 	protected function createCheckoutPaymentForm(OrderInterface $order)

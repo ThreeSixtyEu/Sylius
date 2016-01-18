@@ -49,11 +49,12 @@ class CheckoutProcessScenario implements ProcessScenarioInterface
 
         $builder
             ->add('security', 'sylius_checkout_security')
-            ->add('payment_shipping', 'sylius_checkout_payment_shipping')
+            ->add('addressing', 'sylius_checkout_addressing')
+            ->add('shipping', 'sylius_checkout_shipping')
+            ->add('payment', 'sylius_checkout_payment')
             ->add('finalize', 'sylius_checkout_finalize')
             ->add('purchase', 'sylius_checkout_purchase')
         ;
-
         $builder
             ->setDisplayRoute('sylius_checkout_display')
             ->setForwardRoute('sylius_checkout_forward')
