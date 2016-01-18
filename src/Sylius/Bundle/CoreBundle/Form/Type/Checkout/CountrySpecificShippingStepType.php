@@ -17,6 +17,7 @@ use Sylius\Component\Addressing\Model\Country;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Addressing\Model\ZoneMemberCountry;
 use Sylius\Component\Core\Model\ShippingMethod;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -82,6 +83,12 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 				'type'    => 'sylius_checkout_shipment',
 				'options' => array('criteria' => $options['criteria'])
 			));
+		});
+
+		$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+			if (!array_key_exists('shipments', $event->getData())) {
+				throw new TransformationFailedException();
+			}
 		});
 	}
 
