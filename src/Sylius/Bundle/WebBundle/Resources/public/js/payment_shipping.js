@@ -14,7 +14,9 @@ $(document).ready(function() {
 			$addressing.addClass('js-hidden');
 		}
 	}).on('change', '#sylius_checkout_shipping_country_specific_country', function() {
-		$(this).parents('form').submit();
+		var $form = $(this).parents('form');
+		$form.prepend($("<input/>").attr('type', 'hidden').attr('name', 'doNotForward').val(true));
+		$form.submit();
 	});
 
 	if (!$("#shippings input[type='radio']:checked").length) {

@@ -115,7 +115,10 @@ class PaymentShippingStep extends CheckoutStep
 			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::PAYMENT_COMPLETE, $order);
 			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_COMPLETE, $order);
 
-			return $this->complete();
+			// do not forward ajax form for country change
+			if ($request->get('doNotForward') !== 'true') {
+				return $this->complete();
+			}
 		}
 
 		return $this->renderStep($context, $order, $formPayment, $formShipping, $formAddressing);
