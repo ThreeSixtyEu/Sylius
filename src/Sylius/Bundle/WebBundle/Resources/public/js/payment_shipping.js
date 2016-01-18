@@ -13,8 +13,11 @@ $(document).ready(function() {
 		} else {
 			$addressing.addClass('js-hidden');
 		}
-	}).on('change', '#sylius_checkout_shipping_country', function() {
+	}).on('change', '#sylius_checkout_shipping_country_specific_country', function() {
 		$(this).parents('form').submit();
 	});
 
+	if (!$("#shippings input[type='radio']:checked").length) {
+		$("#shippings input[type='radio']").first().click();
+	}
 });
