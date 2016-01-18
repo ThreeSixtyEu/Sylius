@@ -20,7 +20,7 @@ use Sylius\Component\Resource\Model\TimestampableInterface;
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
  */
-interface VariantInterface extends SoftDeletableInterface, TimestampableInterface
+interface VariantInterface extends SoftDeletableInterface, TimestampableInterface, VariantTranslationInterface
 {
     /**
      * Checks whether variant is master.
@@ -35,23 +35,6 @@ interface VariantInterface extends SoftDeletableInterface, TimestampableInterfac
      * @param Boolean $master
      */
     public function setMaster($master);
-
-    /**
-     * Get presentation.
-     *
-     * This should be generated from option values
-     * when no other is set.
-     *
-     * @return string
-     */
-    public function getPresentation();
-
-    /**
-     * Set custom presentation.
-     *
-     * @param string $presentation
-     */
-    public function setPresentation($presentation);
 
     /**
      * Get product.

@@ -3,12 +3,12 @@
 <div class="row">
     <div class="col-md-8 row-split">
         {{ form_errors(form) }}
+        {{ form_row(form.translations, {'attr': {'class': 'input-lg'}}) }}
         {% if form.options is defined and form.options|length > 0 %}
             {% for optionForm in form.options %}
                 {{ form_row(optionForm) }}
             {% endfor %}
         {% endif %}
-        {{ form_row(form.presentation) }}
         {{ form_row(form.sku) }}
         <div class="form-group">
             {{ form_label(form.availableOn) }}

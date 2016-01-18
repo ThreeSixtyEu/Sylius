@@ -106,6 +106,12 @@ sylius_variation:
                 model: Sylius\Component\Core\Model\ProductVariant
                 repository: Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductVariantRepository
                 form: Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType
+                translatable:
+                    targetEntity: Sylius\Component\Product\Model\VariantTranslation
+            variant_translation:
+                model: Sylius\Component\Product\Model\VariantTranslation
+                repository: Sylius\Bundle\ResourceBundle\Doctrine\ORM\TranslatableEntityRepository
+                form: Sylius\Bundle\VariationBundle\Form\Type\VariantTranslationType
 
 sylius_taxation:
     classes:

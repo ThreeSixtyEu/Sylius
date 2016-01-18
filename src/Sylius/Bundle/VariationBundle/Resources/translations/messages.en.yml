@@ -2,6 +2,7 @@ sylius:
   form:
     variant:
         presentation: Presentation
+        translations: Translations
     option:
         name: Internal name
         presentation: Presentation

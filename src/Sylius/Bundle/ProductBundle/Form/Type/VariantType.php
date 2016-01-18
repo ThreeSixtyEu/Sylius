@@ -29,6 +29,10 @@ class VariantType extends BaseVariantType
         parent::buildForm($builder, $options);
 
         $builder
+            ->add('translations', 'a2lix_translationsForms', array(
+                'form_type' => 'sylius_product_variant_translation',
+                'label'    => 'sylius.form.variant.translations'
+            ))
             ->add('availableOn', 'datetime', array(
                 'date_format' => 'y-M-d',
                 'date_widget' => 'choice',
