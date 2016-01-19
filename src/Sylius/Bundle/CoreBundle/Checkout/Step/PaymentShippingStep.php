@@ -88,9 +88,6 @@ class PaymentShippingStep extends CheckoutStep
 		$formShipping->handleRequest($request);
 
 		if ($formPayment->isValid() && $formShipping->isValid() && (!$this->requireAddress($order) || $formAddressing->isValid())) {
-			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_PRE_COMPLETE, $order);
-			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::PAYMENT_PRE_COMPLETE, $order);
-			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_PRE_COMPLETE, $order);
 			$compareAddr = new Address();
 
 			if (!$this->requireAddress($order) && $order->getShippingAddress() == $compareAddr) {
@@ -107,6 +104,10 @@ class PaymentShippingStep extends CheckoutStep
 				$order->setShippingAddress($address);
 				$order->setBillingAddress(clone $address);
 			}
+
+			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_PRE_COMPLETE, $order);
+			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::PAYMENT_PRE_COMPLETE, $order);
+			$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_PRE_COMPLETE, $order);
 
 			$this->getManager()->persist($order);
 			$this->getManager()->flush();
