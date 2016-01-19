@@ -10,16 +10,18 @@
  */
 
 namespace Sylius\Component\Payment\Model;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\GroupInterface;
+use Sylius\Component\Translation\Model\AbstractTranslatable;
 
 /**
  * Payments method model.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
  */
-class PaymentMethod implements PaymentMethodInterface
+class PaymentMethod extends AbstractTranslatable implements PaymentMethodInterface
 {
     /**
      * Payments method identifier.
@@ -34,20 +36,6 @@ class PaymentMethod implements PaymentMethodInterface
      * @var Boolean
      */
     protected $enabled = true;
-
-    /**
-     * Name.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Description.
-     *
-     * @var string
-     */
-    protected $description;
 
     /**
      * Gateway name.
@@ -87,6 +75,7 @@ class PaymentMethod implements PaymentMethodInterface
      */
     public function __construct()
     {
+	    parent::__construct();
         $this->createdAt = new \DateTime();
     }
 
@@ -95,7 +84,7 @@ class PaymentMethod implements PaymentMethodInterface
      */
     public function __toString()
     {
-        return $this->name;
+        return $this->getName();
     }
 
     /**
@@ -129,7 +118,7 @@ class PaymentMethod implements PaymentMethodInterface
      */
     public function getName()
     {
-        return $this->name;
+        return $this->translate()->getName();
     }
 
     /**
@@ -137,7 +126,7 @@ class PaymentMethod implements PaymentMethodInterface
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->translate()->setName($name);
 
         return $this;
     }
@@ -147,7 +136,7 @@ class PaymentMethod implements PaymentMethodInterface
      */
     public function getDescription()
     {
-        return $this->description;
+        return $this->translate()->getDescription();
     }
 
     /**
@@ -155,7 +144,7 @@ class PaymentMethod implements PaymentMethodInterface
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->translate()->setDescription($description);
 
         return $this;
     }
@@ -296,5 +285,13 @@ class PaymentMethod implements PaymentMethodInterface
 		}
 
 		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function getTranslationEntityClass()
+	{
+		return get_class().'Translation';
 	}
 }
