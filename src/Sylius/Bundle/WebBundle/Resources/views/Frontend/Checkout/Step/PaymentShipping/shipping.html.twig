@@ -5,7 +5,7 @@
 <div class="well" id="shippings" data-shippings-requires-addressing="{{ form.vars.shipping_methods_requiring_address }}">
 
 	<fieldset>
-		{{ form_row(form.country) }}
+		{{ form_row(form.country, {'attr': {'autocomplete': 'off'}}) }}
 		{% for shipment in order.shipments %}
 			{% set shipmentForm = form.shipments[loop.index0] %}
 			{% if loop.first %}{{ form_errors(shipmentForm.method) }}{% endif %}

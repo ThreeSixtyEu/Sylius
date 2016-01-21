@@ -13,7 +13,7 @@
 
 	{% include 'SyliusWebBundle:Frontend/Checkout:_progressBar.html.twig' %}
 
-	<form method="post" action="{{ path(context.process.forwardRoute, {'stepName': context.currentStep.name}) }}" class="form-horizontal" novalidate>
+	<form method="post" action="{{ path(context.process.forwardRoute, {'stepName': context.currentStep.name}) }}" class="form-horizontal" novalidate id="payment_shipping_form">
 		<div class="row">
 			<div class="col-md-6">
 				{% include 'SyliusWebBundle:Frontend/Checkout/Step/PaymentShipping:payment.html.twig' with {'form': formPayment} %}
