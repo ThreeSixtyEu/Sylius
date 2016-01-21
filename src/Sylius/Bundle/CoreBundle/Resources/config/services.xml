@@ -339,6 +339,7 @@
                     <argument>%sylius.uploader.filesystem%</argument>
                 </service>
             </argument>
+            <argument type="service" id="logger" />
         </service>
 
         <service id="sylius.promotion_rule_checker.nth_order" class="%sylius.promotion_rule_checker.nth_order.class%">
