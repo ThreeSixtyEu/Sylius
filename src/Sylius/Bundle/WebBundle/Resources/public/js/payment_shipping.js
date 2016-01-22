@@ -4,15 +4,7 @@
 
 $(document).ready(function() {
 	$("body").on('change, click', '#shippings input[type="radio"]', function() {
-		var $addressing = $("#addressing");
-		var requiredIds = $("#shippings").data('shippingsRequiresAddressing');
-		var id = parseInt($(this).val(), 10);
-
-		if (requiredIds.ids.indexOf(id) !== -1) {
-			$addressing.removeClass('js-hidden');
-		} else {
-			$addressing.addClass('js-hidden');
-		}
+		toggleAddressing($(this));
 	}).on('change', '#sylius_checkout_shipping_country_specific_country, #sylius_checkout_addressing_shippingAddress_country', function() {
 		var $form = $(this).parents('form');
 		var $input = $form.prepend($("<input/>").attr('type', 'hidden').attr('name', 'doNotForward').val(true));
@@ -41,9 +33,20 @@ $(document).ready(function() {
 	});
 
 	function checkFirstShipping() {
-		if (!$("#shippings input[type='radio']:checked").length) {
-			$("#shippings input[type='radio']").first().click();
+		toggleAddressing($("#shippings input[type='radio']:checked"));
+	}
+
+	function toggleAddressing($selectedShipping) {
+		var $addressing = $("#addressing");
+		var requiredIds = $("#shippings").data('shippingsRequiresAddressing');
+		var id = parseInt($selectedShipping.val(), 10);
+
+		if (requiredIds.ids.indexOf(id) !== -1) {
+			$addressing.removeClass('js-hidden');
+		} else {
+			$addressing.addClass('js-hidden');
 		}
 	}
+
 	checkFirstShipping();
 });
