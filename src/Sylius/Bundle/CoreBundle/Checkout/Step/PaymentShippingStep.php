@@ -55,12 +55,16 @@ class PaymentShippingStep extends CheckoutStep
 
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
 		$formShippingPre = $this->createCheckoutShippingForm($order, null);
+		$formShippingPre->handleRequest($request);
 
 		if ($formShippingPre->get('country')->getData() === null) {
 			$choices = $formShippingPre->get('country')->getConfig()->getOption('choice_list')->getChoices();
 			$formShippingPre->get('country')->setData(reset($choices));
 		}
-		$formShippingPre->handleRequest($request);
+
+		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
+		$formShipping = $this->createCheckoutShippingForm($order, $formShippingPre->get('country')->getData());
+		$formShipping->handleRequest($request);
 
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_INITIALIZE, $order);
 		if (is_null($order->getShippingAddress()) || $order->getShippingAddress()->getFirstName() == 'anon.') {
