@@ -16,6 +16,20 @@
                     xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
                                         http://symfony.com/schema/dic/services/constraint-mapping-1.0.xsd">
 
+    <class name="Sylius\Component\Core\Model\Image">
+        <property name="file">
+            <constraint name="Image">
+                <option name="maxSize">32M</option>
+                <option name="notFoundMessage">sylius.image.file.not_found</option>
+                <option name="notReadableMessage">sylius.image.file.not_readable</option>
+                <option name="maxSizeMessage">sylius.image.file.max_size</option>
+                <option name="mimeTypesMessage">sylius.image.file.mime_types</option>
+                <option name="uploadIniSizeErrorMessage">sylius.image.file.ini_size_error</option>
+                <option name="groups">sylius</option>
+            </constraint>
+        </property>
+    </class>
+
     <class name="Sylius\Component\Core\Model\Order">
         <property name="shippingAddress">
             <constraint name="Valid" />
@@ -80,6 +94,11 @@
                 <option name="min">0</option>
                 <option name="minMessage">sylius.product_variant.onHand.min</option>
                 <option name="groups">sylius</option>
+            </constraint>
+        </property>
+        <property name="images">
+            <constraint name="Valid">
+                <option name="traverse">true</option>
             </constraint>
         </property>
     </class>

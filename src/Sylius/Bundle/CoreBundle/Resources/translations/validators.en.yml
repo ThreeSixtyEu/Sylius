@@ -4,6 +4,13 @@ sylius:
             max: Group name must not be longer than {{ limit }} characters.
             min: Group name must be at least {{ limit }} characters long.
             not_blank: Please enter group name.
+    image:
+        file:
+            ini_size_error: The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.
+            not_found: The file could not be found.
+            not_readable: The file is not readable.
+            max_size: The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}.
+            mime_types: This file is not a valid image.
     locale:
         code:
             not_blank: Please enter locale code.
