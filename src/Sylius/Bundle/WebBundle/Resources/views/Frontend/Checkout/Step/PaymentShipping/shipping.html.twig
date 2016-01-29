@@ -2,7 +2,7 @@
 <h3>{{ 'sylius.checkout.shipping.header'|trans|raw }}</h3>
 
 {{ form_errors(form.shipments) }}
-<div class="well" id="shippings" data-shippings-requires-addressing="{{ form.vars.shipping_methods_requiring_address }}">
+<div class="well" id="shippings" data-shippings-requires-addressing="{{ form.vars.shipping_methods_requiring_address }}" data-shippings-generates-eticket="{{ form.vars.shipping_methods_generates_eticket }}">
 
 	<fieldset>
 		{{ form_row(form.country, {'attr': {'autocomplete': 'off'}}) }}
