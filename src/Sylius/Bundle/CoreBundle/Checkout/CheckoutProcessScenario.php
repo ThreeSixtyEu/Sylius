@@ -55,7 +55,6 @@ class CheckoutProcessScenario implements ProcessScenarioInterface
             ->add('finalize', 'sylius_checkout_finalize')
             ->add('purchase', 'sylius_checkout_purchase')
         ;
-
         $builder
             ->setDisplayRoute('sylius_checkout_display')
             ->setForwardRoute('sylius_checkout_forward')

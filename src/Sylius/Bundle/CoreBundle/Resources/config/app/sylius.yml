@@ -109,6 +109,10 @@ sylius_variation:
                 repository: Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductVariantRepository
                 form:
                     default: Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType
+                translation:
+                    model: Sylius\Component\Product\Model\VariantTranslation
+                    form:
+                        default: Sylius\Bundle\VariationBundle\Form\Type\VariantTranslationType
 
 sylius_taxation:
     classes:
@@ -160,6 +164,10 @@ sylius_payment:
             repository: Sylius\Bundle\CoreBundle\Doctrine\ORM\PaymentMethodRepository
             form:
                 choice: Sylius\Bundle\CoreBundle\Form\Type\Payment\PaymentMethodChoiceType
+            translation:
+                model: Sylius\Component\Payment\Model\PaymentMethodTranslation
+                form:
+                    default: Sylius\Bundle\PaymentBundle\Form\Type\PaymentMethodTranslationType
     gateways:
         dummy: Test
         offline: Offline

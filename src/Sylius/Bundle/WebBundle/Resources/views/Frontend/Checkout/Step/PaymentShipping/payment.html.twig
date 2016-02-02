@@ -1,0 +1,24 @@
+{% block content %}
+<h3>{{ 'sylius.checkout.payment.header'|trans|raw }}</h3>
+
+{{ form_errors(form.paymentMethod) }}
+<div class="well">
+
+<fieldset>
+  {% for paymentMethodForm in form.paymentMethod %}
+    <div class="no-cols clearfix checkbox-row">
+	    <span class="pull-left">
+        {% if loop.first %}
+          {{ form_widget(paymentMethodForm, { 'attr': {'checked': 'checked'} }) }}
+        {% else %}
+          {{ form_widget(paymentMethodForm) }}
+        {% endif %}
+      </span>
+	    {{ form_label(paymentMethodForm) }}
+    </div>
+  {% endfor %}
+</fieldset>
+
+{{ form_widget(form._token) }}
+</div>
+{% endblock %}

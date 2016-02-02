@@ -12,7 +12,6 @@
 namespace Sylius\Bundle\VariationBundle\DependencyInjection;
 
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -68,6 +67,9 @@ class SyliusVariationExtension extends AbstractResourceExtension
             if (!isset($config['validation_groups'][$variable]['variant'])) {
                 $config['validation_groups'][$variable]['variant'] = array('sylius');
             }
+            if (!isset($config['validation_groups'][$variable]['variant_translation'])) {
+                $config['validation_groups'][$variable]['variant_translation'] = array('sylius');
+            }
             if (!isset($config['validation_groups'][$variable]['option'])) {
                 $config['validation_groups'][$variable]['option'] = array('sylius');
             }
@@ -106,7 +108,6 @@ class SyliusVariationExtension extends AbstractResourceExtension
         $variantAlias = $variable.'_variant';
         $optionValueAlias = $variable.'_option_value';
 
-
         $variantChoiceFormType = new Definition('Sylius\Bundle\VariationBundle\Form\Type\VariantChoiceType');
         $variantChoiceFormType
             ->setArguments(array($variable))
@@ -122,7 +123,6 @@ class SyliusVariationExtension extends AbstractResourceExtension
         ;
 
         $container->setDefinition('sylius.form.type.'.$variantAlias.'_match', $variantMatchFormType);
-
 
         $optionValueChoiceFormType = new Definition('Sylius\Bundle\VariationBundle\Form\Type\OptionValueChoiceType');
         $optionValueChoiceFormType

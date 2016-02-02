@@ -11,39 +11,39 @@
     'use strict';
 
     $(document).ready(function() {
-        $('select[name$="[country]"]').on('change', function(event) {
-            var $select = $(event.currentTarget);
-            var $provinceContainer = $select.closest('div.form-group').next('div.province-container');
-            var provinceName = $select.attr('name').replace('country', 'province');
-
-            if ('' === $select.val()) {
-                $provinceContainer.fadeOut('slow', function () {
-                    $provinceContainer.html('');
-                });
-                return;
-            }
-
-            $.get($provinceContainer.attr('data-url'), {countryId: $(this).val()}, function (response) {
-                if (!response.content) {
-                    $provinceContainer.fadeOut('slow', function () {
-                        $provinceContainer.html('');
-                    });
-                } else {
-                    $provinceContainer.fadeOut('slow', function () {
-                        $provinceContainer.html(response.content.replace(
-                            'name="sylius_address_province"',
-                            'name="' + provinceName + '"'
-                        ));
-
-                        $provinceContainer.fadeIn();
-                    });
-                }
-            });
-        });
-
-        if('' === $.trim($('div.province-container').text())) {
-            $('select.country-select').trigger('change');
-        }
+        //$('select[name$="[country]"]').on('change', function(event) {
+        //    var $select = $(event.currentTarget);
+        //    var $provinceContainer = $select.closest('div.form-group').next('div.province-container');
+        //    var provinceName = $select.attr('name').replace('country', 'province');
+        //
+        //    if ('' === $select.val()) {
+        //        $provinceContainer.fadeOut('slow', function () {
+        //            $provinceContainer.html('');
+        //        });
+        //        return;
+        //    }
+        //
+        //    $.get($provinceContainer.attr('data-url'), {countryId: $(this).val()}, function (response) {
+        //        if (!response.content) {
+        //            $provinceContainer.fadeOut('slow', function () {
+        //                $provinceContainer.html('');
+        //            });
+        //        } else {
+        //            $provinceContainer.fadeOut('slow', function () {
+        //                $provinceContainer.html(response.content.replace(
+        //                    'name="sylius_address_province"',
+        //                    'name="' + provinceName + '"'
+        //                ));
+        //
+        //                $provinceContainer.fadeIn();
+        //            });
+        //        }
+        //    });
+        //});
+        //
+        //if('' === $.trim($('div.province-container').text())) {
+        //    $('select.country-select').trigger('change');
+        //}
 
         var $billingAddressCheckbox  = $('input[type="checkbox"][name$="[differentBillingAddress]"]');
         var $billingAddressContainer = $('#sylius-billing-address-container');

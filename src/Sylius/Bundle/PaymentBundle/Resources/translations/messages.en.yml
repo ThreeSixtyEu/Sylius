@@ -32,6 +32,7 @@ sylius:
             gateway: Gateway
             groups_limit: Limited to Groups
             name: Name
+            translations: Translations
             fee_calculator:
                 fixed:
                     amount: Amount

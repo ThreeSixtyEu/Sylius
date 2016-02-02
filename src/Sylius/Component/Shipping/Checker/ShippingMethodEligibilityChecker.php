@@ -76,7 +76,7 @@ class ShippingMethodEligibilityChecker implements ShippingMethodEligibilityCheck
         $numMatches = $numShippables = 0;
         foreach ($subject->getShippables() as $shippable) {
             $numShippables++;
-            if ($category === $shippable->getShippingCategory()) {
+            if ($shippable->getShippingCategory()->contains($category)) {
                 $numMatches++;
             }
         }

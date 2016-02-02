@@ -115,6 +115,7 @@ class Configuration implements ConfigurationInterface
                             ->info('Templates used for steps in the checkout flow process')
                             ->children()
                                 ->append($this->addCheckoutStepNode('security', 'SyliusWebBundle:Frontend/Checkout/Step:security.html.twig'))
+                                ->append($this->addCheckoutStepNode('payment_shipping', 'SyliusWebBundle:Frontend/Checkout/Step:payment_shipping.html.twig'))
                                 ->append($this->addCheckoutStepNode('addressing', 'SyliusWebBundle:Frontend/Checkout/Step:addressing.html.twig'))
                                 ->append($this->addCheckoutStepNode('shipping', 'SyliusWebBundle:Frontend/Checkout/Step:shipping.html.twig'))
                                 ->append($this->addCheckoutStepNode('payment', 'SyliusWebBundle:Frontend/Checkout/Step:payment.html.twig'))

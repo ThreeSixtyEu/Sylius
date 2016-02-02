@@ -13,13 +13,14 @@ namespace Sylius\Component\Variation\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Translation\Model\AbstractTranslatable;
 
 /**
  * Object variant model.
  *
  * @author Paweł Jędrzejewski <pawel@sylius.org>
  */
-class Variant implements VariantInterface
+class Variant extends AbstractTranslatable implements VariantInterface
 {
     /**
      * Variant id.
@@ -34,13 +35,6 @@ class Variant implements VariantInterface
      * @var Boolean
      */
     protected $master = false;
-
-    /**
-     * Variant presentation.
-     *
-     * @var string
-     */
-    protected $presentation;
 
     /**
      * Product.
@@ -82,6 +76,7 @@ class Variant implements VariantInterface
      */
     public function __construct()
     {
+        parent::__construct();
         $this->options = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
@@ -117,7 +112,7 @@ class Variant implements VariantInterface
      */
     public function getPresentation()
     {
-        return $this->presentation;
+        return $this->translate()->getPresentation();
     }
 
     /**
@@ -125,7 +120,7 @@ class Variant implements VariantInterface
      */
     public function setPresentation($presentation)
     {
-        $this->presentation = $presentation;
+        $this->translate()->setPresentation($presentation);
 
         return $this;
     }
@@ -274,5 +269,13 @@ class Variant implements VariantInterface
         $this->deletedAt = $deletedAt;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTranslationEntityClass()
+    {
+        return get_class().'Translation';
     }
 }

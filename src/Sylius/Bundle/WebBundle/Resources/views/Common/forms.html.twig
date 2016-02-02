@@ -123,7 +123,11 @@
                             <span class="pull-right text-muted">{{ shipping_costs[child.vars.value]|sylius_price }}</span>
                         {% endif %}
                         <label{% for attrname, attrvalue in child.vars.label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-                        {{ form_widget(child) }}
+                        {% if loop.first %}
+                            {{ form_widget(child, {'attr': {'checked': 'checked'}}) }}
+                        {% else %}
+                            {{ form_widget(child) }}
+                        {% endif %}
                         {{ child.vars.label|trans({}, translation_domain) }}
                         </label>
                     </div>

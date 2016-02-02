@@ -9,6 +9,8 @@ sylius_backend_payment_method_index:
         _sylius:
             template: SyliusWebBundle:Backend/PaymentMethod:index.html.twig
             sortable: true
+            method: createFilterPaginator
+            arguments: [$criteria, $sorting, $deleted]
             sorting:
                 name: desc
 

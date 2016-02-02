@@ -43,6 +43,7 @@ class ProductType extends BaseProductType
             ->add('shippingCategory', 'sylius_shipping_category_choice', array(
                 'required'    => false,
                 'empty_value' => '---',
+                'multiple' => true,
                 'label'       => 'sylius.form.product.shipping_category'
             ))
             ->add('taxons', 'sylius_taxon_selection')

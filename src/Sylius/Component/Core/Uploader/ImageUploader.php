@@ -12,15 +12,18 @@
 namespace Sylius\Component\Core\Uploader;
 
 use Gaufrette\Filesystem;
+use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\ImageInterface;
 
 class ImageUploader implements ImageUploaderInterface
 {
     protected $filesystem;
+    protected $logger;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, LoggerInterface $logger)
     {
         $this->filesystem = $filesystem;
+        $this->logger = $logger;
     }
 
     public function upload(ImageInterface $image)
@@ -48,6 +51,11 @@ class ImageUploader implements ImageUploaderInterface
 
     public function remove($path)
     {
+        if (!$this->filesystem->has($path)) {
+            $this->logger->error(sprintf('The file "%s" was not found. Uploader could not remove it, skipping.', $path));
+            return false;
+        }
+
         return $this->filesystem->delete($path);
     }
 

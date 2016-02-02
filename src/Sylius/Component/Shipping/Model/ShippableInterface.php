@@ -10,6 +10,7 @@
  */
 
 namespace Sylius\Component\Shipping\Model;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Shippable interface.
@@ -56,7 +57,7 @@ interface ShippableInterface
     /**
      * Get the shipping category for transportable object.
      *
-     * @return ShippingCategoryInterface
+     * @return Collection|ShippingCategoryInterface[]
      */
     public function getShippingCategory();
 

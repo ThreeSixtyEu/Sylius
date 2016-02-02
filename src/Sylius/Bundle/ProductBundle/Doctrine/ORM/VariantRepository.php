@@ -11,14 +11,14 @@
 
 namespace Sylius\Bundle\ProductBundle\Doctrine\ORM;
 
-use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use Sylius\Bundle\TranslationBundle\Doctrine\ORM\TranslatableResourceRepository;
 
 /**
  * Variant repository.
  *
  * @author Alexandre Bacco <alexandre.bacco@gmail.com>
  */
-class VariantRepository extends EntityRepository
+class VariantRepository extends TranslatableResourceRepository
 {
     protected function getCollectionQueryBuilder()
     {
