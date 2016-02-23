@@ -42,6 +42,7 @@
             <argument type="service" id="sylius.email_sender.adapter" />
             <argument type="service" id="sylius.email_provider" />
             <argument type="service" id="sylius.mailer.default_settings_provider" />
+            <argument type="service" id="event_dispatcher" />
         </service>
 
         <service id="sylius.mailer.default_settings_provider" class="%sylius.mailer.default_settings_provider.class%">

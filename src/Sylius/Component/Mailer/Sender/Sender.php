@@ -11,10 +11,13 @@
 
 namespace Sylius\Component\Mailer\Sender;
 
+use Sylius\Component\Mailer\Event\EmailSendEvent;
 use Sylius\Component\Mailer\Provider\DefaultSettingsProviderInterface;
 use Sylius\Component\Mailer\Sender\Adapter\AdapterInterface as SenderAdapterInterface;
 use Sylius\Component\Mailer\Renderer\Adapter\AdapterInterface as RendererAdapterInterface;
 use Sylius\Component\Mailer\Provider\EmailProviderInterface;
+use Sylius\Component\Mailer\SyliusMailerEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Basic sender, which uses adapters system.
@@ -46,21 +49,29 @@ class Sender implements SenderInterface
     protected $defaultSettingsProvider;
 
     /**
-     * @param RendererAdapterInterface         $rendererAdapter
-     * @param SenderAdapterInterface           $senderAdapter
-     * @param EmailProviderInterface           $provider
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
+     * @param RendererAdapterInterface $rendererAdapter
+     * @param SenderAdapterInterface $senderAdapter
+     * @param EmailProviderInterface $provider
      * @param DefaultSettingsProviderInterface $defaultSettingsProvider
+     * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(
         RendererAdapterInterface $rendererAdapter,
         SenderAdapterInterface $senderAdapter,
         EmailProviderInterface $provider,
-        DefaultSettingsProviderInterface $defaultSettingsProvider
+        DefaultSettingsProviderInterface $defaultSettingsProvider,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->senderAdapter            = $senderAdapter;
         $this->rendererAdapter          = $rendererAdapter;
         $this->provider                 = $provider;
         $this->defaultSettingsProvider  = $defaultSettingsProvider;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -76,6 +87,9 @@ class Sender implements SenderInterface
 
         $senderAddress = $email->getSenderAddress() ?: $this->defaultSettingsProvider->getSenderAddress();
         $senderName = $email->getSenderName() ?: $this->defaultSettingsProvider->getSenderName();
+
+        $emailSendEvent = new EmailSendEvent(null, $email, $data, $recipients);
+        $this->dispatcher->dispatch(SyliusMailerEvents::EMAIL_PRE_PROCESS, $emailSendEvent);
 
         $renderedEmail = $this->rendererAdapter->render($email, $data);
 

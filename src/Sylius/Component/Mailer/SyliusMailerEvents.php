@@ -15,6 +15,7 @@ namespace Sylius\Component\Mailer;
  */
 class SyliusMailerEvents
 {
+    const EMAIL_PRE_PROCESS = 'sylius.email.pre_process';
     const EMAIL_PRE_RENDER = 'sylius.email_rendered';
     const EMAIL_PRE_SEND = 'sylius.email_send.pre_send';
     const EMAIL_POST_SEND = 'sylius.email_send.post_send';
