@@ -123,16 +123,21 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 		$choiceList = $methodType->getConfig()->getOption('choice_list');
 
 		$requireAddress = array();
+		$generateTickets = array();
 		/** @var ShippingMethod $shippingMethod */
 		$i = 0;
 		foreach ($choiceList->getChoices() as $shippingMethod) {
 			if ($shippingMethod->getRequireAddress()) {
 				$requireAddress[] = $i;
 			}
+			if ($shippingMethod->getCategory()->isGenerateTickets()) {
+				$generateTickets[] = $i;
+			}
 			$i++;
 		}
 
 		$view->vars['shipping_methods_requiring_address'] = json_encode(array('ids' => $requireAddress));
+		$view->vars['shipping_methods_generates_eticket'] = json_encode(array('ids' => $generateTickets));
 	}
 
 	/**

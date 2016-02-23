@@ -18,6 +18,7 @@ use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\Model\ShippingMethod;
 use Sylius\Component\Core\Model\UserInterface;
 use Sylius\Component\Core\SyliusCheckoutEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -85,6 +86,14 @@ class PaymentShippingStep extends CheckoutStep
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
 		$formShipping = $this->createCheckoutShippingForm($order, $formShippingPre->get('country')->getData());
 		$formShipping->handleRequest($request);
+
+		if ($formPayment->isSubmitted() && $formShipping->isSubmitted()) {
+			// custom validation for pandaticket cashOnDelivery and eTicket combination
+			// TODO remove when relations between payment and delivery will be available
+			if ($order->getLastPayment()->getMethod()->getGateway() == 'cashOnDelivery' && $order->getLastShipment()->getMethod()->getCategory()->isGenerateTickets()) {
+				$formPayment->get('paymentMethod')->addError(new FormError('funlife.eshop.form.payment.cash_on_delivery'));
+			}
+		}
 
 		if ($formPayment->isValid() && $formShipping->isValid() && (!$this->requireAddress($order) || $formAddressing->isValid())) {
 			$compareAddr = new Address();

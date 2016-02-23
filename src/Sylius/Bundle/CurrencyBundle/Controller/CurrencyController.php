@@ -31,7 +31,13 @@ class CurrencyController extends ResourceController
     {
         $this->getCurrencyContext()->setCurrency($currency);
 
-        return $this->redirect($request->headers->get('referer'));
+        if (empty($request->headers->get('referer'))) {
+            $url = $this->generateUrl('sylius_homepage');
+        } else {
+            $url = $request->headers->get('referer');
+        }
+
+        return $this->redirect($url);
     }
 
     /**

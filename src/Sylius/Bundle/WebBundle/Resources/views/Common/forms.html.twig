@@ -98,6 +98,9 @@
                 }}
             </span>
         {% endfor %}
+        {% if help %}
+            <div class="help-block">{{ help|trans({}, translation_domain)|raw }}</div>
+        {% endif %}
         </div>
     </div>
 {% endspaceless %}
@@ -107,7 +110,7 @@
 {% spaceless %}
     {% if errors|length > 0 %}
         {% for error in errors %}
-            <div class="alert alert-danger">{{ error.message }}</div>
+            <div class="alert alert-danger">{{ error.message|trans(error.messageParameters, 'validators') }}</div>
         {% endfor %}
     {% endif %}
 {% endspaceless %}
