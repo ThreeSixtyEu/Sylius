@@ -62,7 +62,9 @@ class SwiftMailerAdapter extends AbstractAdapter
 
         $this->dispatcher->dispatch(SyliusMailerEvents::EMAIL_PRE_SEND, $emailSendEvent);
 
-        $this->mailer->send($message);
+        if (!$emailSendEvent->isError()) {
+            $this->mailer->send($message);
+        }
 
         $this->dispatcher->dispatch(SyliusMailerEvents::EMAIL_POST_SEND, $emailSendEvent);
     }

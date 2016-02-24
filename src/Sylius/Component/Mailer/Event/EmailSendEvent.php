@@ -40,21 +40,29 @@ class EmailSendEvent extends Event
     protected $data;
 
     /**
+     * @var bool
+     */
+    protected $error;
+
+    /**
      * @param mixed $message
-     * @param array $recipients
      * @param EmailInterface $email
      * @param array $data
+     * @param array $recipients
+     * @param bool $error
      */
     public function __construct(
         $message,
         EmailInterface $email,
         array $data,
-        array $recipients = array()
+        array $recipients = array(),
+        $error = false
     ) {
         $this->message = $message;
         $this->email = $email;
         $this->data = $data;
         $this->recipients = $recipients;
+        $this->error = $error;
     }
 
     /**
@@ -87,5 +95,21 @@ class EmailSendEvent extends Event
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param boolean $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
     }
 }
