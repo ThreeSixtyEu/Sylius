@@ -34,6 +34,7 @@ class PaymentMethodChoiceType extends BasePaymentMethodChoiceType
             $repositoryOptions = array(
                 'disabled' => $options['disabled'],
                 'channel' => $options['channel'],
+                'order_items' => $options['order_items'],
             );
 
             return function (PaymentMethodRepositoryInterface $repository) use ($repositoryOptions) {

@@ -147,7 +147,7 @@ class PaymentShippingStep extends CheckoutStep
 
 	protected function createCheckoutAddressingForm(OrderInterface $order, UserInterface $user = null)
 	{
-		return $this->createForm('sylius_checkout_addressing', $order, array('user' => $user));
+		return $this->createForm('sylius_checkout_addressing', $order, array('customer' => $user->getCustomer()));
 	}
 
 	protected function createCheckoutShippingForm(OrderInterface $order, $country)

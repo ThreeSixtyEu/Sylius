@@ -16,6 +16,7 @@ use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Sylius\Component\Addressing\Model\Country;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Addressing\Model\ZoneMemberCountry;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ShippingMethod;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
@@ -35,18 +36,40 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class CountrySpecificShippingStepType extends AbstractResourceType
 {
 	/**
+	 * @var ChannelContextInterface
+	 */
+	private $channelContext;
+
+	/**
+	 * CountrySpecificShippingStepType constructor.
+	 *
+	 * @param string $dataClass
+	 * @param array|\string[] $validationGroups
+	 * @param ChannelContextInterface $channelContext
+	 */
+	public function __construct($dataClass, $validationGroups, ChannelContextInterface $channelContext)
+	{
+		parent::__construct($dataClass, $validationGroups);
+		$this->channelContext = $channelContext;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('country', 'sylius_country_choice', array(
 			'label' => 'sylius.form.address.country',
+			'empty_value' => false,
 			'mapped' => false,
 		));
 
 		$builder->add('shipments', 'collection', array(
 			'type'    => 'sylius_checkout_shipment',
-			'options' => array('criteria' => $options['criteria'])
+			'options' => array(
+				'criteria' => $options['criteria'],
+				'channel' => $this->channelContext->getChannel(),
+			),
 		));
 
 		$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
@@ -81,7 +104,10 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 
 			$form->add('shipments', 'collection', array(
 				'type'    => 'sylius_checkout_shipment',
-				'options' => array('criteria' => $options['criteria'])
+				'options' => array(
+					'criteria' => $options['criteria'],
+					'channel' => $this->channelContext->getChannel(),
+				),
 			));
 		});
 
@@ -124,16 +150,15 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 
 		$requireAddress = array();
 		$generateTickets = array();
+
 		/** @var ShippingMethod $shippingMethod */
-		$i = 0;
 		foreach ($choiceList->getChoices() as $shippingMethod) {
 			if ($shippingMethod->getRequireAddress()) {
-				$requireAddress[] = $i;
+				$requireAddress[] = $shippingMethod->getId();
 			}
-			if ($shippingMethod->getCategory()->isGenerateTickets()) {
-				$generateTickets[] = $i;
+			if ($shippingMethod->getCategory() && $shippingMethod->getCategory()->isGenerateTickets()) {
+				$generateTickets[] = $shippingMethod->getId();
 			}
-			$i++;
 		}
 
 		$view->vars['shipping_methods_requiring_address'] = json_encode(array('ids' => $requireAddress));

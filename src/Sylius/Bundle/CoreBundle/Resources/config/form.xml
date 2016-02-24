@@ -70,6 +70,8 @@
         </service>
         <service id="sylius.checkout_form.shipping_country_specific" class="%sylius.checkout_form.shipping_country_specific.class%">
             <argument>%sylius.model.cart.class%</argument>
+            <argument type="collection" />
+            <argument type="service" id="sylius.context.channel" />
             <tag name="form.type" alias="sylius_checkout_shipping_country_specific" />
         </service>
         <service id="sylius.checkout_form.payment" class="%sylius.checkout_form.payment.class%">
