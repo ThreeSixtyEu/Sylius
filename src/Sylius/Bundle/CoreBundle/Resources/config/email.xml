@@ -32,6 +32,7 @@
 
         <service id="sylius.email_manager.order" class="%sylius.email_manager.order.class%">
             <argument type="service" id="sylius.email_sender" />
+            <tag name="kernel.event_listener" event="sylius.checkout.finalize.complete" method="sendConfirmationEmail" />
         </service>
 
         <service id="sylius.email_manager.shipment" class="%sylius.email_manager.shipment.class%">

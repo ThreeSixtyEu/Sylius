@@ -119,10 +119,6 @@ winzou_state_machine:
                     on:   'confirm'
                     do:   [@sylius.callback.coupon_usage, 'incrementCouponUsage']
                     args: ['object']
-                sylius_order_confirmation_email:
-                    on:   ['confirm']
-                    do:   [@sylius.email_manager.order, 'sendConfirmationEmail']
-                    args: ['object']
                 sylius_release_inventory:
                     on:   'release'
                     do:   [@sylius.order_processing.inventory_handler, 'releaseInventory']

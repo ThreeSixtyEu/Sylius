@@ -12,8 +12,8 @@
 namespace Sylius\Bundle\CoreBundle\EmailManager;
 
 use Sylius\Bundle\CoreBundle\Mailer\Emails;
-use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Sends the order confirmation email.
@@ -34,10 +34,10 @@ class OrderEmailManager
     }
 
     /**
-     * @param OrderInterface $order
+     * @param GenericEvent $event
      */
-    public function sendConfirmationEmail(OrderInterface $order)
+    public function sendConfirmationEmail(GenericEvent $event)
     {
-        $this->emailSender->send(Emails::ORDER_CONFIRMATION, array($order->getCustomer()->getEmail()), array('order' => $order));
+        $this->emailSender->send(Emails::ORDER_CONFIRMATION, array($event->getSubject()->getCustomer()->getEmail()), array('order' => $event->getSubject()));
     }
 }
