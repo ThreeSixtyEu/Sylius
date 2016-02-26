@@ -62,6 +62,7 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 			'label' => 'sylius.form.address.country',
 			'empty_value' => false,
 			'mapped' => false,
+			'enabled' => true,
 		));
 
 		$builder->add('shipments', 'collection', array(
