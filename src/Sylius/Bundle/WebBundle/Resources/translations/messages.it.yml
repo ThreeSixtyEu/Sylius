@@ -420,7 +420,7 @@ sylius:
     index_header: Pagine
     no_results: Non ci sono pagine statiche da visualizzare.
     title: Titolo
-    update_header: Ultimo aggiornamento
+    update_header: Pagina di modifica
   password: Password
   payment:
     amount: Ammontare

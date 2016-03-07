@@ -119,7 +119,7 @@ sylius:
         publishable: Published
         start_date: Start date
         title: Title
-        updated_at: Last update
+        updated_at: Editing page
         imagine:
             create: Create imagine block
             create_header: Creating a new imagine block
