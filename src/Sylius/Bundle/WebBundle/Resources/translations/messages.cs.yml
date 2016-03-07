@@ -86,7 +86,6 @@ sylius:
     string_blocks: Textové bloky
     imagine_blocks: Obrázkové bloky
     slideshow_blocks: Bannery
-
     end_date: Platnost do
     filter: Velikost obrázku
     id: Id
@@ -99,7 +98,6 @@ sylius:
     start_date: Platnost od
     title: Titulek
     updated_at: Poslední aktualizace
-
     imagine:
       create: Vytvořit obrázkový blok
       create_header: Vytváření obrázkového bloku
@@ -166,6 +164,8 @@ sylius:
       index: Země
     customers: Zákazníci
     edit: Úpravy
+    email:
+      index: E-maily
     exchange_rate:
       index: Směnné kurzy
     general_settings: Obecné nastavení
@@ -175,6 +175,8 @@ sylius:
       index: Sklad
     locale:
       index: Lokalizace
+    marketing:
+      Marketing
     new: Nový
     option:
       index: Možnosti
@@ -182,6 +184,8 @@ sylius:
       index: Objednávky
     payment:
       index: Platby
+    permission:
+      index: Oprávnění
     product:
       index: Produkty
     promotion:
@@ -192,7 +196,14 @@ sylius:
       index: Vlastnosti
     prototype:
       index: Vzory
+    report:
+      index: Reporty
+    role:
+      index: Role
     sales: Prodeje
+    section:
+      customer: Zákazníci
+    support: Zákaznická podpora
     shipment:
       index: Zásilky
     update: Úpravy
@@ -251,6 +262,19 @@ sylius:
     iso_name: ISO kód
     name: Jméno
   created_at: Vytvořeno
+  customer:
+    manage: Spravovat zákazníky
+  email:
+    create: Přidat nový e-mail
+    create_header: Přidání nového e-mailu
+    index_header: E-mailové šablony
+    manage: Správa e-mailů
+    no_results: Nejsou nastaveny žádné e-maily.
+    update_header: Úprava e-mailu
+    code: Kód
+    enabled: Povolit?
+    subject: Předmět
+    updated_at: Poslední změna
   exchange_rate:
     currency: měna
     id: ID
@@ -325,8 +349,15 @@ sylius:
     unit_price: Jednotná cena
   page:
     body: Tělo
+    create: Nová stránka
+    create_header: Nová stránka
+    end_date: Aktivní do
     id: ID
     index_header: Stránky
+    no_route: Stránku nebude možné zobrazit, pokud nebude existovat cesta pro zobrazení.
+    publishable: Zveřejněná
+    routes: Cesty
+    start_date: Aktivní od
     title: Název
     update_header: Poslední aktualizace
   password: Heslo
@@ -345,6 +376,16 @@ sylius:
     index_header: Způsoby plateb
     name: Jméno
     updated_at: Poslední aktualizace
+  permission:
+    create: Přidat oprávnění
+    create_header: Nové oprávnění
+    code: Kód
+    id: ID
+    description: Popis
+    index_header: Oprávnění
+    no_results: Žádná oprávnění nejsou nastavena.
+    update_header: Úprava oprávnění
+    updated_at: Poslední změna
   product:
     add_attribute: Přidat atribut
     add_payment_constraint: Přidat omezení platby
@@ -387,6 +428,34 @@ sylius:
     index_header: Kupóny
   prototype:
     index_header: Produktové vzory
+  report:
+    create: Vytvořit report
+    create_header: Vytvořit nový report
+    no_results: Žádné existující reporty.
+    show_header: Detail reportu
+    details: detaily
+    id: id
+    name: Název
+    code: Kód
+    description: Popis
+    manage: Správovat
+    update_header: Upravit report
+    renderer: Typ vykreslení
+    data_fetcher: Typ sběrače dat
+    index_header: Reporty
+    no_data: Žádná data k zobrazení.
+    no_report: Žádný report k zobrazení.
+  role:
+    create: Nová role
+    create_header: Nová role
+    code: Kód
+    id: ID
+    name: Název
+    description: Popis
+    index_header: Role
+    no_results: Žádné existující role.
+    update_header: Úprava role
+    updated_at: Poslední změna
   search: Hledat
   settings:
     general_header: Obecná nastavení

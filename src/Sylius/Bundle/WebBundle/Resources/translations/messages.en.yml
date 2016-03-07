@@ -108,7 +108,6 @@ sylius:
         string_blocks: String blocks
         imagine_blocks: Imagine blocks
         slideshow_blocks: Slideshow blocks
-
         end_date: End date
         filter: Image size
         id: Id
@@ -121,7 +120,6 @@ sylius:
         start_date: Start date
         title: Title
         updated_at: Last update
-
         imagine:
             create: Create imagine block
             create_header: Creating a new imagine block

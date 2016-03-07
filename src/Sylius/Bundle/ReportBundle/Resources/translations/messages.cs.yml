@@ -1,0 +1,24 @@
+sylius:
+    form:
+        rule:
+            item_count_configuration:
+                count: sylius.form.rule.item_count_configuration.count   # FIXME
+                equal: sylius.form.rule.item_count_configuration.equal   # FIXME
+
+            type: sylius.form.rule.type   # FIXME
+
+        report:
+            name: Název
+            description: Popis
+            data_fetcher: Sběrač dat
+            code: Kód
+            renderer:
+                label: Vykreslování
+                template: Šablona
+            chart:
+                type: Typ
+            user_registration:
+                start: Od
+                end: Do
+                period: Časový rozsah
+                empty_records: Vypisovat prázdné záznamy?

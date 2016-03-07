@@ -58,6 +58,7 @@ sylius:
       taxation:
         default_tax_zone: Výchozí sazba DPH
     shipment_filter:
+      channel: Kanál
       created_at_from: Od
       created_at_to: Do
       number: Číslo objednávky

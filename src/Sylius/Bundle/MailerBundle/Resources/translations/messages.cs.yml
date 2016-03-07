@@ -1,0 +1,11 @@
+sylius:
+    form:
+        email:
+            code: Kód
+            enabled: Povolený
+            subject: Předmět
+            sender_name: Jméno odesilatele
+            sender_address: Adresa odesilatele
+            content: Obsah
+            template: Šablona
+            no_template: Použít vlastní šablonu

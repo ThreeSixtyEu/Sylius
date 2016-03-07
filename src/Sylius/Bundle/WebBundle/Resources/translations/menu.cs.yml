@@ -9,7 +9,7 @@ sylius:
         channels: Kanály
         configuration: Nastavení
         contact_requests: Žádosti
-        contact_topics: Správa témat
+        contact_topics: Zákaznická podpora
         countries: Země
         customer: Zákazníci
         customers: Zákazníci
@@ -39,7 +39,7 @@ sylius:
         shipping_categories: Druhy zásilek
         shipping_methods: Způsoby dopravy
         stockables: Sklady
-        support: Podpora
+        support: Zákaznická podpora
         tax_categories: Typy zdanění
         tax_rates: Daňové sazby
         taxation_settings: Daně
@@ -52,7 +52,7 @@ sylius:
         channels: Kanály
         configuration: Nastavení
         contact_requests: Žádosti
-        contact_topics: Správa témat
+        contact_topics: Typy zákaznické podpory
         content: Obsah
         countries: Země
         customer: Zákazníci
@@ -85,7 +85,7 @@ sylius:
         shipping_categories: Druhy zásilek
         shipping_methods: Způsoby dopravy
         stockables: Sklady
-        support: Podpora
+        support: Zákaznická podpora
         tax_categories: Typy zdanění
         tax_rates: Daňové sazby
         taxation_settings: Daně

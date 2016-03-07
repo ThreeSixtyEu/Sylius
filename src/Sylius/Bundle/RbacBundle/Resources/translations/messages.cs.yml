@@ -1,0 +1,12 @@
+sylius:
+  form:
+    role:
+      code: Kód
+      name: Název
+      description: Popis
+      permissions: Oprávnění
+      parent: Zařadit pod
+    permission:
+      code: Kód
+      description: Popis
+      parent: Zařadit pod

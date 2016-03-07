@@ -1,3 +1,10 @@
 # This file is part of the Sylius package.
 # (c) Paweł Jędrzejewski
 
+sylius:
+  form:
+    attribute:
+      name: Ident atributu
+      presentation: Název atributu
+      type: Typ atributu
+      choices: Možnosti
