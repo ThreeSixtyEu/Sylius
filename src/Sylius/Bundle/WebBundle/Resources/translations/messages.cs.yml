@@ -359,7 +359,7 @@ sylius:
     routes: Cesty
     start_date: Aktivní od
     title: Název
-    update_header: Poslední aktualizace
+    update_header: Editace stránky
   password: Heslo
   payment:
     created_at: Vytvořeno
