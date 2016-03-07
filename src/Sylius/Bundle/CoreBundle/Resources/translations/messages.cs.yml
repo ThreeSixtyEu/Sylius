@@ -17,6 +17,12 @@ sylius:
       title: Název
     cart:
       coupon: Kupón
+    channel:
+      taxonomies: Kategorizace
+      locales: Jazyky
+      currencies: Měny
+      shipping_methods: Způsoby doručení
+      payment_methods: Způsoby plateb
     checkout:
       addressing:
         different_billing_address: Použít jinou adresu pro fakturaci?
@@ -55,6 +61,9 @@ sylius:
         meta_description: Meta popis
         meta_keywords: Meta klíčová slova
         title: Název stránky
+        tracking_code: Měřící kód (např. pro Google Analytics)
+      security:
+        enabled: Zabezpečeno?
       taxation:
         default_tax_zone: Výchozí sazba DPH
     shipment_filter:

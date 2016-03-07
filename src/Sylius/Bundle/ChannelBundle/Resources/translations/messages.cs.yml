@@ -1,0 +1,9 @@
+sylius:
+    form:
+        channel:
+            code: Kód
+            name: Název
+            description: Popisek
+            url: URL
+            enabled: Povolen?
+            color: Barva

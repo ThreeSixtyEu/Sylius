@@ -12,6 +12,7 @@ sylius:
       type: Typ Karty
     payment:
       amount: Platební částka
+      fee_calculator: Kalkulátor poplatku
       method: Způsob platby
       state:
         0: Stav platby
@@ -22,7 +23,13 @@ sylius:
     payment_method:
       description: Popis
       enabled: Povoleno?
+      fee_calculator:
+        fixed:
+          amount: Fixní cena poplatku
+        percent:
+          percent: Procentní poplatek
       gateway: Brána
       groups_limit: Limitováno pro skupiny
       name: Jméno
       translations: Překlady
+

@@ -6,3 +6,4 @@ sylius:
     currency:
       code: Kód
       enabled: Povoleno
+      exchange_rate: Směnný kurz

@@ -58,6 +58,12 @@ sylius:
     info: Info
     success: Úspěch
     warning: Varování
+  api_client:
+    create: Nový klíč
+    create_header: Nový API Klíč
+    index_header: API klienti
+    secret: Bezpečnostní klíč
+    update_header: Editace
   backend:
     alert:
       info: Info
@@ -155,11 +161,15 @@ sylius:
       updated_at: Poslední aktualizace
   breadcrumb:
     assortment: Sortiment
+    api_client:
+      index: API klienti
     block:
       simple:
         index: Jednoduché bloky
       string:
         index: Textové bloky
+    channel:
+      index: Kanály
     country:
       index: Země
     customers: Zákazníci
@@ -203,6 +213,7 @@ sylius:
     sales: Prodeje
     section:
       customer: Zákazníci
+    security_settings: Zabezpečení
     support: Zákaznická podpora
     shipment:
       index: Zásilky
@@ -225,6 +236,21 @@ sylius:
       total: Celkem
       unit_price: Cena
     summary_header: Obsah košíku
+  channel:
+    code: Kód
+    create: Nový kanál
+    create_header: Nový kanál
+    created_at: Vytvořen
+    enabled: Povolen?
+    id: ID
+    index_header: Kanály
+    manage: Správa kanálů
+    name: Název
+    no_results: Žádné kanály.
+    url: URL
+    update: Upravit kanál
+    updated_at: Poslední aktualizace
+    update_header: Úprava kanálu
   checkout:
     back: Zpět
     finalize:
@@ -257,6 +283,7 @@ sylius:
     message: Chcete tuto položku odstranit?
     title: Potvrzení
   country:
+    enabled: Povolena?
     id: ID
     index_header: Země
     iso_name: ISO kód
@@ -264,6 +291,7 @@ sylius:
   created_at: Vytvořeno
   customer:
     manage: Spravovat zákazníky
+  disable: Zakázat
   email:
     create: Přidat nový e-mail
     create_header: Přidání nového e-mailu
@@ -275,6 +303,7 @@ sylius:
     enabled: Povolit?
     subject: Předmět
     updated_at: Poslední změna
+  enable: Povolit
   exchange_rate:
     currency: měna
     id: ID
@@ -312,6 +341,7 @@ sylius:
   locale:
     code: Kód
     enabled: Povoleno
+    name: Název / Jazyk
     updated_at: Poslední aktualizace
   login: Přihlásit
   login_header: Administrace
@@ -459,6 +489,7 @@ sylius:
   search: Hledat
   settings:
     general_header: Obecná nastavení
+    security_header: Nastavení zabezpečení
     taxation_header: Daně
   shipping_address: Doručovací adresa
   shipping_category:

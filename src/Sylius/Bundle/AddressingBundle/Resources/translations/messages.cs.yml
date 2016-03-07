@@ -23,8 +23,11 @@ sylius:
     zone:
       members: Členové
       name: Jméno
+      select_scope: Vyberte
+      scope: Rozsah
       type: Typ
       types:
+        country: Stát
         province: Provincie
         zone: Oblast
     zone_member_country:

@@ -33,6 +33,13 @@ sylius:
       body: Tělo
       parent: Rodič
       title: Název
+      id: Id
+      internal_name: Systémový název
+      menu_nodes: Zařazení
+      publish_end_date: Platnost do
+      publish_start_date: Platnost od
+      publishable: Zveřejněná
+      routes: Cesty
     string_block:
       body: Tělo
       id: ID

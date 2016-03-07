@@ -18,6 +18,12 @@ sylius:
         user_confirmation:
             name: User confirmation
             subject: Welcome to our store!
+    api_client:
+        create: New API Key
+        create_header: New API Client
+        index_header: API Clients
+        secret: Secure keys
+        update_header: Editing
     account:
         address:
             action:
@@ -176,6 +182,8 @@ sylius:
             update_header: Editing string block
             updated_at: Last update
     breadcrumb:
+        api_client:
+            index: API Clients
         assortment: Assortment
         block:
             imagine:
