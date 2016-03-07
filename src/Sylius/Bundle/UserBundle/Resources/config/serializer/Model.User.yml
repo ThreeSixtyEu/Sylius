@@ -2,9 +2,9 @@ Sylius\Component\User\Model\User:
     exclusion_policy: ALL
     xml_root_name: sylius_user
     properties:
-        id:
-            expose: true
-            type: integer
+#        id:
+#            expose: true
+#            type: integer
         username:
             expose: true
             type: string
@@ -24,3 +24,6 @@ Sylius\Component\User\Model\User:
         getEmailCanonical:
             serialized_name: email_canonical
             type: string
+        getCustomerId: # Backward compability with 0.13
+            serialized_name: id
+            type: integer

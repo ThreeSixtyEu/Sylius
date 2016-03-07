@@ -633,4 +633,15 @@ class User implements UserInterface
     {
         return (null !== $date) && ((new \DateTime()) >= $date);
     }
+
+    /**
+     * Backward compability with 0.13
+     * Used in api as user id
+     *
+     * @return int
+     */
+    public function getCustomerId()
+    {
+        return $this->getCustomer()->getId();
+    }
 }
