@@ -6,29 +6,40 @@ sylius:
     menu:
       main:
         assortment: Sortiment
+        channels: Kanály
         configuration: Nastavení
+        contact_requests: Žádosti
+        contact_topics: Správa témat
         countries: Země
         customer: Zákazníci
+        customers: Zákazníci
         dashboard: Nástěnka
+        emails: Emaily
         exchange_rates: Směnné kurzy
         general_settings: Obecná nastavení
         homepage: Váš obchod
         locales: Lokalizace
+        marketing: Marketing
         new_order: Přidat novou objednávku
         new_promotion: Přidat akci
         options: Spravovat nastavení produktů
         orders: Aktuální objednávky
         payment_methods: Způsoby plateb
         payments: Platby
+        permissions: Oprávnění
         products: Produkty
         promotions: Akce
         properties: Nastavení parametrů
         prototypes: Produktové vzory
+        report: Reporty
+        roles: Role
         sales: Objednávky
+        security_settings: Zabezpečení
         shipments: Zásilky
         shipping_categories: Druhy zásilek
         shipping_methods: Způsoby dopravy
         stockables: Sklady
+        support: Podpora
         tax_categories: Typy zdanění
         tax_rates: Daňové sazby
         taxation_settings: Daně
@@ -38,16 +49,22 @@ sylius:
       sidebar:
         assortment: Sortiment
         blocks: Bloky
+        channels: Kanály
         configuration: Nastavení
+        contact_requests: Žádosti
+        contact_topics: Správa témat
         content: Obsah
         countries: Země
         customer: Zákazníci
+        customers: Zákazníci
         dashboard: Nástěnka
+        emails: Emaily
         exchange_rates: Směnné kurzy
         general_settings: Obecná nastavení
         groups: Skupiny
         homepage: Zpět na frontend
         locales: Lokalizace
+        marketing: Marketing
         new_order: Přidat novou objednávku
         new_promotion: Přidat akci
         options: Spravovat nastavení
@@ -55,15 +72,20 @@ sylius:
         pages: Stránky
         payment_methods: Způsoby plateb
         payments: Platby
+        permissions: Oprávnění
         products: Produkty
         promotions: Akce
         properties: Nastavení parametrů
         prototypes: Produktové vzory
+        report: Reporty
+        roles: Role
         sales: Objednávky
+        security_settings: Zabezpečení
         shipments: Zásilky
         shipping_categories: Druhy zásilek
         shipping_methods: Způsoby dopravy
         stockables: Sklady
+        support: Podpora
         tax_categories: Typy zdanění
         tax_rates: Daňové sazby
         taxation_settings: Daně
