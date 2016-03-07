@@ -8,10 +8,10 @@
 <table id="customers" class="table">
     <thead>
         <tr>
-            <th>{{ sylius_resource_sort('id', 'sylius.customer.id'|trans) }}</th>
+            <th>{{ sylius_resource_sort('id', 'sylius.user.id'|trans) }}</th>
             <th>{{ sylius_resource_sort('firstName', 'sylius.address.firstname'|trans) }}</th>
             <th>{{ sylius_resource_sort('lastName', 'sylius.address.lastname'|trans) }}</th>
-            <th>{{ sylius_resource_sort('email', 'sylius.customer.email'|trans) }}</th>
+            <th>{{ sylius_resource_sort('email', 'sylius.user.email'|trans) }}</th>
             <th>{{ sylius_resource_sort('user.createdAt', 'sylius.user.registration_date'|trans) }}</th>
             <th>{{ sylius_resource_sort('user.enabled', 'sylius.user.enabled'|trans) }}</th>
             <th></th>
@@ -56,7 +56,7 @@
     </tbody>
 </table>
 {% else %}
-{{ alerts.info('sylius.customer.no_results'|trans) }}
+{{ alerts.info('sylius.user.no_results'|trans) }}
 {% endif %}
 
 {% endmacro %}
@@ -71,7 +71,7 @@
 <table id="customers" class="table">
     <thead>
         <tr>
-            <th>{{ sylius_resource_sort('email', 'sylius.customer.email'|trans) }}</th>
+            <th>{{ sylius_resource_sort('email', 'sylius.user.email'|trans) }}</th>
             <th>{{ sylius_resource_sort('user.enabled', 'sylius.user.enabled'|trans) }}</th>
             <th></th>
         </tr>
@@ -108,7 +108,7 @@
     </tbody>
 </table>
 {% else %}
-{{ alerts.info('sylius.customer.no_results'|trans) }}
+{{ alerts.info('sylius.user.no_results'|trans) }}
 {% endif %}
 
 {% endmacro %}
