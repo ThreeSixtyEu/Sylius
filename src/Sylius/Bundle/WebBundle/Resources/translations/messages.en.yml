@@ -108,6 +108,20 @@ sylius:
         string_blocks: String blocks
         imagine_blocks: Imagine blocks
         slideshow_blocks: Slideshow blocks
+
+        end_date: End date
+        filter: Image size
+        id: Id
+        image: Image
+        internal_name: Internal name
+        label: Description
+        link_url: Link URL
+        parent: Parent
+        publishable: Published
+        start_date: Start date
+        title: Title
+        updated_at: Last update
+
         imagine:
             create: Create imagine block
             create_header: Creating a new imagine block
@@ -136,6 +150,7 @@ sylius:
             update_header: Editing simple block
             updated_at: Last update
         slideshow:
+            add_slide: Add slide
             body: Body
             create: Create slideshow block
             create_header: Creating a new slideshow block

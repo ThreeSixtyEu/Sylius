@@ -80,12 +80,88 @@ sylius:
       sales_confirmed_this_month: Z toho zaplaceno
       sales_this_month: Prodeje
   block:
-    body: Tělo
-    id: ID
-    title: Název
+    index_header: Obsahové bloky
+    no_results: Žádné bloky k zobrazení.
+    simple_blocks: Jednoduché bloky
+    string_blocks: Textové bloky
+    imagine_blocks: Obrázkové bloky
+    slideshow_blocks: Bannery
+
+    end_date: Platnost do
+    filter: Velikost obrázku
+    id: Id
+    image: Obrázek
+    internal_name: Systémový název
+    label: Popisek
+    link_url: Odkaz URL
+    parent: Zařazení bloku
+    publishable: Zvěřejněn
+    start_date: Platnost od
+    title: Titulek
     updated_at: Poslední aktualizace
+
+    imagine:
+      create: Vytvořit obrázkový blok
+      create_header: Vytváření obrázkového bloku
+      end_date: Platnost do
+      id: Id
+      index: Obrázkové bloky
+      index_header: Obrázkové bloky
+      label: Popisek
+      publishable: Zvěřejněn
+      start_date: Platnost od
+      title: Titulek
+      update_header: Úprava obrázkového bloku
+      updated_at: Poslední aktualizace
+    simple:
+      body: Tělo
+      create: Nový jednoduchý blok
+      create_header: Nový jednoduchý blok
+      end_date: Platnost do
+      id: Id
+      index: Jednoduché bloky
+      index_header: Jednoduché bloky
+      label: Popisek
+      publishable: Zvěřejněn
+      start_date: Platnost od
+      title: Titulek
+      update_header: Úprava jednoduchého bloku
+      updated_at: Poslední aktualizace
+    slideshow:
+      add_slide: Přidat banner
+      body: Tělo
+      create: Nový blok banneru
+      create_header: Nový blok banneru
+      end_date: Platnost do
+      id: Id
+      index: Bloky bannerů
+      index_header: Bloky bannerů
+      publishable: Zvěřejněn
+      start_date: Platnost od
+      title: Titulek
+      update_header: Úprava bloku banneru
+      updated_at: Poslední aktualizace
+    string:
+      body: Tělo
+      create: Nový textový blok
+      create_header: Nový textový blok
+      end_date: Platnost do
+      id: Id
+      index: Textové bloky
+      index_header: Textové bloky
+      label: Popisek
+      publishable: Zvěřejněn
+      start_date: Platnost od
+      title: Titulek
+      update_header: Úprava textového bloku
+      updated_at: Poslední aktualizace
   breadcrumb:
     assortment: Sortiment
+    block:
+      simple:
+        index: Jednoduché bloky
+      string:
+        index: Textové bloky
     country:
       index: Země
     customers: Zákazníci
