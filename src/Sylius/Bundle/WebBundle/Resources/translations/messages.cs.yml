@@ -325,6 +325,11 @@ sylius:
       email: Email
       firstName: Křestní Jméno
       lastName: Příjmení
+      birthday: Datum narození
+      gender:
+        index: Pohlaví
+        male: Muž
+        female: Žena
   gallery:
     next: Další
     previous: Předchozí

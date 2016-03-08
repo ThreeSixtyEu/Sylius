@@ -447,6 +447,11 @@ sylius:
             email: Email
             firstName: First name
             lastName: Last name
+            birthday: Birthday
+            gender:
+                index: Gender
+                male: Male
+                female: Female
         comment:
             comment: Comment
             notify_customer: Notify Customer?

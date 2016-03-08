@@ -26,20 +26,22 @@ class CustomerProfileType extends AbstractResourceType
     {
         $builder
             ->add('firstName', 'text', array(
-                'label' => 'sylius.form.customer.first_name',
+                'label' => 'sylius.form.profile.firstName',
             ))
             ->add('lastName', 'text', array(
-                'label' => 'sylius.form.customer.last_name',
+                'label' => 'sylius.form.profile.lastName',
             ))
             ->add('email', 'email', array(
-                'label' => 'sylius.form.customer.email',
+                'label' => 'sylius.form.profile.email',
             ))
             ->add('birthday', 'birthday', array(
-                'label'    => 'sylius.form.customer.birthday',
+                'label'    => 'sylius.form.profile.birthday',
                 'widget'   => 'single_text',
                 'required' => false,
             ))
-            ->add('gender', 'sylius_gender')
+            ->add('gender', 'sylius_gender', array(
+                'label'    => 'sylius.form.profile.gender.index'
+            ))
         ;
     }
 
