@@ -17,7 +17,9 @@ sylius_api_user_create:
     path: /
     methods: [POST]
     defaults:
-        _controller: sylius.controller.user:createAction
+        _controller: sylius.controller.customer:createAction
+        _sylius:
+            form: sylius_api_customer
 
 sylius_api_user_update:
     path: /{id}

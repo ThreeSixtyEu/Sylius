@@ -21,6 +21,8 @@
         <parameter key="sylius.form.type.api.order_item.class">Sylius\Bundle\CoreBundle\Form\Type\Api\OrderItemType</parameter>
         <parameter key="sylius.form.type.api.taxon.class">Sylius\Bundle\CoreBundle\Form\Type\Api\TaxonType</parameter>
         <parameter key="sylius.form.type.api.product.class">Sylius\Bundle\CoreBundle\Form\Type\Api\ProductType</parameter>
+        <parameter key="sylius.form.type.api.customer.class">Sylius\Bundle\CoreBundle\Form\Type\Api\CustomerType</parameter>
+        <parameter key="sylius.model.customer.class">Sylius\Bundle\CoreBundle\Form\Model\ApiCustomerModel</parameter>
     </parameters>
 
     <services>
@@ -39,6 +41,10 @@
         <service id="sylius.form.type.api.product" class="%sylius.form.type.api.product.class%">
             <argument>%sylius.model.product.class%</argument>
             <tag name="form.type" alias="sylius_api_product" />
+        </service>
+        <service id="sylius.form.type.api.customer" class="%sylius.form.type.api.customer.class%">
+            <argument>%sylius.model.customer.class%</argument>
+            <tag name="form.type" alias="sylius_api_customer" />
         </service>
     </services>
 
