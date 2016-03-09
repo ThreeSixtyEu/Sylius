@@ -62,7 +62,9 @@ class ImagineBlockType extends AbstractResourceType
         $filters = array();
 
         foreach (array_keys($this->filterConfiguration->all()) as $filter) {
-            $filters[$filter] = sprintf('sylius.form.imagine_block.%s', $filter);
+            if (in_array($filter, array('slideshow_small', 'slideshow_medium', 'slideshow_large'))) {
+                $filters[$filter] = sprintf('sylius.form.imagine_block.%s', $filter);
+            }
         }
 
         $builder
