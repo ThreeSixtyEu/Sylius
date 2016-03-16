@@ -96,9 +96,10 @@ class PaymentShippingStep extends CheckoutStep
 		}
 
 		if ($formPayment->isValid() && $formShipping->isValid() && (!$this->requireAddress($order) || $formAddressing->isValid())) {
-			$compareAddr = new Address();
+			$validator = $this->container->get('validator');
+			$violations = $validator->validate($order->getShippingAddress(), array('sylius'));
 
-			if (!$this->requireAddress($order) && $order->getShippingAddress() == $compareAddr) {
+			if (!$this->requireAddress($order) || $violations->count() !== 0) {
 				$address = new Address();
 				$address->setFirstName('anon.');
 				$address->setLastName('anon.');
