@@ -17,7 +17,6 @@ use Sylius\Component\Addressing\Model\Country;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Addressing\Model\ZoneMemberCountry;
 use Sylius\Component\Core\Model\ShippingMethod;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,15 +41,23 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 		$builder->add('country', 'sylius_country_choice', array(
 			'label' => 'sylius.form.address.country',
 			'mapped' => false,
+			'data' => $options['country'],
 		));
 
 		$builder->add('shipments', 'collection', array(
 			'type'    => 'sylius_checkout_shipment',
-			'options' => array('criteria' => $options['criteria'])
+			'options' => array('criteria' => $options['criteria']),
 		));
 
 		$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
 			$form = $event->getForm();
+
+			$form->add('country', 'sylius_country_choice', array(
+				'label' => 'sylius.form.address.country',
+				'empty_value' => ($form->get('country')->getData() || $options['country']) ? false : 'sylius.form.address.country.empty',
+				'mapped' => false,
+				'data' => $options['country'],
+			));
 
 			if ($options['criteria']['zone'] !== null) {
 				return;
@@ -76,19 +83,17 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 						}
 					}
 				}
-				$options['criteria']['zone'] = empty($choices) ? null : $choices;
+				if (empty($choices)) {
+					$options['criteria'] = array('id' => null);
+				} else {
+					$options['criteria']['zone'] = $choices;
+				}
 			}
 
 			$form->add('shipments', 'collection', array(
 				'type'    => 'sylius_checkout_shipment',
-				'options' => array('criteria' => $options['criteria'])
+				'options' => array('criteria' => $options['criteria']),
 			));
-		});
-
-		$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-			if (!array_key_exists('shipments', $event->getData())) {
-				throw new TransformationFailedException();
-			}
 		});
 	}
 
@@ -101,11 +106,11 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 
 		$resolver
 			->setOptional(array(
-				'criteria'
+				'criteria',
 			))
 			->setRequired(array(
 				'zone_repository',
-				'country'
+				'country',
 			))
 			->setAllowedTypes(array(
 				'criteria' => array('array')

@@ -55,13 +55,10 @@ class PaymentShippingStep extends CheckoutStep
 		$formPayment->handleRequest($request);
 
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
-		$formShippingPre = $this->createCheckoutShippingForm($order, null);
+		$country = $order->getShippingAddress() ? $order->getShippingAddress()->getCountry() : null;
+		$formShippingPre = $this->createCheckoutShippingForm($order, $country);
+		$formShippingPre->get('country')->setData($country);
 		$formShippingPre->handleRequest($request);
-
-		if ($formShippingPre->get('country')->getData() === null) {
-			$choices = $formShippingPre->get('country')->getConfig()->getOption('choice_list')->getChoices();
-			$formShippingPre->get('country')->setData(reset($choices));
-		}
 
 		$this->dispatchCheckoutEvent(SyliusCheckoutEvents::SHIPPING_INITIALIZE, $order);
 		$formShipping = $this->createCheckoutShippingForm($order, $formShippingPre->get('country')->getData());
@@ -76,7 +73,7 @@ class PaymentShippingStep extends CheckoutStep
 		$formAddressing->get('shippingAddress')->get('country')->setData($country);
 
 		$requestData = $request->get($formAddressing->getName());
-		$requestData['shippingAddress']['country'] = $country->getId();
+		$requestData['shippingAddress']['country'] = isset($country) ? $country->getId() : null;
 		$request->request->set($formAddressing->getName(), $requestData);
 
 		if ($this->requireAddress($order)) {
