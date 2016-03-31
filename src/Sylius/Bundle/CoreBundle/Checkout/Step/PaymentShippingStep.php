@@ -128,6 +128,9 @@ class PaymentShippingStep extends CheckoutStep
 			}
 		}
 
+		// display form with no error messages
+		$formShipping = $this->createCheckoutShippingForm($order, $formShippingPre->get('country')->getData());
+
 		return $this->renderStep($context, $order, $formPayment, $formShipping, $formAddressing);
 	}
 
