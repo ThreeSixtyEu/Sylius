@@ -59,10 +59,6 @@ class CountrySpecificShippingStepType extends AbstractResourceType
 				'data' => $options['country'],
 			));
 
-			if ($options['criteria']['zone'] !== null) {
-				return;
-			}
-
 			/** @var ChoiceListInterface|null $choiceList */
 			$choiceList = $form->get('country')->getConfig()->getOption('choice_list');
 			if ($choiceList !== null) {
