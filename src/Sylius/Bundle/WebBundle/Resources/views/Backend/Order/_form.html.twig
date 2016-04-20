@@ -37,6 +37,16 @@
                 <div class="list-group-item-text">{{ form_widget(form.state) }}</div>
             </div>
             <div class="list-group-item">
+                <h4 class="list-group-item-heading">{{ 'sylius.user.email'|trans }}</h4>
+                <div class="list-group-item-text">
+                    {% if not order.user %}
+                        {{ form_widget(form.email) }}
+                    {% else %}
+                        {{ order.email }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="list-group-item">
                 <h4 class="list-group-item-heading">{{ 'sylius.order.currency'|trans }}</h4>
                 <div class="list-group-item-text">{{ form_widget(form.currency) }}</div>
             </div>

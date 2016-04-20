@@ -60,6 +60,7 @@ class AdvancedOrderType extends OrderType
                     OrderInterface::STATE_RETURNED    => 'sylius.order.state.returned',
                 ),
             ))
+            ->add('email', 'email')
         ;
     }
 
