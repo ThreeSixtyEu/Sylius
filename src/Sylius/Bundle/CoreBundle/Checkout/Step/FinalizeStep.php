@@ -11,6 +11,7 @@
 
 namespace Sylius\Bundle\CoreBundle\Checkout\Step;
 
+use Doctrine\ORM\ORMException;
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\SyliusCheckoutEvents;
@@ -45,7 +46,11 @@ class FinalizeStep extends CheckoutStep
 
         $order->setUser($this->getUser());
 
-        $this->completeOrder($order);
+        try {
+            $this->completeOrder($order);
+        } catch (ORMException $e) {
+            $this->get('logger')->addWarning(sprintf('%s raised during order completion.', get_class($e)), $e);
+        }
 
         return $this->complete();
     }
