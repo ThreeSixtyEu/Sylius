@@ -49,7 +49,7 @@ class FinalizeStep extends CheckoutStep
         try {
             $this->completeOrder($order);
         } catch (ORMException $e) {
-            $this->get('logger')->addWarning(sprintf('%s raised during order completion.', get_class($e)), $e);
+            $this->get('logger')->addWarning(sprintf('%s raised during order completion.', get_class($e)), array('exception' => $e));
         }
 
         return $this->complete();
