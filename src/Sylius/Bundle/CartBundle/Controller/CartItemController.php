@@ -11,6 +11,7 @@
 
 namespace Sylius\Bundle\CartBundle\Controller;
 
+use Sylius\Component\Cart\Event\CartEvent;
 use Sylius\Component\Cart\Event\CartItemEvent;
 use Sylius\Component\Cart\Resolver\ItemResolvingException;
 use Sylius\Component\Cart\SyliusCartEvents;
@@ -52,6 +53,8 @@ class CartItemController extends Controller
     {
         $cart = $this->getCurrentCart();
         $eventDispatcher = $this->getEventDispatcher();
+
+        $eventDispatcher->dispatch(SyliusCartEvents::ITEM_ADD_FIRST_INIT, new CartEvent($cart));
 
         try {
             $iterations = $this->getResolver()->countIterations($request);
