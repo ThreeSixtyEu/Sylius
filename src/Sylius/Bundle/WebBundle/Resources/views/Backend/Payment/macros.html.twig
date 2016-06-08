@@ -15,6 +15,7 @@
             <th>{{ 'funlife.eshop.payment.order_number'|trans }}</th>
             <th>{{ sylius_resource_sort('createdAt', 'sylius.payment.created_at'|trans) }}</th>
             <th>{{ sylius_resource_sort('updatedAt', 'sylius.payment.updated_at'|trans) }}</th>
+            <th>{{ sylius_resource_sort('completedAt', 'sylius.payment.completed_at'|trans) }}</th>
             <th class="hidden-print"></th>
         </tr>
         </thead>
@@ -36,6 +37,7 @@
                 </td>
                 <td>{{ payment.createdAt|date }}</td>
                 <td>{{ payment.updatedAt|date }}</td>
+                <td>{{ payment.completedAt is sameas(null) ? '-' : payment.completedAt|date }}</td>
                 <td class="hidden-print">
                     <div class="pull-right">
                         {{ buttons.edit(path('sylius_backend_payment_update', {'id': payment.id})) }}

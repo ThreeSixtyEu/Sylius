@@ -12,6 +12,7 @@ sylius:
       type: Typ Karty
     payment:
       amount: Platební částka
+      completed_at: Datum dokončení
       method: Způsob platby
       state:
         0: Stav platby

@@ -81,6 +81,22 @@ interface PaymentInterface extends TimestampableInterface
     public function setState($state);
 
     /**
+     * Get completed at.
+     *
+     * @return \DateTime|null
+     */
+    public function getCompletedAt();
+
+    /**
+     * Set completed at.
+     *
+     * @param \DateTime|null $completedAt
+     *
+     * @return PaymentInterface
+     */
+    public function setCompletedAt(\DateTime $completedAt = null);
+
+    /**
      * Get payment currency.
      *
      * @return string

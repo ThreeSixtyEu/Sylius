@@ -255,6 +255,7 @@ sylius:
     update_header: Poslední aktualizace
   password: Heslo
   payment:
+    completed_at: Zaplaceno
     created_at: Vytvořeno
     id: ID
     index_header: Platby

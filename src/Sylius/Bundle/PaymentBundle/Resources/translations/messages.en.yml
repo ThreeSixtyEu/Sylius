@@ -12,6 +12,7 @@ sylius:
             type: Card Type
         payment:
             amount: Payment amount
+            completed_at: Completed at
             method: Payment method
             state:
                 header: Payment state

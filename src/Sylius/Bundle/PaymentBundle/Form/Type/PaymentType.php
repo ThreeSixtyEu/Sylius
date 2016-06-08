@@ -48,6 +48,12 @@ class PaymentType extends AbstractResourceType
                     PaymentInterface::STATE_UNKNOWN    => 'sylius.form.payment.state.unknown',
                 )
             ))
+            ->add('completedAt', 'datetime', array(
+                'label' => 'sylius.form.payment.completed_at',
+                'empty_value' => array('year' => '-', 'month' => '-', 'day' => '-'),
+                'time_widget' => 'text',
+                'required' => false,
+            ))
         ;
     }
 

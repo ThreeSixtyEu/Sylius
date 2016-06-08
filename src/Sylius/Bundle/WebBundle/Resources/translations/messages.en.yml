@@ -565,6 +565,7 @@ sylius:
     password: Password
     payment:
         amount: Amount
+        completed_at: Completed
         create: Create payment
         create_header: New payment
         created_at: Created at

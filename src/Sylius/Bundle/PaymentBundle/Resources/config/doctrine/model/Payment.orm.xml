@@ -43,6 +43,9 @@
             <join-column name="credit_card_id" referenced-column-name="id" nullable="true" on-delete="SET NULL" />
         </many-to-one>
 
+        <field name="completedAt" column="completed_at" type="datetime" nullable="true">
+            <gedmo:versioned />
+        </field>
         <field name="createdAt" column="created_at" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

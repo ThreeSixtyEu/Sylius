@@ -63,6 +63,13 @@ class Payment implements PaymentInterface
     protected $creditCard;
 
     /**
+     * Last time the payment was completed.
+     *
+     * @var \DateTime|null
+     */
+    protected $completedAt = null;
+
+    /**
      * Creation date.
      *
      * @var \DateTime
@@ -196,6 +203,24 @@ class Payment implements PaymentInterface
     public function setState($state)
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCompletedAt()
+    {
+        return $this->completedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCompletedAt(\DateTime $completedAt = null)
+    {
+        $this->completedAt = $completedAt;
 
         return $this;
     }
