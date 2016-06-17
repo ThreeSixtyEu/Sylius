@@ -74,7 +74,7 @@ class ExpiredOrdersPurger implements PurgerInterface
      */
     public function purge()
     {
-        $orders = $this->repository->findExpired($this->expiresAt);
+        $orders = $this->repository->findExpired($this->expiresAt, 'released');
         foreach ($orders as $order) {
             // Check if order has any on-hold inventory units.
             $hasOnHoldInventoryUnits = $order->getInventoryUnits()->exists(function ($key, InventoryUnitInterface $inventoryUnit) {

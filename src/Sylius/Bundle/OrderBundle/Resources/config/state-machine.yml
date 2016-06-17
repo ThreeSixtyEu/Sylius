@@ -34,7 +34,7 @@ winzou_state_machine:
                 from: [confirmed]
                 to:   shipped
             abandon:
-                from: [cart, pending]
+                from: [cart, pending, released]
                 to:   abandoned
             cancel:
                 from: [confirmed]
