@@ -18,11 +18,18 @@
 
     <parameters>
         <parameter key="sylius.twig.extension.restricted_zone.class">Sylius\Bundle\CoreBundle\Twig\RestrictedZoneExtension</parameter>
+        <parameter key="sylius.twig.extension.order_exchange_rate.class">Sylius\Bundle\CoreBundle\Twig\OrderExchangeRateExtension</parameter>
     </parameters>
 
     <services>
         <service id="sylius.twig.extension.restricted_zone" class="%sylius.twig.extension.restricted_zone.class%" public="false">
             <argument type="service" id="sylius.templating.helper.restricted_zone" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="sylius.twig.extension.order_exchange_rate" class="%sylius.twig.extension.order_exchange_rate.class%" public="false">
+            <argument type="service" id="sylius.templating.helper.order_exchange_rate" />
+            <argument type="service" id="sylius.templating.helper.money" />
             <tag name="twig.extension" />
         </service>
     </services>

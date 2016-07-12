@@ -18,12 +18,17 @@
 
     <parameters>
         <parameter key="sylius.templating.helper.restricted_zone.class">Sylius\Bundle\CoreBundle\Templating\Helper\RestrictedZoneHelper</parameter>
+        <parameter key="sylius.templating.helper.order_exchange_rate.class">Sylius\Bundle\CoreBundle\Templating\Helper\OrderExchangeRateHelper</parameter>
     </parameters>
 
     <services>
         <service id="sylius.templating.helper.restricted_zone" class="%sylius.templating.helper.restricted_zone.class%">
             <argument type="service" id="sylius.checker.restricted_zone" />
             <tag name="templating.helper" alias="sylius_restricted_zone" />
+        </service>
+
+        <service id="sylius.templating.helper.order_exchange_rate" class="%sylius.templating.helper.order_exchange_rate.class%">
+            <tag name="templating.helper" alias="sylius_order_exchange_rate" />
         </service>
     </services>
 

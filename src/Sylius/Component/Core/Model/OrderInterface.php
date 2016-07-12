@@ -159,6 +159,22 @@ interface OrderInterface extends CartInterface, PaymentsSubjectInterface, Promot
     public function setCurrency($currency);
 
     /**
+     * Get exchange rate
+     * 
+     * @return float
+     */
+    public function getExchangeRate();
+
+    /**
+     * Set exchange rate
+     * 
+     * @param float $exchangeRate
+     *
+     * @return OrderInterface
+     */
+    public function setExchangeRate($exchangeRate);
+
+    /**
      * Adds promotion coupon.
      *
      * @param BaseCouponInterface $coupon
