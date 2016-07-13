@@ -27,7 +27,7 @@
                 <td>{{ payment.id }}</td>
                 <td><span class="label label-primary">{{ payment.method }}</span></td>
                 <td>
-                    {{ payment.amount|sylius_price(payment.currency) }}
+                    {{ payment.amount|sylius_order_price(payment.order) }}
                 </td>
                 <td>{{ misc.state_label(payment.state, 'payment') }}</td>
                 <td>

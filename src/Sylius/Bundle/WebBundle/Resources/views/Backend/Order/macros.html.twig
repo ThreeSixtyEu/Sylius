@@ -48,7 +48,7 @@
                             </p>
                         {% endif %}
                     </td>
-                    <td>{{ order.total|sylius_price(order.currency) }}</td>
+                    <td>{{ order.total|sylius_order_price(order) }}</td>
                     <td>
                         <div class="pull-right">
                             {{ buttons.show(path('sylius_backend_order_show', {'id': order.id})) }}
@@ -112,7 +112,7 @@
                             <span title="{{ 'sylius.order.guest'|trans }}">{{ order.email }}</span>
                         {% endif %}
                     </td>
-                    <td>{{ order.total|sylius_price(order.currency) }}</td>
+                    <td>{{ order.total|sylius_order_price(order) }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -163,7 +163,7 @@
                             <span title="{{ 'sylius.order.guest'|trans }}">{{ order.email }}</span>
                         {% endif %}
                     </td>
-                    <td>{{ order.total|sylius_price(order.currency) }}</td>
+                    <td>{{ order.total|sylius_order_price(order) }}</td>
                     <td>
                         <a class="btn btn-warning btn-xs" href="{{ removeActionPath|replace({'ORDER.ID': order.id}) }}"><span class="glyphicon glyphicon-remove"></span> {{ 'sylius.remove'|trans }}</a>
                     </td>
