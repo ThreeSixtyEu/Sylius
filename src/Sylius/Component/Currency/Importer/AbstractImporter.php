@@ -44,23 +44,22 @@ abstract class AbstractImporter implements ImporterInterface
      */
     protected function updateOrCreate(array $managedCurrencies, $code, $rate)
     {
-        if (!empty($managedCurrencies) && !in_array($code, $managedCurrencies)) {
-            foreach ($managedCurrencies as $currency) {
-                if ($code === $currency->getCode()) {
-                    $currency->setExchangeRate($rate);
-
-                    $this->manager->persist($currency);
-
-                    return;
-                }
+        foreach ($managedCurrencies as $currency) {
+            if ($code === $currency->getCode()) {
+                $currency->setExchangeRate($rate);
+                $this->manager->persist($currency);
+                return;
             }
-        } else {
-            /** @var $currency CurrencyInterface */
-            $currency = $this->repository->createNew();
-            $currency->setCode($code);
-            $currency->setExchangeRate($rate);
-
-            $this->manager->persist($currency);
         }
+
+        if (!empty($managedCurrencies)) {
+            return;
+        }
+
+        /** @var $currency CurrencyInterface */
+        $currency = $this->repository->createNew();
+        $currency->setCode($code);
+        $currency->setExchangeRate($rate);
+        $this->manager->persist($currency);
     }
 }
