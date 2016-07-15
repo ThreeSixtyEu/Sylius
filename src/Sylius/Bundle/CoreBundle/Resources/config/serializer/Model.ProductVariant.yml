@@ -8,3 +8,12 @@ Sylius\Component\Core\Model\ProductVariant:
         sku:
             expose: true
             type: string
+        onHold:
+            expose: true
+            type: integer
+        onHand:
+            expose: true
+            type: integer
+        sold:
+            expose: true
+            type: integer
