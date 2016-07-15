@@ -292,6 +292,8 @@ sylius:
     shipping_category: Typ dopravy
     sku: SKU
     stock: Aktuálně skladem
+    on_hold: Rezervováno
+    sold: Prodáno
     tabs:
       categorization: Kategorizace
       images: Obrázky
@@ -328,6 +330,10 @@ sylius:
     name: Jméno
     updated_at: Poslední aktualizace
     zone: Oblast
+  stockable:
+    on_hand: Na skladě
+    on_hold: Rezervováno
+    sold: Prodáno
   tax_category:
     description: Popis
     id: ID
@@ -362,6 +368,8 @@ sylius:
     price: Cena
     sku: SKU
     stock: Aktuálně skladem
+    on_hold: Rezervováno
+    sold: Prodáno
   "yes": true
   zone:
     index_header: Oblasti

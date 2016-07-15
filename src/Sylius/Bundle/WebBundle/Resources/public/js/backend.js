@@ -12,7 +12,7 @@
     $(document).ready(function() {
         $('.variant-table-toggle i.glyphicon').on('click', function(e) {
             $(this).toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
-            $(this).parent().parent().find('table tbody').toggle();
+            $(this).parents('table').find('tr[data-toggle-id="'+$(this).parent().data('id')+'"]').toggle();
         });
         $('.datepicker').datepicker({format: 'dd.mm.yyyy'});
     });

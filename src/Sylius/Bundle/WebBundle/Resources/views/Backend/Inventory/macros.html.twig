@@ -9,10 +9,12 @@
     <thead>
         <tr>
             <th>{{ sylius_resource_sort('id', '#id') }}</th>
-            <th>{{ sylius_resource_sort('sku', 'sylius.stockable.sku'|trans) }}</th>
+            <th></th>
             <th>{{ sylius_resource_sort('name', 'sylius.product.name'|trans) }}</th>
+            <th>{{ 'sylius.variant.options'|trans }}</th>
             <th>{{ sylius_resource_sort('onHand', 'sylius.stockable.on_hand'|trans) }}</th>
             <th>{{ sylius_resource_sort('onHold', 'sylius.stockable.on_hold'|trans) }}</th>
+            <th>{{ 'sylius.stockable.sold'|trans }}</th>
             <th></th>
         </tr>
     </thead>
@@ -22,26 +24,42 @@
                 <td>
                     {{ product.id }}
                 </td>
-                <td>
-                    {{ product.sku }}
-                </td>
+                {% if product.variants.count %}
+                    <td class="variant-table-toggle" data-id="variants{{ product.id }}"><i class="glyphicon glyphicon-chevron-down"></i></td>
+                {% else %}
+                    <td></td>
+                {% endif %}
                 <td>
                     <a href="{{ path('sylius_backend_product_show', {'id': product.id}) }}" class="btn btn-link">
                         <strong>{{ product.name }}</strong>
                     </a>
                 </td>
                 <td>
-                    {% if not product.hasOptions %}
-                        <span class="label label-{{ product.masterVariant.isInStock ? 'success' : 'danger' }}">{{ product.masterVariant.onHand }}</span>
+                    <ul>
+                        {% for option in product.masterVariant.options %}
+                            <li><strong>{{ option.name }}</strong>: {{ option.value }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    {% if product.variants.count %}
+                        {{ product.getOnHand() }}
                     {% else %}
-                        -
+                        <span class="label label-{{ product.masterVariant.isInStock ? 'success' : 'danger' }}">{{ product.masterVariant.onHand }}</span>
                     {% endif %}
                 </td>
                 <td>
-                    {% if not product.hasOptions %}
-                        <span class="label label-{{ product.masterVariant.onHold ? 'warning' : 'success' }}">{{ product.masterVariant.onHold }}</span>
+                    {% if product.variants.count %}
+                        {{ product.getOnHold() }}
                     {% else %}
-                        -
+                        <span class="label label-{{ product.masterVariant.onHold ? 'warning' : 'success' }}">{{ product.masterVariant.onHold }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.variants.count %}
+                        {{ product.getSold() }}
+                    {% else %}
+                        <span class="label label-info">{{ product.masterVariant.sold }}</span>
                     {% endif %}
                 </td>
                 <td>
@@ -50,45 +68,31 @@
                     </div>
                 </td>
             </tr>
-            {% if product.hasOptions %}
-            <tr class="sub-table">
-                <td class="variant-table-toggle"><i class="glyphicon glyphicon-chevron-down"></i></td>
-                <td colspan="4">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>{{ 'sylius.variant.availability'|trans }}</th>
-                                <th>{{ 'sylius.variant.options'|trans }}</th>
-                                <th></th>
-                                <th colspan="2"></th>
-                            </tr>
-                        </thead>
-                        <tbody style="display: none">
-                            {% for variant in product.variants %}
-                                <tr>
-                                    <td>{{ variant.id }}</td>
-                                    <td><span class="label label-{{ variant.available ? 'success' : 'danger' }}">{{ variant.availableOn|date }}</span></td>
-                                    <td>
-                                        <ul>
-                                        {% for option in variant.options %}
-                                            <li><strong>{{ option.name }}</strong>: {{ option.value }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    </td>
-                                    <td><span class="label label-{{ variant.inStock ? 'success' : 'danger' }}">{{ variant.onHand }}</span></td>
-                                    <td><span class="label label-{{ variant.onHold ? 'warning' : 'success' }}">{{ variant.onHold }}</span></td>
-                                    <td>
-                                        <div class="pull-right">
-                                            {{ buttons.edit(path('sylius_backend_product_variant_update', {'productId': product.id, 'id': variant.id})) }}
-                                        </div>
-                                    </td>
-                                </tr>
+            {% if product.variants.count %}
+                {% for variant in product.variants %}
+                    <tr data-toggle-id="variants{{ product.id }}" style="display: none;">
+                        <td>{{ variant.id }}</td>
+                        <td></td>
+                        <td>
+                            {{ variant.presentation }}
+                        </td>
+                        <td>
+                            <ul>
+                            {% for option in variant.options %}
+                                <li><strong>{{ option.name }}</strong>: {{ option.value }}</li>
                             {% endfor %}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
+                            </ul>
+                        </td>
+                        <td><span class="label label-{{ variant.inStock ? 'success' : 'danger' }}">{{ variant.onHand }}</span></td>
+                        <td><span class="label label-{{ variant.onHold ? 'warning' : 'success' }}">{{ variant.onHold }}</span></td>
+                        <td><span class="label label-info">{{ variant.sold }}</span></td>
+                        <td>
+                            <div class="pull-right">
+                                {{ buttons.edit(path('sylius_backend_product_variant_update', {'productId': product.id, 'id': variant.id})) }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
             {% endif %}
         {% endfor %}
     </tbody>

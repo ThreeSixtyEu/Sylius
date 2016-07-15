@@ -641,6 +641,8 @@ sylius:
         show_in_store: show in store
         sku: SKU
         stock: Current stock
+        on_hold: Reserved
+        sold: Sold
         tabs:
             categorization: Categorization
             images: Images
@@ -775,6 +777,7 @@ sylius:
         no_results: There are no inventory items to display.
         on_hand: stock level
         on_hold: on hold
+        sold: Sold
         sku: sku
         updated_at: last update
     tax_category:
@@ -877,6 +880,8 @@ sylius:
         price: Price
         sku: SKU
         stock: Current stock
+        on_hold: Reserved
+        sold: Sold
         update_header: Editing variant
     yes: yes
     zone:

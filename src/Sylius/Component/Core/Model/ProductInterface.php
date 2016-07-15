@@ -94,6 +94,27 @@ interface ProductInterface extends BaseProductInterface, TaxableInterface, Taxon
     public function setShortDescription($shortDescription);
 
     /**
+     * Get sum of onHold from variants
+     * 
+     * @return int
+     */
+    public function getOnHold();
+
+    /**
+     * Get sum of onHand from variants
+     *
+     * @return int
+     */
+    public function getOnHand();
+
+    /**
+     * Get sum of sold from variants
+     *
+     * @return int
+     */
+    public function getSold();
+
+    /**
      * Set taxation category.
      *
      * @param TaxCategoryInterface $category

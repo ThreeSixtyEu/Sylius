@@ -139,7 +139,33 @@
                 {% endif %}
                 <tr>
                     <td>{{ 'sylius.product.stock'|trans }}</td>
-                    <td><span class="label label-{{ product.masterVariant.inStock ? 'success' : 'important' }}">{{ product.masterVariant.onHand }}</span></td>
+                    <td>
+                        {% if product.variants.count %}
+                            {{ product.getOnHand() }}
+                        {% else %}
+                            <span class="label label-{{ product.masterVariant.isInStock ? 'success' : 'danger' }}">{{ product.masterVariant.onHand }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ 'sylius.product.on_hold'|trans }}</td>
+                    <td>
+                        {% if product.variants.count %}
+                            {{ product.getOnHold() }}
+                        {% else %}
+                            <span class="label label-{{ product.masterVariant.onHold ? 'warning' : 'success' }}">{{ product.masterVariant.onHold }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ 'sylius.product.sold'|trans }}</td>
+                    <td>
+                        {% if product.variants.count %}
+                            {{ product.getSold() }}
+                        {% else %}
+                            <span class="label label-info">{{ product.masterVariant.sold }}</span>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <td>{{ 'sylius.product.price'|trans }}</td>

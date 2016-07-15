@@ -313,6 +313,57 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getOnHold()
+    {
+        if ($this->getVariants()) {
+            $onHold = 0;
+            foreach ($this->getVariants() as $variant) {
+                $onHold += $variant->getOnHold();
+            }
+
+            return $onHold;
+        } else {
+            return $this->getMasterVariant()->getOnHold();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOnHand()
+    {
+        if ($this->getVariants()) {
+            $onHand = 0;
+            foreach ($this->getVariants() as $variant) {
+                $onHand += $variant->getOnHand();
+            }
+
+            return $onHand;
+        } else {
+            return $this->getMasterVariant()->getOnHand();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSold()
+    {
+        if ($this->getVariants()) {
+            $sold = 0;
+            foreach ($this->getVariants() as $variant) {
+                $sold += $variant->getSold();
+            }
+
+            return $sold;
+        } else {
+            return $this->getMasterVariant()->getSold();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getTranslationEntityClass()
     {
         return get_class().'Translation';
