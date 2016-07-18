@@ -11,6 +11,8 @@
             <th class="info">{{ sylius_resource_sort('archetype', 'sylius.product.archetype'|trans) }}</th>
             <th class="info">{{ sylius_resource_sort('name', 'sylius.product.name'|trans) }}</th>
             <th class="stock">{{ 'sylius.product.stock'|trans }}</th>
+            <th class="stock">{{ 'sylius.stockable.on_hold'|trans }}</th>
+            <th class="stock">{{ 'sylius.stockable.sold'|trans }}</th>
             <th class="retail-price">{{ 'sylius.product.price'|trans }}</th>
             <th class="updated-at">{{ sylius_resource_sort('updatedAt', 'Updated At') }}</th>
             <th></th>
@@ -54,22 +56,21 @@
                     </div>
                 </div>
             </td>
-            {% if product.hasOptions %}
-                <td class="stock contain-variants text-muted">
-                    <em>{{ 'sylius.product.contain_variants'|trans }}</em>
+            {% if product.getOnHand() > 0 and product.masterVariant.isAvailable %}
+                <td class="stock in-stock">
+                    {{ product.getOnHand() }}
                 </td>
             {% else %}
-                {% if product.masterVariant.onHand > 0 and product.masterVariant.isAvailable %}
-                    <td class="stock in-stock">
-                        {{ product.masterVariant.onHand }}
-                    </td>
-                {% else %}
-                    <td class="stock out-of-stock text-muted">
-                        <em>{{ 'sylius.out_of_stock'|trans }}</em>
-                    </td>
-                {% endif %}
+                <td class="stock out-of-stock text-muted">
+                    <em>{{ 'sylius.out_of_stock'|trans }}</em>
+                </td>
             {% endif %}
-
+            <td class="stock in-stock">
+                {{ product.getOnHold() }}
+            </td>
+            <td class="stock in-stock">
+                {{ product.getSold() }}
+            </td>
 
             {# Retail Price #}
             {% if not product.hasOptions %}
