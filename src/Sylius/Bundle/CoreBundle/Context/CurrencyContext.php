@@ -13,6 +13,8 @@ namespace Sylius\Bundle\CoreBundle\Context;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Bundle\SettingsBundle\Manager\SettingsManagerInterface;
+use Sylius\Component\Cart\Provider\CartProviderInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Currency\Context\CurrencyContext as BaseCurrencyContext;
 use Sylius\Component\Storage\StorageInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -23,18 +25,25 @@ class CurrencyContext extends BaseCurrencyContext
     protected $settingsManager;
     protected $userManager;
 
-    public function __construct(
+	/**
+	 * @var CartProviderInterface
+	 */
+	private $cartProvider;
+
+	public function __construct(
         StorageInterface $storage,
         SecurityContextInterface $securityContext,
         SettingsManagerInterface $settingsManager,
-        ObjectManager $userManager
+        ObjectManager $userManager,
+		CartProviderInterface $cartProvider
     ) {
         $this->securityContext = $securityContext;
         $this->settingsManager = $settingsManager;
         $this->userManager = $userManager;
+		$this->cartProvider = $cartProvider;
 
         parent::__construct($storage, $this->getDefaultCurrency());
-    }
+	}
 
     public function getDefaultCurrency()
     {
@@ -57,6 +66,7 @@ class CurrencyContext extends BaseCurrencyContext
         }
 
         $user->setCurrency($currency);
+	    $this->updateCart($currency);
 
         $this->userManager->persist($user);
         $this->userManager->flush();
@@ -67,5 +77,23 @@ class CurrencyContext extends BaseCurrencyContext
         if ($this->securityContext->getToken() && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->securityContext->getToken()->getUser();
         }
+    }
+
+	/**
+	 * Change cart currency if is in state cart
+	 *
+	 * @param string $currency
+	 */
+    protected function updateCart($currency)
+    {
+    	if (!$this->cartProvider->hasCart()) {
+    		return;
+	    }
+
+	    $cart = $this->cartProvider->getCart();
+
+	    if ($cart instanceof OrderInterface && $cart->getState() === OrderInterface::STATE_CART) {
+		    $cart->setCurrency($currency);
+	    }
     }
 }
