@@ -55,7 +55,7 @@
                 {{ adjustment.description }}
             </td>
             <td>
-                {{ adjustment.amount|sylius_price(order.currency) }}
+                {{ adjustment.amount|sylius_order_price(order) }}
             </td>
             <td>
                 {{ misc.state_label(adjustment.locked) }}

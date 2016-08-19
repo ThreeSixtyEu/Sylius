@@ -70,6 +70,13 @@ class Order extends Cart implements OrderInterface
     protected $currency;
 
     /**
+     * Exchange rate for currency when order was created
+     * 
+     * @var float
+     */
+    protected $exchangeRate;
+
+    /**
      * Promotion coupons.
      *
      * @var Collection|BaseCouponInterface[]
@@ -447,6 +454,24 @@ class Order extends Cart implements OrderInterface
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExchangeRate()
+    {
+        return $this->exchangeRate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExchangeRate($exchangeRate)
+    {
+        $this->exchangeRate = $exchangeRate;
 
         return $this;
     }

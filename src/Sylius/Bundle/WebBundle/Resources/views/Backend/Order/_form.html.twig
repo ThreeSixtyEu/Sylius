@@ -110,7 +110,7 @@
                 {{ form_widget(form.items[loop.index0].unitPrice) }}
             </td>
             <td class="total text-right">
-                {{ item.total|sylius_price(order.currency) }}
+                {{ item.total|sylius_order_price(order) }}
             </td>
         </tr>
     {% else %}
@@ -130,7 +130,7 @@
     <tr>
         <td class="active text-right" colspan="7">
             <strong>{{ 'sylius.order.items_total'|trans }}</strong>:
-            <span class="amount">{{ order.itemsTotal|sylius_price(order.currency) }}</span>
+            <span class="amount">{{ order.itemsTotal|sylius_order_price(order) }}</span>
         </td>
     </tr>
     <tr class="taxes">
@@ -139,7 +139,7 @@
             {% if not order.adjustments(taxAdjustment).isEmpty() %}
                 <ul class="list-unstyled">
                     {% for adjustment in order.adjustments(taxAdjustment) %}
-                        <li>{{ adjustment.description }} {{ adjustment.amount|sylius_price(order.currency) }} </li>
+                        <li>{{ adjustment.description }} {{ adjustment.amount|sylius_order_price(order) }} </li>
                     {% endfor %}
                 </ul>
             {% else %}
@@ -148,7 +148,7 @@
         </td>
         <td class="text-right" colspan="3">
             <strong>{{ 'sylius.order.tax_total'|trans }}</strong>:
-            <span class="amount">{{ order.adjustmentsTotal(taxAdjustment)|sylius_price(order.currency) }}</span>
+            <span class="amount">{{ order.adjustmentsTotal(taxAdjustment)|sylius_order_price(order) }}</span>
         </td>
     </tr>
     <tr class="shipping-charges">
@@ -157,7 +157,7 @@
             {% if not order.adjustments(shippingAdjustment).isEmpty() %}
                 <ul class="list-unstyled">
                     {% for adjustment in order.adjustments(shippingAdjustment) %}
-                        <li>{{ adjustment.description }} {{ adjustment.amount|sylius_price(order.currency) }} </li>
+                        <li>{{ adjustment.description }} {{ adjustment.amount|sylius_order_price(order) }} </li>
                     {% endfor %}
                 </ul>
             {% else %}
@@ -166,7 +166,7 @@
         </td>
         <td class="text-right" colspan="3">
             <strong>{{ 'sylius.order.shipping_total'|trans }}</strong>:
-            <span class="amount">{{ order.adjustmentsTotal(shippingAdjustment)|sylius_price(order.currency) }}</span>
+            <span class="amount">{{ order.adjustmentsTotal(shippingAdjustment)|sylius_order_price(order) }}</span>
         </td>
     </tr>
     <tr class="promotion-discount">
@@ -175,7 +175,7 @@
             {% if not order.adjustments(promotionAdjustment).isEmpty() %}
                 <ul class="list-unstyled">
                     {% for adjustment in order.adjustments(promotionAdjustment) %}
-                        <li>{{ adjustment.description }} {{ adjustment.amount|sylius_price(order.currency) }} </li>
+                        <li>{{ adjustment.description }} {{ adjustment.amount|sylius_order_price(order) }} </li>
                     {% endfor %}
                 </ul>
             {% else %}
@@ -184,7 +184,7 @@
         </td>
         <td class="text-right" colspan="3">
             <strong>{{ 'sylius.checkout.finalize.order.promotion_total'|trans }}</strong>:
-            <span class="amount">{{ order.adjustmentsTotal(promotionAdjustment)|sylius_price(order.currency) }}</span>
+            <span class="amount">{{ order.adjustmentsTotal(promotionAdjustment)|sylius_order_price(order) }}</span>
         </td>
     </tr>
     {% if not order.adjustments.isEmpty() %}
@@ -200,7 +200,7 @@
     <tr>
         <td class="text-right active text-success lead" colspan="6">
             <strong>{{ 'sylius.order.total'|trans }}</strong>:
-            <span class="amount">{{ order.total|sylius_price(order.currency) }}</span>
+            <span class="amount">{{ order.total|sylius_order_price(order) }}</span>
         </td>
     </tr>
     </tfoot>
