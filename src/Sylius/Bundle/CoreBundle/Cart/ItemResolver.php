@@ -103,7 +103,7 @@ class ItemResolver implements ItemResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(CartItemInterface $item, $data)
+    public function resolve(CartItemInterface $item, $data, $iteration = 0)
     {
         $id = $this->resolveItemIdentifier($data);
 
@@ -117,6 +117,10 @@ class ItemResolver implements ItemResolverInterface
 
         // We use forms to easily set the quantity and pick variant but you can do here whatever is required to create the item.
         $form = $this->formFactory->create('sylius_cart_item', $item, array('product' => $product));
+
+        // When iterating over multiple variants we need to transform each iteration to single item for the form to work
+        $data = $this->transformIterationToRegularData($data, $iteration);
+
         $form->submit($data);
 
         // If our product has no variants, we simply set the master variant of it.
@@ -184,5 +188,81 @@ class ItemResolver implements ItemResolverInterface
         }
 
         return $id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countIterations($request)
+    {
+        if (!$request instanceof Request) {
+            throw new ItemResolvingException('Invalid request data.');
+        }
+
+        if (!$this->isMultipleRequest($request)) {
+            return 1;
+        }
+
+        $submittedVariants = $request->request->get('sylius_cart_item[variant]', null, true);
+        if ($submittedVariants === null || !is_array($submittedVariants)) {
+            throw new ItemResolvingException('Submitted variants missing from request or it has unexpected format.');
+        }
+
+        return count($submittedVariants);
+    }
+
+    /**
+     * @param Request $data
+     * @param $iteration
+     * @return Request
+     * @throws ItemResolvingException
+     */
+    protected function transformIterationToRegularData(Request $data, $iteration)
+    {
+        if (!$this->isMultipleRequest($data)) {
+            return $data;
+        }
+
+        $submittedVariants = $data->request->get('sylius_cart_item[variant]', null, true);
+        reset($submittedVariants);
+        for ($i = 0; $i < $iteration; $i++) {
+            if (next($submittedVariants) === false) {
+                throw new ItemResolvingException('There are more iterations than submitted variants.');
+            }
+        }
+
+        return $this->transformData($data, key($submittedVariants));
+    }
+
+
+    /**
+     * Checks whether we will be resolving multiple variants from a request
+     *
+     * @param Request $request
+     * @return bool
+     */
+    protected function isMultipleRequest(Request $request)
+    {
+        return $request->request->getAlnum('variant_types', 'default') === 'multiple';
+    }
+
+    /**
+     * Transforms request with multiple variants to a request with single variant (based on $variantId)
+     *
+     * The new request <b>must</b> be cloned first if it changes any value.
+     *
+     * @param Request $original the original request
+     * @param int $variantId
+     * @return Request
+     */
+    protected function transformData(Request $original, $variantId)
+    {
+        $clone = clone $original;
+        $clone->request->set('sylius_cart_item', array(
+            'variant' => $variantId,
+            'quantity' => $original->request->getInt('sylius_cart_item[variant][' . $variantId . '][quantity]', 1, true),
+            '_token' => $original->request->get('sylius_cart_item[_token]', null, true),
+        ));
+        return $clone;
     }
 }

@@ -11,6 +11,7 @@
 
 namespace Sylius\Bundle\CartBundle\Controller;
 
+use Sylius\Component\Cart\Event\CartEvent;
 use Sylius\Component\Cart\Event\CartItemEvent;
 use Sylius\Component\Cart\Resolver\ItemResolvingException;
 use Sylius\Component\Cart\SyliusCartEvents;
@@ -51,26 +52,30 @@ class CartItemController extends Controller
     public function addAction(Request $request)
     {
         $cart = $this->getCurrentCart();
-        $emptyItem = $this->createNew();
-
         $eventDispatcher = $this->getEventDispatcher();
 
+        $eventDispatcher->dispatch(SyliusCartEvents::ITEM_ADD_FIRST_INIT, new CartEvent($cart));
+
         try {
-            $item = $this->getResolver()->resolve($emptyItem, $request);
+            $iterations = $this->getResolver()->countIterations($request);
+            for ($i = 0; $i < $iterations; $i++) {
+                $emptyItem = $this->createNew();
+                $item = $this->getResolver()->resolve($emptyItem, $request, $i);
+
+                $event = new CartItemEvent($cart, $item);
+                $event->isFresh(true);
+
+                // Update models
+                $eventDispatcher->dispatch(SyliusCartEvents::ITEM_ADD_INITIALIZE, $event);
+                $eventDispatcher->dispatch(SyliusCartEvents::CART_CHANGE, new GenericEvent($cart));
+                $eventDispatcher->dispatch(SyliusCartEvents::CART_SAVE_INITIALIZE, $event);
+            }
         } catch (ItemResolvingException $exception) {
             // Write flash message
             $eventDispatcher->dispatch(SyliusCartEvents::ITEM_ADD_ERROR, new FlashEvent($exception->getMessage()));
 
             return $this->redirectAfterAdd($request);
         }
-
-        $event = new CartItemEvent($cart, $item);
-        $event->isFresh(true);
-
-        // Update models
-        $eventDispatcher->dispatch(SyliusCartEvents::ITEM_ADD_INITIALIZE, $event);
-        $eventDispatcher->dispatch(SyliusCartEvents::CART_CHANGE, new GenericEvent($cart));
-        $eventDispatcher->dispatch(SyliusCartEvents::CART_SAVE_INITIALIZE, $event);
 
         // Write flash message
         $eventDispatcher->dispatch(SyliusCartEvents::ITEM_ADD_COMPLETED, new FlashEvent());

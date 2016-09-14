@@ -25,10 +25,21 @@ interface ItemResolverInterface
      *
      * @param CartItemInterface $item Empty and clean item object as first argument
      * @param mixed             $data Mixed data from which item identifier is extracted
+     * @param int               $iteration Current iteration count when we are adding multiple variants
      *
      * @return CartItemInterface
      *
      * @throws ItemResolvingException
      */
-    public function resolve(CartItemInterface $item, $data);
+    public function resolve(CartItemInterface $item, $data, $iteration = 0);
+
+    /**
+     * Returns iteration count - how many times should resolve be called for the specified request.
+     *
+     * @param $request
+     * @return
+     *
+     * @throws ItemResolvingException
+     */
+    public function countIterations($request);
 }
