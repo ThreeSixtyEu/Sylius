@@ -292,6 +292,7 @@
         <service id="sylius.listener.order_exchange_rate" class="Sylius\Bundle\CoreBundle\EventListener\OrderExchangeRateListener">
             <argument type="service" id="sylius.repository.currency" />
             <tag name="kernel.event_listener" event="sylius.cart.initialize" method="cartInitialize" />
+            <tag name="kernel.event_listener" event="sylius.order.pre_create" method="orderPreCreate" />
             <tag name="kernel.event_listener" event="sylius.checkout.finalize.pre_complete" method="checkoutFinalize" />
         </service>
         <service id="sylius.listener.restricted_zone" class="%sylius.listener.restricted_zone.class%">

@@ -48,6 +48,24 @@ class OrderExchangeRateListener
 	/**
 	 * @param GenericEvent $event
 	 */
+	public function orderPreCreate(GenericEvent $event)
+	{
+		$order = $event->getSubject();
+		if (!$order instanceof OrderInterface) {
+			throw new UnexpectedTypeException(
+				$order,
+				'Sylius\Component\Core\Model\OrderInterface'
+			);
+		}
+
+		if ($order->getExchangeRate() === null) {
+			$this->processOrderExchangeRate($order);
+		}
+	}
+
+	/**
+	 * @param GenericEvent $event
+	 */
 	public function checkoutFinalize(GenericEvent $event)
 	{
 		$this->processOrderExchangeRate($event->getSubject());
