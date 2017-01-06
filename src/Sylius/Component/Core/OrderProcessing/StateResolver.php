@@ -52,7 +52,13 @@ class StateResolver implements StateResolverInterface
                     ));
                 })) {
                     $paymentState = PaymentInterface::STATE_PROCESSING;
-                }
+                } elseif ($payments->exists(function ($key, $payment) {
+		            return in_array($payment->getState(), array(
+			            PaymentInterface::STATE_FAILED,
+		            ));
+	            })) {
+		            $paymentState = PaymentInterface::STATE_FAILED;
+	            }
             }
         }
 
