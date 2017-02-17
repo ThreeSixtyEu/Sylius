@@ -1,13 +1,25 @@
 {% macro formatValue(key, value) %}
-{% if value.timestamp is defined %}
-    {{ value|date() }}
-{% elseif key == 'price' or key == 'unitPrice' %}
-    {{ value|sylius_price() }}
-{% elseif value is empty %}
-    <em>{{ 'sylius.history.empty'|trans }}</em>
-{% else %}
-    {{ value }}
-{% endif %}
+    {% if value.timestamp is defined %}
+        {{ value|date() }}
+    {% elseif key == 'price' or key == 'unitPrice' %}
+        {{ value|sylius_price() }}
+    {% elseif value is empty %}
+        <em>{{ 'sylius.history.empty'|trans }}</em>
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endmacro %}
+
+{% macro formatMixedValue(key, value) %}
+    {% if value is iterable %}
+        <ul>
+            {% for k, v in value %}
+                <li>{{ k|humanize }}: {{ _self.formatMixedValue(k, v) }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {{ _self.formatValue(key, value) }}
+    {% endif %}
 {% endmacro %}
 
 {% set length = logs|length %}
@@ -33,15 +45,7 @@
                     {% for key, value in log.data %}
                     <li>
                         <strong>{{ key|humanize }}</strong>:
-                        {% if value is iterable %}
-                            <ul>
-                            {% for k, v in value %}
-                                <li>{{ k|humanize }}: {{ _self.formatValue(k, v) }}</li>
-                            {% endfor %}
-                            </ul>
-                        {% else %}
-                            {{ _self.formatValue(key, value) }}
-                        {% endif %}
+                        {{ _self.formatMixedValue(key, value) }}
                     </li>
                     {% endfor %}
                 </ul>
