@@ -198,13 +198,31 @@ class OrderFilterType extends AbstractResourceType
 
                     // Concatenate user.firstname, ' ' and user.lastanme and put it in a LIKE %username% query
                     $qb
+                        ->leftJoin('o.shippingAddress', 'a')
+                        ->leftJoin('o.billingAddress', 'b')
                         ->andWhere(
-                            $qb->expr()->like(
-                                $qb->expr()->concat(
-                                    $qb->expr()->concat('user.firstName', $qb->expr()->literal(' ')),
-                                    'user.lastName'
+                            $qb->expr()->orX(
+                                $qb->expr()->like(
+                                    $qb->expr()->concat(
+                                        $qb->expr()->concat('user.firstName', $qb->expr()->literal(' ')),
+                                        'user.lastName'
+                                    ),
+                                    ':username'
                                 ),
-                                ':username'
+                                $qb->expr()->like(
+                                    $qb->expr()->concat(
+                                        $qb->expr()->concat('a.firstName', $qb->expr()->literal(' ')),
+                                        'a.lastName'
+                                    ),
+                                    ':username'
+                                ),
+                                $qb->expr()->like(
+                                    $qb->expr()->concat(
+                                        $qb->expr()->concat('b.firstName', $qb->expr()->literal(' ')),
+                                        'b.lastName'
+                                    ),
+                                    ':username'
+                                )
                             )
                         )
                         ->setParameter('username', '%' . $values['value'] . '%');
@@ -226,7 +244,12 @@ class OrderFilterType extends AbstractResourceType
                     /** @var QueryBuilder $qb */
                     $qb = $filterQuery->getQueryBuilder();
                     $qb
-                        ->andWhere($qb->expr()->like('user.email', ':usermail'))
+                        ->andWhere(
+                            $qb->expr()->orX(
+                                $qb->expr()->like('user.email', ':usermail'),
+                                $qb->expr()->like('o.email', ':usermail')
+                            )
+                        )
                         ->setParameter('usermail', '%' . $values['value'] . '%');
                     return $qb;
                 },
