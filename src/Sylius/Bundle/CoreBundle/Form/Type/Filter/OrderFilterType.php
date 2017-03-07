@@ -85,7 +85,7 @@ class OrderFilterType extends AbstractResourceType
                                 }
                                 for ($i = $idStart; $i <= $idEnd; $i++) {
                                     if (trim($id) !== '') {
-                                        $numbers[] = str_pad((string)trim($id), 9, '0', STR_PAD_LEFT);
+                                        $numbers[] = str_pad((string)trim($i), 9, '0', STR_PAD_LEFT);
                                     }
                                 }
                             }
