@@ -34,10 +34,77 @@ class OrderFilterType extends AbstractResourceType
         $builder
             ->add('number', 'filter_text', array(
                 'label' => 'funlife.eshop.form.order.number',
-                'condition_pattern' => FilterOperands::STRING_BOTH,
                 'attr' => array(
                     'placeholder' => 'funlife.eshop.form.order.number_hint',
                 ),
+                'apply_filter' => function (QueryInterface $filterQuery, $field, $values) {
+                    $values['value'] = str_replace('#', '', $values['value']);
+
+                    if (empty($values['value'])) {
+                        return null;
+                    }
+
+                    /** @var QueryBuilder $qb */
+                    $qb = $filterQuery->getQueryBuilder();
+
+                    // you can search values like: 100 - 150, 20,13, 15- 150
+
+                    // normalize range separators
+                    $values['value'] = preg_replace('/([\s]+-[\s]+)|(-[\s]+)|([\s]+-)/', '-', $values['value']);
+                    // normalize separators
+                    $values['value'] = preg_replace('/[,;|\s]+/', ',', $values['value']);
+
+                    if(strpos($values['value'], '-') === false) {
+                        // fuzzy search for single values
+                        if (strpos($values['value'], ',') === false) {
+                            $qb
+                                ->andWhere($qb->expr()->like('o.number', ':' . 'orderNumber'))
+                                ->setParameter('orderNumber', '%' . (string)trim($values['value']) . '%');
+                            return $qb;
+                        }
+                    } else {
+                        //prepare for search between values
+                        $values['value'] .= ',';
+                    }
+
+                    // exact search for multiple values delimited by comma
+                    $numbers = [];
+                    foreach (explode(',', $values['value']) as $id) {
+                        if(strpos($id, '-') === false) {
+                            if (trim($id) !== '') {
+                                $numbers[] = str_pad((string)trim($id), 9, '0', STR_PAD_LEFT);
+                            }
+                        } else {
+                            // range search betwen $value1-$value2
+                            $stringStart = strpos($id, '-');
+                            $idStart = substr($id, 0, $stringStart);
+                            $idEnd = substr($id, $stringStart + 1) !== false ? substr($id, $stringStart + 1) : $idStart;
+                            if (is_numeric($idStart) && is_numeric($idEnd)){
+                                if ($idEnd < $idStart) {
+                                    $tmpEnd = $idEnd; $idEnd = $idStart; $idStart = $tmpEnd; unset($tmpEnd);
+                                }
+                                for ($i = $idStart; $i <= $idEnd; $i++) {
+                                    if (trim($id) !== '') {
+                                        $numbers[] = (int)$i;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // invalid format, force no results
+                    if (count($numbers) === 0) {
+                        $qb->where($qb->expr()->eq(1, 0));
+                        return $qb;
+                    }
+
+                    $qb
+                        ->andWhere($qb->expr()->in('o.number', ':orderNumbers'))
+                        ->setParameter('orderNumbers', $numbers)
+                    ;
+
+                    return $qb;
+                },
             ))
             ->add('state', 'filter_choice', array(
                 'label' => 'funlife.eshop.form.order.state.header',
