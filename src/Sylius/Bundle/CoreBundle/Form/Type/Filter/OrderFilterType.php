@@ -49,7 +49,7 @@ class OrderFilterType extends AbstractResourceType
 
                     // you can search values like: 100 - 150, 20,13, 15- 150
 
-                    // normalize range separators
+                    // normalize range oparators
                     $values['value'] = preg_replace('/([\s]+-[\s]+)|(-[\s]+)|([\s]+-)/', '-', $values['value']);
                     // normalize separators
                     $values['value'] = preg_replace('/[,;|\s]+/', ',', $values['value']);
@@ -85,7 +85,7 @@ class OrderFilterType extends AbstractResourceType
                                 }
                                 for ($i = $idStart; $i <= $idEnd; $i++) {
                                     if (trim($id) !== '') {
-                                        $numbers[] = (int)$i;
+                                        $numbers[] = str_pad((string)trim($id), 9, '0', STR_PAD_LEFT);
                                     }
                                 }
                             }
