@@ -87,7 +87,7 @@ class PaymentShippingStep extends CheckoutStep
 		if ($formPayment->isSubmitted() && $formShipping->isSubmitted()) {
 			// custom validation for pandaticket cashOnDelivery and eTicket combination
 			// TODO remove when relations between payment and delivery will be available
-			if ($order->getLastPayment()->getMethod()->getGateway() == 'cashOnDelivery' && $order->getLastShipment()->getMethod()->getCategory()->isGenerateTickets()) {
+			if ($order->getLastPayment()->getMethod()->getGateway() == 'cashOnDelivery' && $order->getLastShipment()->getMethod() && $order->getLastShipment()->getMethod()->getCategory()->isGenerateTickets()) {
 				$formPayment->get('paymentMethod')->addError(new FormError('funlife.eshop.form.payment.cash_on_delivery'));
 			}
 		}
