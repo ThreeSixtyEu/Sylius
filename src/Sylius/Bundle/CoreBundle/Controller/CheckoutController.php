@@ -12,6 +12,7 @@
 namespace Sylius\Bundle\CoreBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use Sylius\Component\Cart\SyliusCartEvents;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\OrderCheckoutTransitions;
 use Sylius\Component\Core\SyliusCheckoutEvents;
@@ -71,6 +72,9 @@ class CheckoutController extends FOSRestController
         if ($request->isMethod('GET')) {
             return new Response('Method not allowed!', 405);
         }
+
+        // make sure sylius.cart_change was called
+	    $this->dispatchCheckoutEvent(SyliusCartEvents::CART_CHANGE, $order);
 
         $this->dispatchCheckoutEvent(SyliusCheckoutEvents::ADDRESSING_INITIALIZE, $order);
 
