@@ -34,3 +34,8 @@
 		</div>
 	</form>
 {% endblock %}
+
+{% block facebookPixelActions %}
+	fbq('track', 'InitiateCheckout');
+	fbq('track', 'AddPaymentInfo');
+{% endblock %}

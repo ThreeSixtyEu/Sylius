@@ -39,12 +39,17 @@ class CartController extends Controller
         $cart = $this->getCurrentCart();
         $form = $this->createForm('sylius_cart', $cart);
 
+        // check if we were redirected after add
+        $itemAdded = ($this->get('session')->get('x-redirected-after-event') == SyliusCartEvents::ITEM_ADD_COMPLETED);
+        $this->get('session')->remove('x-redirected-after-event');
+
         $view = $this
             ->view()
             ->setTemplate($this->config->getTemplate('summary.html'))
             ->setData(array(
                 'cart' => $cart,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'itemAddCompleted' => $itemAdded,
             ))
         ;
 

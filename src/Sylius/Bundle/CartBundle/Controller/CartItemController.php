@@ -80,6 +80,10 @@ class CartItemController extends Controller
         // Write flash message
         $eventDispatcher->dispatch(SyliusCartEvents::ITEM_ADD_COMPLETED, new FlashEvent());
 
+		    /** @var Session $session */
+		    $session = $this->get('session');
+		    $session->set('x-redirected-after-event', SyliusCartEvents::ITEM_ADD_COMPLETED);
+
         return $this->redirectAfterAdd($request);
     }
 
